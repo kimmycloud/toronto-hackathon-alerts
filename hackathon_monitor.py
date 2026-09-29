@@ -1,4 +1,5 @@
 import requests
+import re
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 from dateparser.search import search_dates
@@ -97,20 +98,37 @@ def get_page(url):
 
 def find_registration_links(hackathon_url):
     soup = get_page(hackathon_url)
-
     links = []
 
+    # Clickable registration links
     for link in soup.find_all("a", href=True):
         text = " ".join(link.stripped_strings).lower()
 
         if any(keyword in text for keyword in LINK_KEYWORDS):
             url = urljoin(hackathon_url, link["href"])
 
-            # Ignore obvious Devpost account/login links
-            if "secure.devpost.com" in url:
-                continue
+            if "secure.devpost.com" not in url:
+                links.append(url)
 
-            links.append(url)
+    # Plain-text URLs such as "Register here: https://luma.com/..."
+    page_text = soup.get_text(" ", strip=True)
+
+    raw_urls = re.findall(
+        r'https?://[^\s<>"\']+',
+        page_text
+    )
+
+    for url in raw_urls:
+        clean_url = url.rstrip(".,);]")
+
+        if any(domain in clean_url.lower() for domain in [
+            "luma.com",
+            "lu.ma",
+            "eventbrite",
+            "forms.gle",
+            "docs.google.com/forms",
+        ]):
+            links.append(clean_url)
 
     return list(dict.fromkeys(links))
 
