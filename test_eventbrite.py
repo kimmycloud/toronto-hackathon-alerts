@@ -1,15 +1,12 @@
-import requests
-from bs4 import BeautifulSoup
+from html.parser import HTMLParser
+from urllib.request import Request, urlopen
 from urllib.parse import urljoin
+
 
 SEARCH_PAGES = {
     "Toronto": "https://www.eventbrite.ca/d/canada--toronto/hackathon/",
     "Hamilton": "https://www.eventbrite.ca/d/canada--hamilton/hackathon/",
     "Waterloo": "https://www.eventbrite.ca/d/canada--waterloo/hackathon/",
-}
-
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 HackathonAlertBot/1.0"
 }
 
 KEYWORDS = [
@@ -20,37 +17,79 @@ KEYWORDS = [
 ]
 
 
+class LinkParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.links = []
+        self.current_href = None
+        self.current_text = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "a":
+            attrs = dict(attrs)
+            self.current_href = attrs.get("href")
+            self.current_text = []
+
+    def handle_data(self, data):
+        if self.current_href:
+            self.current_text.append(data)
+
+    def handle_endtag(self, tag):
+        if tag == "a" and self.current_href:
+            text = " ".join(self.current_text).strip()
+
+            self.links.append(
+                (self.current_href, text)
+            )
+
+            self.current_href = None
+            self.current_text = []
+
+
+def download(url):
+    request = Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0"
+        }
+    )
+
+    with urlopen(request, timeout=30) as response:
+        return response.read().decode(
+            "utf-8",
+            errors="ignore"
+        )
+
+
 def main():
     found = {}
 
     for city, url in SEARCH_PAGES.items():
         print(f"\nSearching {city}...")
 
-        response = requests.get(
-            url,
-            headers=HEADERS,
-            timeout=30
+        html = download(url)
+
+        print(
+            f"Downloaded {len(html):,} characters."
         )
 
-        print(f"HTTP status: {response.status_code}")
-        response.raise_for_status()
+        parser = LinkParser()
+        parser.feed(html)
 
-        soup = BeautifulSoup(response.text, "lxml")
+        for href, text in parser.links:
 
-        for link in soup.find_all("a", href=True):
-            text = " ".join(link.stripped_strings).strip()
-            href = urljoin(url, link["href"])
+            full_url = urljoin(url, href)
 
-            if "/e/" not in href:
+            if "/e/" not in full_url:
                 continue
 
             if not any(
-                word in text.lower()
-                for word in KEYWORDS
+                keyword in text.lower()
+                for keyword in KEYWORDS
             ):
                 continue
 
-            clean_url = href.split("?")[0]
+            clean_url = full_url.split("?")[0]
 
             found[clean_url] = {
                 "name": text,
@@ -65,7 +104,9 @@ def main():
         print(url)
         print()
 
-    print(f"Total candidates: {len(found)}")
+    print(
+        f"Total candidates: {len(found)}"
+    )
 
 
 if __name__ == "__main__":
