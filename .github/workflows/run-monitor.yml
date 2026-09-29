@@ -3,6 +3,9 @@ name: Run Hackathon Monitor
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -20,6 +23,19 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run monitor
-  env:
-    DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-  run: python hackathon_monitor.py
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python hackathon_monitor.py
+
+      - name: Save alert history
+        run: |
+          git config user.name "hackathon-alert-bot"
+          git config user.email "actions@github.com"
+          git add sent_hackathons.json
+
+          if git diff --cached --quiet; then
+            echo "No new alerts to save."
+          else
+            git commit -m "Update hackathon alert history"
+            git push
+          fi
