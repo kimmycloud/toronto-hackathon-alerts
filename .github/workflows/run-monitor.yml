@@ -20,4 +20,6 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run monitor
-        run: python hackathon_monitor.py
+  env:
+    DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  run: python hackathon_monitor.py
