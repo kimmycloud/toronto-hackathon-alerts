@@ -29,7 +29,7 @@ jobs:
       - name: Run monitor
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python test_mlh.py
+        run: python hackathon_monitor.py
 
       - name: Save alert history
         run: |
