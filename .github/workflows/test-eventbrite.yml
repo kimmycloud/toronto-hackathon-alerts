@@ -16,8 +16,5 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: pip install requests beautifulsoup4 lxml
-
       - name: Run Eventbrite test
         run: python test_eventbrite.py
