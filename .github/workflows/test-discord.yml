@@ -1,0 +1,17 @@
+name: Test Discord
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send test message
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{"content":"✅ Hackathon alert system is connected!"}' \
+          "$DISCORD_WEBHOOK_URL"
