@@ -22,14 +22,12 @@ def find_devpost_candidates():
     response.raise_for_status()
 
     soup = BeautifulSoup(response.text, "lxml")
-
     candidates = {}
 
     for link in soup.find_all("a", href=True):
         href = urljoin(url, link["href"])
         text = " ".join(link.stripped_strings)
 
-        # Devpost hackathons generally have their own *.devpost.com site
         if ".devpost.com" not in href:
             continue
 
@@ -41,15 +39,43 @@ def find_devpost_candidates():
     return candidates
 
 
+def check_location(url):
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=30)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "lxml")
+        page_text = soup.get_text(" ", strip=True).lower()
+
+        for location in TARGET_LOCATIONS:
+            if location.lower() in page_text:
+                return location
+
+    except requests.RequestException:
+        pass
+
+    return None
+
+
 if __name__ == "__main__":
     print("Hackathon monitor started.")
-    print(f"Watching {len(TARGET_LOCATIONS)} locations.")
 
     candidates = find_devpost_candidates()
 
-    print(f"\nFound {len(candidates)} Devpost candidates:\n")
+    print(f"Found {len(candidates)} total Devpost candidates.\n")
+    print("Matching our locations:\n")
+
+    match_count = 0
 
     for url, name in candidates.items():
-        print(name)
-        print(url)
-        print()
+        location = check_location(url)
+
+        if location:
+            match_count += 1
+
+            print(f"✅ {name}")
+            print(f"Location match: {location}")
+            print(url)
+            print()
+
+    print(f"Total location matches: {match_count}")
