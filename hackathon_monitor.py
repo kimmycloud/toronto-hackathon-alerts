@@ -1,10 +1,14 @@
-import requests
+import json
+import os
 import re
+import requests
+
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 from dateparser.search import search_dates
 from datetime import datetime
 from zoneinfo import ZoneInfo
+
 
 TARGET_LOCATIONS = [
     "Toronto", "North York", "Scarborough", "Etobicoke",
@@ -15,10 +19,15 @@ TARGET_LOCATIONS = [
 ]
 
 DEVPOST_API = "https://devpost.com/api/hackathons"
+DATABASE_FILE = "sent_hackathons.json"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 HackathonAlertBot/1.0"
 }
+
+LINK_KEYWORDS = [
+    "apply", "register", "registration", "sign up"
+]
 
 DEADLINE_KEYWORDS = [
     "application deadline",
@@ -32,16 +41,37 @@ DEADLINE_KEYWORDS = [
     "sign up by",
 ]
 
-LINK_KEYWORDS = [
-    "apply",
-    "register",
-    "registration",
-    "sign up",
+CLOSED_KEYWORDS = [
+    "registration closed",
+    "registration is closed",
+    "applications closed",
+    "applications are closed",
+    "applications have closed",
+    "registration has closed",
 ]
 
 
+def load_sent():
+    if not os.path.exists(DATABASE_FILE):
+        return []
+
+    with open(DATABASE_FILE, "r") as f:
+        return json.load(f)
+
+
+def save_sent(sent):
+    with open(DATABASE_FILE, "w") as f:
+        json.dump(sent, f, indent=2)
+
+
+def get_page(url):
+    response = requests.get(url, headers=HEADERS, timeout=30)
+    response.raise_for_status()
+    return BeautifulSoup(response.text, "lxml")
+
+
 def find_devpost_candidates(max_pages=20):
-    all_hackathons = []
+    results = []
     seen = set()
 
     for page in range(1, max_pages + 1):
@@ -50,8 +80,8 @@ def find_devpost_candidates(max_pages=20):
             params={"page": page},
             timeout=30
         )
-        response.raise_for_status()
 
+        response.raise_for_status()
         hackathons = response.json().get("hackathons", [])
 
         if not hackathons:
@@ -62,9 +92,9 @@ def find_devpost_candidates(max_pages=20):
 
             if key not in seen:
                 seen.add(key)
-                all_hackathons.append(hackathon)
+                results.append(hackathon)
 
-    return all_hackathons
+    return results
 
 
 def get_location(hackathon):
@@ -85,22 +115,11 @@ def location_matches(hackathon):
     )
 
 
-def get_page(url):
-    response = requests.get(
-        url,
-        headers=HEADERS,
-        timeout=30
-    )
-    response.raise_for_status()
-
-    return BeautifulSoup(response.text, "lxml")
-
-
 def find_registration_links(hackathon_url):
     soup = get_page(hackathon_url)
     links = []
 
-    # Clickable registration links
+    # Clickable links
     for link in soup.find_all("a", href=True):
         text = " ".join(link.stripped_strings).lower()
 
@@ -110,7 +129,7 @@ def find_registration_links(hackathon_url):
             if "secure.devpost.com" not in url:
                 links.append(url)
 
-    # Plain-text URLs such as "Register here: https://luma.com/..."
+    # Plain-text URLs
     page_text = soup.get_text(" ", strip=True)
 
     raw_urls = re.findall(
@@ -133,7 +152,21 @@ def find_registration_links(hackathon_url):
     return list(dict.fromkeys(links))
 
 
-def extract_deadline_from_page(url):
+def registration_closed(url):
+    try:
+        soup = get_page(url)
+        text = soup.get_text(" ", strip=True).lower()
+
+        return any(
+            phrase in text
+            for phrase in CLOSED_KEYWORDS
+        )
+
+    except Exception:
+        return False
+
+
+def extract_deadline(url):
     try:
         soup = get_page(url)
     except Exception:
@@ -150,12 +183,7 @@ def extract_deadline_from_page(url):
         if position == -1:
             continue
 
-        # Examine text immediately around the deadline wording
-        snippet = text[position:position + 180]
-
-        # Avoid confusing project submission deadlines with signup deadlines
-        if "submission deadline" in snippet.lower():
-            continue
+        snippet = text[position:position + 200]
 
         matches = search_dates(
             snippet,
@@ -165,67 +193,125 @@ def extract_deadline_from_page(url):
             }
         )
 
-        if not matches:
-            continue
-
-        for matched_text, date in matches:
-            if date.date() >= now.date():
+        if matches:
+            for matched_text, date in matches:
                 return {
-                    "deadline": date,
-                    "matched_text": matched_text,
+                    "date": date,
                     "source": url,
-                    "snippet": snippet,
+                    "text": matched_text,
                 }
 
     return None
 
 
-if __name__ == "__main__":
-    print("Hackathon monitor started.\n")
+def send_discord_alert(
+    name,
+    location,
+    event_dates,
+    hackathon_url,
+    registration_url,
+    deadline
+):
+    webhook = os.environ["DISCORD_WEBHOOK_URL"]
 
+    if deadline:
+        deadline_text = deadline["date"].strftime("%B %d, %Y")
+        status = "🟢"
+    else:
+        deadline_text = "Not found — verify registration is still open"
+        status = "🟡"
+
+    message = (
+        f"{status} **New Hackathon Found**\n\n"
+        f"## {name}\n"
+        f"📍 **Location:** {location}\n"
+        f"🗓️ **Hackathon:** {event_dates}\n"
+        f"⏰ **Registration deadline:** {deadline_text}\n\n"
+        f"🔗 **Hackathon:** {hackathon_url}\n"
+    )
+
+    if registration_url:
+        message += f"📝 **Register:** {registration_url}\n"
+
+    requests.post(
+        webhook,
+        json={"content": message},
+        timeout=30
+    ).raise_for_status()
+
+
+def main():
+    print("Hackathon monitor started.")
+
+    sent = load_sent()
     hackathons = find_devpost_candidates()
 
-    print(f"Found {len(hackathons)} Devpost hackathons.\n")
+    print(f"Found {len(hackathons)} Devpost hackathons.")
 
     for hackathon in hackathons:
 
         if not location_matches(hackathon):
             continue
 
-        name = hackathon.get("title")
+        # Devpost says this event isn't upcoming
+        if hackathon.get("open_state") != "upcoming":
+            continue
+
+        name = hackathon.get("title", "Unknown")
         url = hackathon.get("url")
         location = get_location(hackathon)
+        event_dates = hackathon.get(
+            "submission_period_dates",
+            "Date unavailable"
+        )
 
-        print("=" * 60)
-        print(f"✅ {name}")
-        print(f"Location: {location}")
-        print(f"Devpost dates: {hackathon.get('submission_period_dates')}")
-        print(f"Page: {url}")
+        # Already announced
+        if url in sent:
+            continue
 
-        # First check the hackathon page itself
-        deadline = extract_deadline_from_page(url)
+        print(f"\nChecking: {name}")
 
-        # Then follow registration/application links
         registration_links = find_registration_links(url)
+        registration_url = (
+            registration_links[0]
+            if registration_links
+            else None
+        )
 
-        print(f"Registration links found: {len(registration_links)}")
+        # If registration page clearly says closed → skip
+        if registration_url and registration_closed(registration_url):
+            print("❌ Registration closed.")
+            continue
 
-        if not deadline:
-            for registration_url in registration_links:
-                print(f"Checking: {registration_url}")
+        deadline = extract_deadline(url)
 
-                deadline = extract_deadline_from_page(registration_url)
+        if not deadline and registration_url:
+            deadline = extract_deadline(registration_url)
 
-                if deadline:
-                    break
-
+        # If we actually found a deadline and it is already past → skip
         if deadline:
-            print("\n🎯 POSSIBLE REGISTRATION DEADLINE")
-            print(deadline["deadline"])
-            print(f"Source: {deadline['source']}")
-            print(f"Text: {deadline['snippet']}")
+            now = datetime.now(ZoneInfo("America/Toronto"))
 
-        else:
-            print("\n⚠️ No verified registration deadline found.")
+            deadline_date = deadline["date"]
 
-        print()
+            if deadline_date.date() < now.date():
+                print("❌ Deadline passed.")
+                continue
+
+        send_discord_alert(
+            name,
+            location,
+            event_dates,
+            url,
+            registration_url,
+            deadline,
+        )
+
+        sent.append(url)
+        save_sent(sent)
+
+        print("✅ Discord alert sent.")
+
+
+if __name__ == "__main__":
+    main()
