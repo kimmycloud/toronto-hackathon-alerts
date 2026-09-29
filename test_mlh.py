@@ -1,14 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 MLH_URL = "https://www.mlh.com/seasons/2027/events"
 
 TARGET_LOCATIONS = [
     "Toronto",
     "Scarborough",
-    "Markham",
     "Mississauga",
-    "Missisauga",  # MLH currently has this misspelling
+    "Missisauga",
     "Hamilton",
     "Waterloo",
     "Kitchener",
@@ -29,13 +29,18 @@ def main():
 
     soup = BeautifulSoup(response.text, "lxml")
 
-    print("MLH page downloaded successfully.\n")
+    print("Matching MLH event links:\n")
 
-    page_text = soup.get_text(" ", strip=True)
+    for link in soup.find_all("a", href=True):
+        text = " ".join(link.stripped_strings)
 
-    for location in TARGET_LOCATIONS:
-        if location.lower() in page_text.lower():
-            print(f"✅ Found location: {location}")
+        if any(
+            location.lower() in text.lower()
+            for location in TARGET_LOCATIONS
+        ):
+            print("=" * 50)
+            print(text)
+            print(urljoin(MLH_URL, link["href"]))
 
 
 if __name__ == "__main__":
