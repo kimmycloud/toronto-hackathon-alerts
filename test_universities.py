@@ -8,6 +8,8 @@ SOURCES = {
     "York": "https://events.yorku.ca/",
     "Waterloo": "https://uwaterloo.ca/events",
     "McMaster": "https://ses.eng.mcmaster.ca/experiences/hackathons/",
+    "uOttawa": "https://www.uottawa.ca/campus-life/events-all",
+    "Carleton": "https://carleton.ca/events/",
 }
 
 KEYWORDS = [
