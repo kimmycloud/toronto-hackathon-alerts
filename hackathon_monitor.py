@@ -1,6 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
-from urllib.parse import urljoin
 
 TARGET_LOCATIONS = [
     "Toronto", "North York", "Scarborough", "Etobicoke",
@@ -10,49 +8,24 @@ TARGET_LOCATIONS = [
     "Waterloo", "Kitchener", "Cambridge", "Hamilton",
 ]
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 HackathonAlertBot/1.0"
-}
+DEVPOST_API = "https://devpost.com/api/hackathons"
 
 
 def find_devpost_candidates():
-    url = "https://devpost.com/hackathons"
-
-    response = requests.get(url, headers=HEADERS, timeout=30)
+    response = requests.get(DEVPOST_API, timeout=30)
     response.raise_for_status()
 
-    soup = BeautifulSoup(response.text, "lxml")
-    candidates = {}
-
-    for link in soup.find_all("a", href=True):
-        href = urljoin(url, link["href"])
-        text = " ".join(link.stripped_strings)
-
-        if ".devpost.com" not in href:
-            continue
-
-        if not text:
-            continue
-
-        candidates[href] = text
-
-    return candidates
+    data = response.json()
+    return data["hackathons"]
 
 
-def check_location(url):
-    try:
-        response = requests.get(url, headers=HEADERS, timeout=30)
-        response.raise_for_status()
+def location_matches(hackathon):
+    location_data = hackathon.get("displayed_location") or {}
+    location = location_data.get("location", "")
 
-        soup = BeautifulSoup(response.text, "lxml")
-        page_text = soup.get_text(" ", strip=True).lower()
-
-        for location in TARGET_LOCATIONS:
-            if location.lower() in page_text:
-                return location
-
-    except requests.RequestException:
-        pass
+    for target in TARGET_LOCATIONS:
+        if target.lower() in location.lower():
+            return target
 
     return None
 
@@ -60,22 +33,24 @@ def check_location(url):
 if __name__ == "__main__":
     print("Hackathon monitor started.")
 
-    candidates = find_devpost_candidates()
+    hackathons = find_devpost_candidates()
 
-    print(f"Found {len(candidates)} total Devpost candidates.\n")
+    print(f"Found {len(hackathons)} Devpost hackathons.\n")
     print("Matching our locations:\n")
 
-    match_count = 0
+    matches = 0
 
-    for url, name in candidates.items():
-        location = check_location(url)
+    for hackathon in hackathons:
+        location = location_matches(hackathon)
 
         if location:
-            match_count += 1
+            matches += 1
 
-            print(f"✅ {name}")
-            print(f"Location match: {location}")
-            print(url)
+            print(f"✅ {hackathon['title']}")
+            print(f"Location: {hackathon['displayed_location']['location']}")
+            print(f"Status: {hackathon['open_state']}")
+            print(f"Dates: {hackathon['submission_period_dates']}")
+            print(hackathon["url"])
             print()
 
-    print(f"Total location matches: {match_count}")
+    print(f"Total location matches: {matches}")
