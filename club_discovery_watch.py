@@ -32,8 +32,25 @@ HEADERS = {
 }
 
 
-DISCOVERY_PATTERNS = [
-    # Hackathons
+# --------------------------------------------------
+# Geographic policy
+# --------------------------------------------------
+
+TORONTO_GTA_SCHOOLS = {
+    "TMU",
+    "U of T",
+    "York",
+}
+
+
+# --------------------------------------------------
+# Core events
+#
+# These are worth alerting for regardless of which
+# monitored university hosts them.
+# --------------------------------------------------
+
+CORE_EVENT_PATTERNS = [
     r"\bhackathon\b",
     r"\bhack[\s-]?athon\b",
     r"\bdatathon\b",
@@ -42,26 +59,22 @@ DISCOVERY_PATTERNS = [
     r"\bbuildathon\b",
     r"\bcodeathon\b",
 
-    # Game / security events
     r"\bgame\s*jam\b",
     r"\bctf\b",
     r"\bcapture\s+the\s+flag\b",
 
-    # Programming competitions
     r"\bcoding\s+competition\b",
     r"\bcoding\s+contest\b",
     r"\bprogramming\s+competition\b",
     r"\bprogramming\s+contest\b",
     r"\bcompetitive\s+programming\b",
 
-    # Engineering / robotics
     r"\brobotics\s+competition\b",
     r"\brobotics\s+challenge\b",
     r"\bengineering\s+competition\b",
     r"\bengineering\s+challenge\b",
     r"\binnovation\s+challenge\b",
 
-    # AI / ML / data
     r"\bai\s+competition\b",
     r"\bai\s+challenge\b",
     r"\bml\s+competition\b",
@@ -71,15 +84,43 @@ DISCOVERY_PATTERNS = [
     r"\bdata\s+competition\b",
     r"\bdata\s+challenge\b",
 
-    # High-value technical events
+    r"\bcase\s+competition\b",
+]
+
+
+# --------------------------------------------------
+# Extra technical events
+#
+# These are useful, but only worth notifying about
+# when hosted in Toronto/GTA.
+# --------------------------------------------------
+
+LOCAL_TECH_EVENT_PATTERNS = [
     r"\bcyber\s+summit\b",
     r"\bcybersecurity\s+summit\b",
     r"\btech(?:nology)?\s+summit\b",
+
     r"\bdeveloper\s+conference\b",
     r"\bengineering\s+conference\b",
     r"\bai\s+conference\b",
     r"\bmachine\s+learning\s+conference\b",
+
+    r"\bcyber\s+conference\b",
+    r"\bcybersecurity\s+conference\b",
+
+    r"\btechnical\s+conference\b",
+    r"\btech\s+conference\b",
+
+    r"\bdeveloper\s+summit\b",
+    r"\bengineering\s+summit\b",
+    r"\bai\s+summit\b",
 ]
+
+
+DISCOVERY_PATTERNS = (
+    CORE_EVENT_PATTERNS
+    + LOCAL_TECH_EVENT_PATTERNS
+)
 
 
 REGISTRATION_PATTERNS = [
@@ -183,14 +224,38 @@ def clean_text(value):
     ).strip()
 
 
-def matches_discovery(text):
+def matches_patterns(
+    text,
+    patterns,
+):
     return any(
         re.search(
             pattern,
             text,
             re.IGNORECASE,
         )
-        for pattern in DISCOVERY_PATTERNS
+        for pattern in patterns
+    )
+
+
+def matches_discovery(text):
+    return matches_patterns(
+        text,
+        DISCOVERY_PATTERNS,
+    )
+
+
+def matches_core_event(text):
+    return matches_patterns(
+        text,
+        CORE_EVENT_PATTERNS,
+    )
+
+
+def matches_local_tech_event(text):
+    return matches_patterns(
+        text,
+        LOCAL_TECH_EVENT_PATTERNS,
     )
 
 
@@ -455,20 +520,56 @@ def new_signals(
     ]
 
 
-def signal_is_high_value(signal):
-    if signal.startswith(
-        "LINK|"
+def signal_is_high_value(
+    club,
+    signal,
+):
+    """
+    Alert policy:
+
+    1. Hackathons / competitions:
+       alert regardless of monitored school.
+
+    2. Broader technical conferences/summits:
+       alert only for Toronto/GTA schools.
+
+    3. Generic application/registration links:
+       preserve the existing false-positive-friendly
+       behavior only for Toronto/GTA schools.
+    """
+
+    school = club.get(
+        "school",
+        ""
+    )
+
+    is_toronto_gta = (
+        school
+        in TORONTO_GTA_SCHOOLS
+    )
+
+    if matches_core_event(
+        signal
     ):
         return True
 
-    return (
-        matches_discovery(
+    if (
+        is_toronto_gta
+        and matches_local_tech_event(
             signal
         )
-        and matches_registration(
-            signal
+    ):
+        return True
+
+    if (
+        is_toronto_gta
+        and signal.startswith(
+            "LINK|"
         )
-    )
+    ):
+        return True
+
+    return False
 
 
 # --------------------------------------------------
@@ -600,33 +701,13 @@ def safe_date(
 
 
 def extract_explicit_date(text):
-    """
-    Only recognizes explicit dates.
-
-    It never guesses missing pieces.
-
-    Supported examples:
-      16. Sept. 2026
-      September 16, 2026
-      16 de set. de 2026
-      16 de setembro de 2026
-      16 de septiembre de 2026
-      16 septembre 2026
-      2026-09-16
-      16/09/2026
-      16.09.2026
-      2026년 9월 16일
-      2026年9月16日
-    """
-
     if not re.search(
         r"20\d{2}",
         text,
     ):
         return None
 
-    # Korean:
-    # 2026년 9월 16일
+    # Korean
     match = re.search(
         r"(20\d{2})\s*년\s*"
         r"(\d{1,2})\s*월\s*"
@@ -641,8 +722,7 @@ def extract_explicit_date(text):
             match.group(3),
         )
 
-    # Chinese / Japanese:
-    # 2026年9月16日
+    # Chinese / Japanese
     match = re.search(
         r"(20\d{2})\s*年\s*"
         r"(\d{1,2})\s*月\s*"
@@ -657,10 +737,7 @@ def extract_explicit_date(text):
             match.group(3),
         )
 
-    # Year first:
     # 2026-09-16
-    # 2026/09/16
-    # 2026.09.16
     match = re.search(
         r"\b(20\d{2})[-/.]"
         r"(\d{1,2})[-/.]"
@@ -675,10 +752,7 @@ def extract_explicit_date(text):
             match.group(3),
         )
 
-    # Day first:
     # 16/09/2026
-    # 16.09.2026
-    # 16-09-2026
     match = re.search(
         r"\b(\d{1,2})[-/.]"
         r"(\d{1,2})[-/.]"
@@ -693,15 +767,8 @@ def extract_explicit_date(text):
             match.group(1),
         )
 
-    # Day + month word + year.
-    #
-    # Allows punctuation after the day:
     # 16. Sept. 2026
-    #
-    # Allows Portuguese / Spanish "de":
     # 16 de set. de 2026
-    #
-    # Allows French:
     # 16 septembre 2026
     match = re.search(
         r"\b(\d{1,2})"
@@ -729,7 +796,6 @@ def extract_explicit_date(text):
                 match.group(1),
             )
 
-    # Month + day + year:
     # September 16, 2026
     match = re.search(
         r"\b([A-Za-zÀ-ÿ]+\.?)"
@@ -755,17 +821,6 @@ def extract_explicit_date(text):
                 match.group(2),
             )
 
-    # IMPORTANT:
-    # No fuzzy/dateparser fallback here.
-    #
-    # If we cannot explicitly identify
-    # year + month + day, return None.
-    # This prevents dates like:
-    #
-    #   "16. Sept. 2026"
-    #
-    # from accidentally turning into
-    # today's date.
     return None
 
 
@@ -857,7 +912,7 @@ def send_discord(
             {
                 "title": (
                     "🔎 POSSIBLE NEW "
-                    "HACKATHON / COMPETITION"
+                    "HACKATHON / EVENT"
                 ),
 
                 "description": (
@@ -874,11 +929,9 @@ def send_discord(
                 "footer": {
                     "text": (
                         "Discovery alert — "
-                        "verify that this is a "
-                        "future event and that "
-                        "registration is open "
-                        "before treating it as "
-                        "confirmed."
+                        "verify event date and "
+                        "registration before "
+                        "treating it as confirmed."
                     )
                 },
             }
@@ -1124,7 +1177,8 @@ def main():
             signal
             for signal in additions
             if signal_is_high_value(
-                signal
+                club,
+                signal,
             )
         ]
 
