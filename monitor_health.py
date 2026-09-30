@@ -147,7 +147,7 @@ def university_discovery_health(path):
 def log_health(path, monitor, heading_pattern):
     text = Path(path).read_text(encoding="utf-8")
     lines = text.splitlines()
-    match = re.search(r"^Loaded (\d+) (?:club discovery entries|annual organizer sources)\.$", text, re.M)
+    match = re.search(r"^Loaded (\d+) (?:club discovery entries|annual organizer sources|bio-link sources)\.$", text, re.M)
     if not match or not re.search(r"^Finished:", text, re.M):
         raise ValueError("Incomplete monitor log")
     expected = int(match.group(1))
@@ -178,14 +178,14 @@ def log_health(path, monitor, heading_pattern):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--type", required=True, choices=[
-        "university-discovery", "club-discovery", "annual-organizer"])
+        "university-discovery", "club-discovery", "annual-organizer", "bio-link"])
     parser.add_argument("--file", required=True)
     args = parser.parse_args()
     try:
         if args.type == "university-discovery":
             university_discovery_health(args.file)
         else:
-            heading = (r"^\[\d+/\d+\] (.+?) — (.+)$" if args.type == "club-discovery"
+            heading = (r"^\[\d+/\d+\] (.+?) — (.+)$" if args.type in {"club-discovery", "bio-link"}
                        else r"^Checking: (.+?) — (.+)$")
             log_health(args.file, args.type, re.compile(heading))
     except Exception as exc:

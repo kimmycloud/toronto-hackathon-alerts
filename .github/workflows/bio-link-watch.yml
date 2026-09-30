@@ -1,0 +1,54 @@
+name: Bio-Link Discovery Watch
+
+on:
+  schedule:
+    - cron: "23 */2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: monitor-health-state
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bio-link watch
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python bio_link_watch.py | tee bio-link-output.txt
+
+      - name: Report monitor health
+        env:
+          MONITOR_ERROR_WEBHOOK_URL: ${{ secrets.MONITOR_ERROR_WEBHOOK_URL }}
+        run: python monitor_health.py --type bio-link --file bio-link-output.txt
+
+      - name: Save monitor states
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bio_link_state.json monitor_health_state.json
+          if git diff --cached --quiet; then
+            echo "No monitor state changes to save."
+          else
+            git commit -m "Update bio-link monitor state"
+            git pull --rebase origin main
+            git push origin main
+          fi
