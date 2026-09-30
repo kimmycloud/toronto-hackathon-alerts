@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
@@ -96,7 +97,6 @@ def normalize_datetime(value):
         return None
 
     try:
-        # Unix timestamp support
         if isinstance(value, (int, float)):
             return datetime.fromtimestamp(
                 value,
@@ -169,10 +169,11 @@ def dedupe_events(events):
     return deduped
 
 
-def parse_luma_schema_org(source):
-    html, final_url = fetch_html(source)
-    soup = BeautifulSoup(html, "html.parser")
-
+def extract_json_ld_events(
+    source,
+    soup,
+    final_url,
+):
     events = []
 
     for script in soup.find_all(
@@ -189,34 +190,48 @@ def parse_luma_schema_org(source):
         except json.JSONDecodeError:
             continue
 
-        items = []
+        candidates = []
 
-        if isinstance(data, dict):
+        if isinstance(data, list):
+            candidates.extend(data)
+
+        elif isinstance(data, dict):
+            candidates.append(data)
+
+            graph = data.get("@graph")
+
+            if isinstance(graph, list):
+                candidates.extend(graph)
+
             if data.get("@type") == "ItemList":
-                items.extend(
-                    data.get(
-                        "itemListElement",
-                        [],
-                    )
-                )
+                for item in data.get(
+                    "itemListElement",
+                    [],
+                ):
+                    if (
+                        isinstance(item, dict)
+                        and "item" in item
+                    ):
+                        candidates.append(
+                            item["item"]
+                        )
 
-            elif data.get("@type") == "Event":
-                items.append(data)
-
-        elif isinstance(data, list):
-            items.extend(data)
-
-        for item in items:
-            if (
-                isinstance(item, dict)
-                and "item" in item
-            ):
-                item = item["item"]
-
+        for item in candidates:
             if not isinstance(item, dict):
                 continue
 
-            if item.get("@type") != "Event":
+            item_type = item.get("@type")
+
+            if isinstance(item_type, list):
+                is_event = (
+                    "Event" in item_type
+                )
+            else:
+                is_event = (
+                    item_type == "Event"
+                )
+
+            if not is_event:
                 continue
 
             start = normalize_datetime(
@@ -230,16 +245,52 @@ def parse_luma_schema_org(source):
                 "location"
             )
 
-            if isinstance(location, dict):
+            location_name = ""
+
+            if isinstance(
+                location,
+                dict,
+            ):
                 location_name = (
                     location.get("name")
-                    or location.get("address")
                     or ""
                 )
-            else:
-                location_name = str(
-                    location or ""
+
+                address = location.get(
+                    "address"
                 )
+
+                if isinstance(
+                    address,
+                    dict,
+                ):
+                    address_parts = [
+                        address.get(
+                            "streetAddress"
+                        ),
+                        address.get(
+                            "addressLocality"
+                        ),
+                        address.get(
+                            "addressRegion"
+                        ),
+                    ]
+
+                    address_text = ", ".join(
+                        str(part)
+                        for part in address_parts
+                        if part
+                    )
+
+                    if address_text:
+                        if location_name:
+                            location_name += (
+                                f" — {address_text}"
+                            )
+                        else:
+                            location_name = (
+                                address_text
+                            )
 
             events.append(
                 make_event(
@@ -260,12 +311,31 @@ def parse_luma_schema_org(source):
                 )
             )
 
-    return dedupe_events(events)
+    return events
+
+
+def parse_luma_schema_org(source):
+    html, final_url = fetch_html(source)
+    soup = BeautifulSoup(
+        html,
+        "html.parser",
+    )
+
+    return dedupe_events(
+        extract_json_ld_events(
+            source,
+            soup,
+            final_url,
+        )
+    )
 
 
 def parse_next_data_future_events(source):
     html, final_url = fetch_html(source)
-    soup = BeautifulSoup(html, "html.parser")
+    soup = BeautifulSoup(
+        html,
+        "html.parser",
+    )
 
     script = soup.find(
         "script",
@@ -307,35 +377,29 @@ def parse_next_data_future_events(source):
         if not start:
             continue
 
-        title = (
-            item.get("name")
-            or item.get("title")
-            or ""
-        )
-
-        location = (
-            item.get("location")
-            or item.get("venue")
-            or ""
-        )
-
-        url = (
-            item.get("url")
-            or item.get("link")
-            or final_url
-        )
-
         events.append(
             make_event(
                 source=source,
-                title=title,
+                title=(
+                    item.get("name")
+                    or item.get("title")
+                    or ""
+                ),
                 start=start,
                 end=(
                     item.get("endDate")
                     or item.get("end")
                 ),
-                location=location,
-                url=url,
+                location=(
+                    item.get("location")
+                    or item.get("venue")
+                    or ""
+                ),
+                url=(
+                    item.get("url")
+                    or item.get("link")
+                    or final_url
+                ),
             )
         )
 
@@ -344,58 +408,89 @@ def parse_next_data_future_events(source):
 
 def parse_html_upcoming_events(source):
     html, final_url = fetch_html(source)
-    soup = BeautifulSoup(html, "html.parser")
+    soup = BeautifulSoup(
+        html,
+        "html.parser",
+    )
 
+    return parse_visible_date_blocks(
+        source,
+        soup,
+        final_url,
+    )
+
+
+def parse_gdg_event_cards(source):
+    html, final_url = fetch_html(source)
+    soup = BeautifulSoup(
+        html,
+        "html.parser",
+    )
+
+    events = extract_json_ld_events(
+        source,
+        soup,
+        final_url,
+    )
+
+    if events:
+        return dedupe_events(events)
+
+    return parse_visible_date_blocks(
+        source,
+        soup,
+        final_url,
+    )
+
+
+def parse_visible_date_blocks(
+    source,
+    soup,
+    final_url,
+):
     events = []
 
-    month_names = (
-        "January February March April "
-        "May June July August September "
-        "October November December "
-        "Jan Feb Mar Apr Jun Jul Aug "
-        "Sep Sept Oct Nov Dec"
-    ).split()
+    month_pattern = re.compile(
+        r"\b("
+        r"January|February|March|April|May|June|"
+        r"July|August|September|October|November|December|"
+        r"Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec"
+        r")\s+\d{1,2}"
+        r"(?:st|nd|rd|th)?"
+        r"(?:,\s*|\s+)"
+        r"(20\d{2})\b",
+        re.IGNORECASE,
+    )
 
     for element in soup.find_all(
-        ["article", "section", "div", "li"]
+        [
+            "article",
+            "section",
+            "li",
+            "div",
+        ]
     ):
-        block_text = element.get_text(
+        text = element.get_text(
             " ",
             strip=True,
         )
 
-        if not block_text:
+        if not text:
             continue
 
-        lower = block_text.lower()
+        match = month_pattern.search(
+            text
+        )
 
-        if not any(
-            month.lower() in lower
-            for month in month_names
-        ):
+        if not match:
             continue
 
-        try:
-            start = date_parser.parse(
-                block_text,
-                fuzzy=True,
-                default=datetime.now(
-                    timezone.utc
-                ).replace(
-                    hour=0,
-                    minute=0,
-                    second=0,
-                    microsecond=0,
-                ),
-            )
+        start = normalize_datetime(
+            match.group(0)
+        )
 
-        except Exception:
+        if not start:
             continue
-
-        if start.tzinfo is None:
-            start = start.replace(
-                tzinfo=timezone.utc
-            )
 
         heading = element.find(
             [
@@ -403,6 +498,7 @@ def parse_html_upcoming_events(source):
                 "h2",
                 "h3",
                 "h4",
+                "h5",
                 "strong",
             ]
         )
@@ -413,7 +509,7 @@ def parse_html_upcoming_events(source):
                 strip=True,
             )
         else:
-            title = block_text[:120]
+            title = text[:160]
 
         link = element.find(
             "a",
@@ -440,199 +536,14 @@ def parse_html_upcoming_events(source):
     return dedupe_events(events)
 
 
-def parse_gdg_event_cards(source):
-    html, final_url = fetch_html(source)
-    soup = BeautifulSoup(html, "html.parser")
-
-    events = []
-
-    # Prefer JSON-LD.
-    for script in soup.find_all(
-        "script",
-        attrs={
-            "type": "application/ld+json"
-        },
-    ):
-        raw = script.string
-
-        if not raw:
-            continue
-
-        try:
-            data = json.loads(raw)
-        except json.JSONDecodeError:
-            continue
-
-        if isinstance(data, dict):
-            candidates = [data]
-
-            graph = data.get("@graph")
-
-            if isinstance(graph, list):
-                candidates.extend(graph)
-
-        elif isinstance(data, list):
-            candidates = data
-
-        else:
-            candidates = []
-
-        for item in candidates:
-            if not isinstance(
-                item,
-                dict,
-            ):
-                continue
-
-            if item.get(
-                "@type"
-            ) != "Event":
-                continue
-
-            start = normalize_datetime(
-                item.get("startDate")
-            )
-
-            if not start:
-                continue
-
-            location = item.get(
-                "location"
-            )
-
-            location_name = ""
-
-            if isinstance(
-                location,
-                dict,
-            ):
-                location_name = (
-                    location.get("name")
-                    or ""
-                )
-
-                address = location.get(
-                    "address"
-                )
-
-                if isinstance(
-                    address,
-                    dict,
-                ):
-                    address_text = ", ".join(
-                        str(
-                            address.get(key)
-                        )
-                        for key in [
-                            "streetAddress",
-                            "addressLocality",
-                            "addressRegion",
-                        ]
-                        if address.get(key)
-                    )
-
-                    if address_text:
-                        if location_name:
-                            location_name += (
-                                f" — {address_text}"
-                            )
-                        else:
-                            location_name = (
-                                address_text
-                            )
-
-            events.append(
-                make_event(
-                    source=source,
-                    title=item.get(
-                        "name",
-                        "",
-                    ),
-                    start=start,
-                    end=item.get(
-                        "endDate"
-                    ),
-                    location=location_name,
-                    url=item.get(
-                        "url",
-                        final_url,
-                    ),
-                )
-            )
-
-    # Fallback to visible event links.
-    if not events:
-        month_words = (
-            "jan feb mar apr may jun jul "
-            "aug sep sept oct nov dec "
-            "january february march april "
-            "june july august september "
-            "october november december"
-        ).split()
-
-        for link in soup.find_all(
-            "a",
-            href=True,
-        ):
-            text = link.get_text(
-                " ",
-                strip=True,
-            )
-
-            if not text:
-                continue
-
-            lower = text.lower()
-
-            if (
-                "no upcoming events"
-                in lower
-            ):
-                continue
-
-            if not any(
-                month in lower
-                for month in month_words
-            ):
-                continue
-
-            try:
-                start = date_parser.parse(
-                    text,
-                    fuzzy=True,
-                )
-
-            except Exception:
-                continue
-
-            if start.tzinfo is None:
-                start = start.replace(
-                    tzinfo=timezone.utc
-                )
-
-            events.append(
-                make_event(
-                    source=source,
-                    title=text[:160],
-                    start=start,
-                    url=urljoin(
-                        final_url,
-                        link["href"],
-                    ),
-                )
-            )
-
-    return dedupe_events(events)
-
-
 def is_itch_jam_url(url):
     try:
         parsed = urlparse(url)
 
-        host = parsed.netloc.lower()
-
         return (
-            host.endswith("itch.io")
+            parsed.netloc.lower().endswith(
+                "itch.io"
+            )
             and "/jam/" in parsed.path
         )
 
@@ -641,15 +552,13 @@ def is_itch_jam_url(url):
 
 
 def extract_itch_datetime(element):
-    attributes = [
+    for attribute in [
         "datetime",
         "title",
         "data-time",
         "data-timestamp",
         "data-date",
-    ]
-
-    for attribute in attributes:
+    ]:
         value = element.get(
             attribute
         )
@@ -707,8 +616,6 @@ def parse_itch_jam_page(
 
     date_candidates = []
 
-    # itch.io commonly exposes formatted dates
-    # in abbr/time elements.
     for element in soup.find_all(
         ["abbr", "time"]
     ):
@@ -717,34 +624,29 @@ def parse_itch_jam_page(
         )
 
         if dt:
-            date_candidates.append(dt)
+            date_candidates.append(
+                dt
+            )
 
-    # Also inspect elements with timestamp attrs.
-    for element in soup.find_all(
-        attrs={"data-time": True}
-    ):
-        dt = extract_itch_datetime(
-            element
-        )
+    for attribute in [
+        "data-time",
+        "data-timestamp",
+    ]:
+        for element in soup.find_all(
+            attrs={attribute: True}
+        ):
+            dt = extract_itch_datetime(
+                element
+            )
 
-        if dt:
-            date_candidates.append(dt)
-
-    for element in soup.find_all(
-        attrs={"data-timestamp": True}
-    ):
-        dt = extract_itch_datetime(
-            element
-        )
-
-        if dt:
-            date_candidates.append(dt)
+            if dt:
+                date_candidates.append(
+                    dt
+                )
 
     if not date_candidates:
         return None
 
-    # The earliest exposed jam date is normally
-    # the start/opening date.
     start = min(
         date_candidates
     )
@@ -770,8 +672,6 @@ def parse_itch_jam_page(
 
 
 def parse_itch_io_jams(source):
-    candidate_urls = []
-
     primary_urls = [
         source["url"],
         *source.get(
@@ -780,13 +680,14 @@ def parse_itch_io_jams(source):
         ),
     ]
 
-    # Direct jam links from registry.
+    candidate_urls = []
+
     for url in primary_urls:
         if is_itch_jam_url(url):
-            candidate_urls.append(url)
+            candidate_urls.append(
+                url
+            )
 
-    # Search organizer/profile pages for
-    # links to hosted jams.
     for profile_url in primary_urls:
         if is_itch_jam_url(
             profile_url
@@ -798,10 +699,7 @@ def parse_itch_io_jams(source):
                 profile_url
             )
 
-        except SourceBlockedError:
-            continue
-
-        except requests.RequestException:
+        except Exception:
             continue
 
         soup = BeautifulSoup(
@@ -840,14 +738,67 @@ def parse_itch_io_jams(source):
                 jam_url,
             )
 
-        except SourceBlockedError:
-            continue
-
-        except requests.RequestException:
+        except Exception:
             continue
 
         if event:
-            events.append(event)
+            events.append(
+                event
+            )
+
+    return dedupe_events(events)
+
+
+def parse_html_event_page(source):
+    html, final_url = fetch_html(source)
+    soup = BeautifulSoup(
+        html,
+        "html.parser",
+    )
+
+    events = extract_json_ld_events(
+        source,
+        soup,
+        final_url,
+    )
+
+    visible_events = (
+        parse_visible_date_blocks(
+            source,
+            soup,
+            final_url,
+        )
+    )
+
+    events.extend(
+        visible_events
+    )
+
+    return dedupe_events(events)
+
+
+def parse_organizer_page(source):
+    html, final_url = fetch_html(source)
+    soup = BeautifulSoup(
+        html,
+        "html.parser",
+    )
+
+    # First trust explicit structured Event data.
+    events = extract_json_ld_events(
+        source,
+        soup,
+        final_url,
+    )
+
+    # Then inspect visible dated sections.
+    events.extend(
+        parse_visible_date_blocks(
+            source,
+            soup,
+            final_url,
+        )
+    )
 
     return dedupe_events(events)
 
@@ -867,6 +818,12 @@ PARSERS = {
 
     "itch_io_jams":
         parse_itch_io_jams,
+
+    "html_event_page":
+        parse_html_event_page,
+
+    "organizer_page":
+        parse_organizer_page,
 }
 
 
@@ -896,6 +853,17 @@ def main():
     blocked = 0
     failed = 0
     found = 0
+
+    implemented = set(
+        PARSERS.keys()
+    )
+
+    skipped = [
+        source
+        for source in sources
+        if source.get("parser")
+        not in implemented
+    ]
 
     for source in sources:
         parser_name = source.get(
@@ -969,6 +937,7 @@ def main():
         f"{succeeded} succeeded, "
         f"{blocked} blocked, "
         f"{failed} failed, "
+        f"{len(skipped)} skipped, "
         f"{found} future events found."
     )
 
