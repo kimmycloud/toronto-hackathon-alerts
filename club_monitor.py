@@ -119,28 +119,124 @@ def parse_luma_schema_org(source):
     return events
 
 
+def parse_next_data_future_events(source):
+    html = fetch_html(source["url"])
+    soup = BeautifulSoup(html, "html.parser")
+
+    script = soup.find(
+        "script",
+        id="__NEXT_DATA__",
+    )
+
+    if not script or not script.string:
+        raise RuntimeError(
+            "__NEXT_DATA__ not found"
+        )
+
+    data = json.loads(script.string)
+
+    future_events = (
+        data
+        .get("props", {})
+        .get("pageProps", {})
+        .get("futureEvents", [])
+    )
+
+    events = []
+
+    for item in future_events:
+        if not isinstance(item, dict):
+            continue
+
+        start_raw = (
+            item.get("startDate")
+            or item.get("start")
+            or item.get("date")
+        )
+
+        if not start_raw:
+            continue
+
+        try:
+            start = date_parser.parse(
+                str(start_raw)
+            )
+        except Exception:
+            continue
+
+        if start.tzinfo is None:
+            start = start.replace(
+                tzinfo=timezone.utc
+            )
+
+        title = (
+            item.get("name")
+            or item.get("title")
+            or ""
+        )
+
+        location = (
+            item.get("location")
+            or item.get("venue")
+            or ""
+        )
+
+        url = (
+            item.get("url")
+            or item.get("link")
+            or source["url"]
+        )
+
+        events.append(
+            {
+                "source_id": source["id"],
+                "school": source["school"],
+                "organizer": source["name"],
+                "title": str(title),
+                "start": start.isoformat(),
+                "end": (
+                    item.get("endDate")
+                    or item.get("end")
+                ),
+                "location": str(location),
+                "url": str(url),
+            }
+        )
+
+    return events
+
+
 PARSERS = {
     "luma_schema_org": parse_luma_schema_org,
+    "next_data_future_events": parse_next_data_future_events,
 }
 
 
 def is_future_event(event):
     try:
-        start = date_parser.parse(event["start"])
+        start = date_parser.parse(
+            event["start"]
+        )
     except Exception:
         return False
 
     if start.tzinfo is None:
-        start = start.replace(tzinfo=timezone.utc)
+        start = start.replace(
+            tzinfo=timezone.utc
+        )
 
-    return start > datetime.now(timezone.utc)
+    return (
+        start
+        > datetime.now(timezone.utc)
+    )
 
 
 def main():
     sources = load_sources()
 
     print(
-        f"Loaded {len(sources)} active university sources."
+        f"Loaded {len(sources)} "
+        f"active university sources."
     )
 
     tested = 0
@@ -149,7 +245,6 @@ def main():
     for source in sources:
         parser_name = source.get("parser")
 
-        # We are implementing parsers gradually.
         if parser_name not in PARSERS:
             continue
 
@@ -157,11 +252,13 @@ def main():
 
         print(
             f"\nChecking: "
-            f"{source['school']} — {source['name']}"
+            f"{source['school']} — "
+            f"{source['name']}"
         )
 
         try:
             events = parser(source)
+
             future = [
                 event
                 for event in events
@@ -179,18 +276,23 @@ def main():
 
             for event in future:
                 print(
-                    f"  FUTURE: {event['title']} "
+                    f"  FUTURE: "
+                    f"{event['title']} "
                     f"| {event['start']}"
                 )
 
         except Exception as exc:
             print(
-                f"FAILED: {source['id']}: {exc}"
+                f"FAILED: "
+                f"{source['id']}: "
+                f"{exc}"
             )
 
     print()
+
     print(
-        f"Finished: {tested} sources tested, "
+        f"Finished: "
+        f"{tested} sources tested, "
         f"{found} future events found."
     )
 
