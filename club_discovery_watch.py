@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import re
+import socket
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
@@ -73,10 +74,10 @@ REGISTRATION_PATTERNS = [
 
 EVENT_PLATFORM_HOSTS = [
     "luma.com",
+    "lu.ma",
     "devpost.com",
     "eventbrite.",
     "itch.io",
-    "lu.ma",
     "forms.gle",
     "docs.google.com",
 ]
@@ -92,7 +93,18 @@ SKIP_HOSTS = [
 ]
 
 
+# These are useful for identifying clubs,
+# but are poor event-monitoring sources.
+GENERIC_DIRECTORY_PATTERNS = [
+    "yourtmsu.ca/groups/student-groups",
+]
+
+
 class SourceBlockedError(Exception):
+    pass
+
+
+class SourceUnavailableError(Exception):
     pass
 
 
@@ -185,7 +197,7 @@ def is_event_platform(url):
     )
 
 
-def should_skip_url(url):
+def should_skip_social(url):
     try:
         host = (
             urlparse(url)
@@ -202,22 +214,67 @@ def should_skip_url(url):
     )
 
 
-def fetch(url):
-    response = requests.get(
-        url,
-        headers=HEADERS,
-        timeout=20,
-        allow_redirects=True,
+def is_generic_directory(url):
+    lower = url.lower()
+
+    return any(
+        pattern in lower
+        for pattern
+        in GENERIC_DIRECTORY_PATTERNS
     )
 
-    if response.status_code == 403:
+
+def fetch(url):
+    try:
+        response = requests.get(
+            url,
+            headers=HEADERS,
+            timeout=20,
+            allow_redirects=True,
+        )
+
+    except requests.exceptions.SSLError as exc:
+        raise SourceUnavailableError(
+            f"{url} -> SSL unavailable: {exc}"
+        ) from exc
+
+    except requests.exceptions.ConnectionError as exc:
+        raise SourceUnavailableError(
+            f"{url} -> connection unavailable: {exc}"
+        ) from exc
+
+    except requests.exceptions.Timeout as exc:
+        raise SourceUnavailableError(
+            f"{url} -> timeout"
+        ) from exc
+
+    status = response.status_code
+
+    if status in {
+        403,
+        406,
+        429,
+    }:
         raise SourceBlockedError(
-            f"{url} -> HTTP 403"
+            f"{url} -> HTTP {status}"
+        )
+
+    if status == 404:
+        raise SourceUnavailableError(
+            f"{url} -> HTTP 404"
+        )
+
+    if 500 <= status <= 599:
+        raise SourceUnavailableError(
+            f"{url} -> HTTP {status}"
         )
 
     response.raise_for_status()
 
-    return response.text, response.url
+    return (
+        response.text,
+        response.url,
+    )
 
 
 def get_candidate_urls(club):
@@ -241,8 +298,9 @@ def get_candidate_urls(club):
                 backup
             )
 
-    # Directory pages are usually identity-only,
-    # so use them only if we have nothing better.
+    # Directory pages are only a fallback,
+    # and generic rosters are intentionally
+    # excluded because they are not event feeds.
     if not urls:
         directory_url = club.get(
             "directory_url"
@@ -253,9 +311,24 @@ def get_candidate_urls(club):
                 directory_url
             )
 
-    return list(
-        dict.fromkeys(urls)
+    urls = list(
+        dict.fromkeys(
+            urls
+        )
     )
+
+    return [
+        url
+        for url in urls
+        if (
+            not should_skip_social(
+                url
+            )
+            and not is_generic_directory(
+                url
+            )
+        )
+    ]
 
 
 def extract_signals(
@@ -269,7 +342,6 @@ def extract_signals(
 
     signals = set()
 
-    # Headings / short text.
     for tag in soup.find_all(
         [
             "h1",
@@ -301,7 +373,6 @@ def extract_signals(
                 f"TEXT|{text}"
             )
 
-    # Links are the highest-value signal.
     for link in soup.find_all(
         "a",
         href=True,
@@ -373,8 +444,6 @@ def new_signals(
 
 
 def signal_is_high_value(signal):
-    lower = signal.lower()
-
     if signal.startswith(
         "LINK|"
     ):
@@ -382,17 +451,15 @@ def signal_is_high_value(signal):
 
     return (
         matches_discovery(
-            lower
+            signal
         )
         and matches_registration(
-            lower
+            signal
         )
     )
 
 
-def format_signal(
-    signal,
-):
+def format_signal(signal):
     parts = signal.split(
         "|"
     )
@@ -512,6 +579,7 @@ def main():
     unchanged = 0
     changed = 0
     blocked = 0
+    unavailable = 0
     failed = 0
     skipped = 0
     alerts = 0
@@ -532,27 +600,22 @@ def main():
             club
         )
 
-        urls = [
-            url
-            for url in urls
-            if not should_skip_url(
-                url
-            )
-        ]
-
         if not urls:
             skipped += 1
 
             print(
                 "SKIPPED: "
-                "no automatable public URL."
+                "no automatable event URL."
             )
 
             continue
 
         combined_signals = set()
         successful_urls = []
+
         blocked_urls = []
+        unavailable_urls = []
+        unexpected_errors = []
 
         for url in urls:
             try:
@@ -573,38 +636,84 @@ def main():
                     signals
                 )
 
-            except SourceBlockedError:
+            except SourceBlockedError as exc:
                 blocked_urls.append(
-                    url
+                    str(exc)
+                )
+
+            except SourceUnavailableError as exc:
+                unavailable_urls.append(
+                    str(exc)
                 )
 
             except Exception as exc:
+                unexpected_errors.append(
+                    f"{url} -> {exc}"
+                )
+
+        # If at least one URL worked,
+        # continue normally.
+        if successful_urls:
+            for item in blocked_urls:
+                print(
+                    f"  URL BLOCKED: "
+                    f"{item}"
+                )
+
+            for item in unavailable_urls:
+                print(
+                    f"  URL UNAVAILABLE: "
+                    f"{item}"
+                )
+
+            for item in unexpected_errors:
                 print(
                     f"  URL FAILED: "
-                    f"{url}: {exc}"
+                    f"{item}"
                 )
 
-        if (
-            not successful_urls
-            and blocked_urls
-        ):
-            blocked += 1
+        else:
+            if unexpected_errors:
+                failed += 1
 
-            print(
-                "BLOCKED: "
-                + "; ".join(
-                    blocked_urls
+                print(
+                    "FAILED: "
+                    + "; ".join(
+                        unexpected_errors
+                    )
                 )
-            )
 
-            continue
+                continue
 
-        if not successful_urls:
+            if blocked_urls:
+                blocked += 1
+
+                print(
+                    "BLOCKED: "
+                    + "; ".join(
+                        blocked_urls
+                    )
+                )
+
+                continue
+
+            if unavailable_urls:
+                unavailable += 1
+
+                print(
+                    "UNAVAILABLE: "
+                    + "; ".join(
+                        unavailable_urls
+                    )
+                )
+
+                continue
+
             failed += 1
 
             print(
-                "FAILED: no candidate "
-                "URL could be fetched."
+                "FAILED: no usable "
+                "candidate URL."
             )
 
             continue
@@ -629,6 +738,7 @@ def main():
 
         if not previous:
             baseline += 1
+
             state[
                 club_id
             ] = current
@@ -710,8 +820,9 @@ def main():
                     f"{exc}"
                 )
 
-                # Keep old state so the
-                # alert can retry next run.
+                # Preserve the old state
+                # so notification retries
+                # on the next run.
                 continue
 
         state[
@@ -728,6 +839,7 @@ def main():
         f"{unchanged} unchanged, "
         f"{changed} changed, "
         f"{blocked} blocked, "
+        f"{unavailable} unavailable, "
         f"{failed} failed, "
         f"{skipped} skipped, "
         f"{alerts} Discord alerts."
