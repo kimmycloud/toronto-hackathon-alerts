@@ -2,12 +2,13 @@ import hashlib
 import json
 import os
 import re
-import socket
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
+from dateutil import parser as date_parser
 
 
 CLUBS_FILE = Path("university_club_watch.json")
@@ -93,8 +94,6 @@ SKIP_HOSTS = [
 ]
 
 
-# These are useful for identifying clubs,
-# but are poor event-monitoring sources.
 GENERIC_DIRECTORY_PATTERNS = [
     "yourtmsu.ca/groups/student-groups",
 ]
@@ -298,9 +297,6 @@ def get_candidate_urls(club):
                 backup
             )
 
-    # Directory pages are only a fallback,
-    # and generic rosters are intentionally
-    # excluded because they are not event feeds.
     if not urls:
         directory_url = club.get(
             "directory_url"
@@ -459,6 +455,68 @@ def signal_is_high_value(signal):
     )
 
 
+def extract_explicit_date(text):
+    date_patterns = [
+        re.compile(
+            r"\b\d{1,2}[.\s-]+"
+            r"(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|"
+            r"Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|"
+            r"Sep(?:t(?:ember)?)?\.?|Oct(?:ober)?|"
+            r"Nov(?:ember)?|Dec(?:ember)?)"
+            r"[.\s,-]+20\d{2}\b",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|"
+            r"Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|"
+            r"Sep(?:t(?:ember)?)?\.?|Oct(?:ober)?|"
+            r"Nov(?:ember)?|Dec(?:ember)?)"
+            r"\s+\d{1,2}(?:st|nd|rd|th)?"
+            r"(?:,\s*|\s+)20\d{2}\b",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"\b20\d{2}[-/]\d{1,2}[-/]\d{1,2}\b"
+        ),
+    ]
+
+    for pattern in date_patterns:
+        match = pattern.search(
+            text
+        )
+
+        if not match:
+            continue
+
+        try:
+            dt = date_parser.parse(
+                match.group(0),
+                fuzzy=True,
+            )
+
+            return dt.date()
+
+        except Exception:
+            continue
+
+    return None
+
+
+def signal_is_past_event(signal):
+    explicit_date = extract_explicit_date(
+        signal
+    )
+
+    if not explicit_date:
+        return False
+
+    today = datetime.now(
+        timezone.utc
+    ).date()
+
+    return explicit_date < today
+
+
 def format_signal(signal):
     parts = signal.split(
         "|"
@@ -583,6 +641,7 @@ def main():
     failed = 0
     skipped = 0
     alerts = 0
+    past_suppressed = 0
 
     for index, club in enumerate(
         clubs,
@@ -651,8 +710,6 @@ def main():
                     f"{url} -> {exc}"
                 )
 
-        # If at least one URL worked,
-        # continue normally.
         if successful_urls:
             for item in blocked_urls:
                 print(
@@ -791,11 +848,32 @@ def main():
             )
         ]
 
+        alertworthy = []
+
+        for signal in high_value:
+            if signal_is_past_event(
+                signal
+            ):
+                past_suppressed += 1
+
+                print(
+                    f"  SUPPRESSED PAST: "
+                    f"{signal[:300]}"
+                )
+
+                continue
+
+            alertworthy.append(
+                signal
+            )
+
         print(
             f"CHANGED: "
             f"{len(additions)} new, "
             f"{len(high_value)} "
-            f"high-value."
+            f"high-value, "
+            f"{len(alertworthy)} "
+            f"alertworthy."
         )
 
         for signal in additions[
@@ -806,11 +884,11 @@ def main():
                 f"{signal[:300]}"
             )
 
-        if high_value:
+        if alertworthy:
             try:
                 if send_discord(
                     club,
-                    high_value,
+                    alertworthy,
                 ):
                     alerts += 1
 
@@ -820,9 +898,6 @@ def main():
                     f"{exc}"
                 )
 
-                # Preserve the old state
-                # so notification retries
-                # on the next run.
                 continue
 
         state[
@@ -842,6 +917,7 @@ def main():
         f"{unavailable} unavailable, "
         f"{failed} failed, "
         f"{skipped} skipped, "
+        f"{past_suppressed} past suppressed, "
         f"{alerts} Discord alerts."
     )
 
