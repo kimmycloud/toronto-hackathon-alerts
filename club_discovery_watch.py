@@ -455,32 +455,150 @@ def signal_is_high_value(signal):
     )
 
 
+# --------------------------------------------------
+# Date detection
+# --------------------------------------------------
+
+def safe_date(year, month, day):
+    try:
+        return datetime(
+            int(year),
+            int(month),
+            int(day),
+            tzinfo=timezone.utc,
+        ).date()
+
+    except (TypeError, ValueError):
+        return None
+
+
 def extract_explicit_date(text):
-    date_patterns = [
+    """
+    Extract a clearly written calendar date from
+    an event signal.
+
+    Supports examples such as:
+      September 16, 2026
+      16 Sept. 2026
+      2026-09-16
+      2026/09/16
+      16/09/2026
+      16.09.2026
+      2026년 9월 16일
+      2026年9月16日
+    """
+
+    # Korean:
+    # 2026년 9월 16일
+    match = re.search(
+        r"\b(20\d{2})\s*년\s*"
+        r"(\d{1,2})\s*월\s*"
+        r"(\d{1,2})\s*일",
+        text,
+    )
+
+    if match:
+        return safe_date(
+            match.group(1),
+            match.group(2),
+            match.group(3),
+        )
+
+    # Chinese / Japanese numeric form:
+    # 2026年9月16日
+    match = re.search(
+        r"\b(20\d{2})\s*年\s*"
+        r"(\d{1,2})\s*月\s*"
+        r"(\d{1,2})\s*日",
+        text,
+    )
+
+    if match:
+        return safe_date(
+            match.group(1),
+            match.group(2),
+            match.group(3),
+        )
+
+    # Year first:
+    # 2026-09-16
+    # 2026/09/16
+    # 2026.09.16
+    match = re.search(
+        r"\b(20\d{2})[-/.]"
+        r"(\d{1,2})[-/.]"
+        r"(\d{1,2})\b",
+        text,
+    )
+
+    if match:
+        return safe_date(
+            match.group(1),
+            match.group(2),
+            match.group(3),
+        )
+
+    # Day first numeric:
+    # 16/09/2026
+    # 16.09.2026
+    # 16-09-2026
+    match = re.search(
+        r"\b(\d{1,2})[-/.]"
+        r"(\d{1,2})[-/.]"
+        r"(20\d{2})\b",
+        text,
+    )
+
+    if match:
+        return safe_date(
+            match.group(3),
+            match.group(2),
+            match.group(1),
+        )
+
+    # English / common European month names:
+    month_patterns = [
         re.compile(
-            r"\b\d{1,2}[.\s-]+"
-            r"(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|"
-            r"Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|"
-            r"Sep(?:t(?:ember)?)?\.?|Oct(?:ober)?|"
-            r"Nov(?:ember)?|Dec(?:ember)?)"
+            r"\b\d{1,2}"
+            r"(?:st|nd|rd|th)?"
+            r"[.\s-]+"
+            r"(?:Jan(?:uary)?|"
+            r"Feb(?:ruary)?|"
+            r"Mar(?:ch)?|"
+            r"Apr(?:il)?|"
+            r"May|"
+            r"Jun(?:e)?|"
+            r"Jul(?:y)?|"
+            r"Aug(?:ust)?|"
+            r"Sep(?:t(?:ember)?)?\.?|"
+            r"Oct(?:ober)?|"
+            r"Nov(?:ember)?|"
+            r"Dec(?:ember)?)"
             r"[.\s,-]+20\d{2}\b",
             re.IGNORECASE,
         ),
         re.compile(
-            r"\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|"
-            r"Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|"
-            r"Sep(?:t(?:ember)?)?\.?|Oct(?:ober)?|"
-            r"Nov(?:ember)?|Dec(?:ember)?)"
-            r"\s+\d{1,2}(?:st|nd|rd|th)?"
-            r"(?:,\s*|\s+)20\d{2}\b",
+            r"\b(?:Jan(?:uary)?|"
+            r"Feb(?:ruary)?|"
+            r"Mar(?:ch)?|"
+            r"Apr(?:il)?|"
+            r"May|"
+            r"Jun(?:e)?|"
+            r"Jul(?:y)?|"
+            r"Aug(?:ust)?|"
+            r"Sep(?:t(?:ember)?)?\.?|"
+            r"Oct(?:ober)?|"
+            r"Nov(?:ember)?|"
+            r"Dec(?:ember)?)"
+            r"\s+\d{1,2}"
+            r"(?:st|nd|rd|th)?"
+            r"(?:,\s*|\s+)"
+            r"20\d{2}\b",
             re.IGNORECASE,
-        ),
-        re.compile(
-            r"\b20\d{2}[-/]\d{1,2}[-/]\d{1,2}\b"
         ),
     ]
 
-    for pattern in date_patterns:
+    for pattern in month_patterns:
         match = pattern.search(
             text
         )
@@ -492,6 +610,7 @@ def extract_explicit_date(text):
             dt = date_parser.parse(
                 match.group(0),
                 fuzzy=True,
+                dayfirst=True,
             )
 
             return dt.date()
@@ -851,14 +970,24 @@ def main():
         alertworthy = []
 
         for signal in high_value:
-            if signal_is_past_event(
-                signal
+            explicit_date = (
+                extract_explicit_date(
+                    signal
+                )
+            )
+
+            if (
+                explicit_date
+                and signal_is_past_event(
+                    signal
+                )
             ):
                 past_suppressed += 1
 
                 print(
-                    f"  SUPPRESSED PAST: "
-                    f"{signal[:300]}"
+                    "  SUPPRESSED PAST: "
+                    f"{explicit_date.isoformat()} "
+                    f"| {signal[:250]}"
                 )
 
                 continue
