@@ -8,7 +8,7 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
-from dateutil import parser as date_parser
+from dateparser.search import search_dates
 
 
 CLUBS_FILE = Path("university_club_watch.json")
@@ -468,59 +468,30 @@ def safe_date(year, month, day):
             tzinfo=timezone.utc,
         ).date()
 
-    except (TypeError, ValueError):
+    except (
+        TypeError,
+        ValueError,
+    ):
         return None
 
 
 def extract_explicit_date(text):
     """
-    Extract a clearly written calendar date from
-    an event signal.
+    Extract an explicitly written calendar date.
 
-    Supports examples such as:
-      September 16, 2026
-      16 Sept. 2026
-      2026-09-16
-      2026/09/16
-      16/09/2026
-      16.09.2026
-      2026년 9월 16일
-      2026年9月16日
+    Important:
+    - Requires a visible 4-digit year.
+    - Does not infer a missing year.
+    - Supports several languages.
     """
 
-    # Korean:
-    # 2026년 9월 16일
-    match = re.search(
-        r"\b(20\d{2})\s*년\s*"
-        r"(\d{1,2})\s*월\s*"
-        r"(\d{1,2})\s*일",
+    if not re.search(
+        r"\b20\d{2}\b",
         text,
-    )
+    ):
+        return None
 
-    if match:
-        return safe_date(
-            match.group(1),
-            match.group(2),
-            match.group(3),
-        )
-
-    # Chinese / Japanese numeric form:
-    # 2026年9月16日
-    match = re.search(
-        r"\b(20\d{2})\s*年\s*"
-        r"(\d{1,2})\s*月\s*"
-        r"(\d{1,2})\s*日",
-        text,
-    )
-
-    if match:
-        return safe_date(
-            match.group(1),
-            match.group(2),
-            match.group(3),
-        )
-
-    # Year first:
+    # Numeric year-first fallback:
     # 2026-09-16
     # 2026/09/16
     # 2026.09.16
@@ -538,7 +509,7 @@ def extract_explicit_date(text):
             match.group(3),
         )
 
-    # Day first numeric:
+    # Numeric day-first:
     # 16/09/2026
     # 16.09.2026
     # 16-09-2026
@@ -556,67 +527,40 @@ def extract_explicit_date(text):
             match.group(1),
         )
 
-    # English / common European month names:
-    month_patterns = [
-        re.compile(
-            r"\b\d{1,2}"
-            r"(?:st|nd|rd|th)?"
-            r"[.\s-]+"
-            r"(?:Jan(?:uary)?|"
-            r"Feb(?:ruary)?|"
-            r"Mar(?:ch)?|"
-            r"Apr(?:il)?|"
-            r"May|"
-            r"Jun(?:e)?|"
-            r"Jul(?:y)?|"
-            r"Aug(?:ust)?|"
-            r"Sep(?:t(?:ember)?)?\.?|"
-            r"Oct(?:ober)?|"
-            r"Nov(?:ember)?|"
-            r"Dec(?:ember)?)"
-            r"[.\s,-]+20\d{2}\b",
-            re.IGNORECASE,
-        ),
-        re.compile(
-            r"\b(?:Jan(?:uary)?|"
-            r"Feb(?:ruary)?|"
-            r"Mar(?:ch)?|"
-            r"Apr(?:il)?|"
-            r"May|"
-            r"Jun(?:e)?|"
-            r"Jul(?:y)?|"
-            r"Aug(?:ust)?|"
-            r"Sep(?:t(?:ember)?)?\.?|"
-            r"Oct(?:ober)?|"
-            r"Nov(?:ember)?|"
-            r"Dec(?:ember)?)"
-            r"\s+\d{1,2}"
-            r"(?:st|nd|rd|th)?"
-            r"(?:,\s*|\s+)"
-            r"20\d{2}\b",
-            re.IGNORECASE,
-        ),
-    ]
-
-    for pattern in month_patterns:
-        match = pattern.search(
-            text
+    try:
+        found = search_dates(
+            text,
+            languages=[
+                "en",
+                "fr",
+                "es",
+                "pt",
+                "ko",
+                "zh",
+                "ja",
+            ],
+            settings={
+                "STRICT_PARSING": True,
+                "DATE_ORDER": "DMY",
+            },
         )
 
-        if not match:
+    except Exception:
+        found = None
+
+    if not found:
+        return None
+
+    for matched_text, parsed in found:
+        # The actual matched phrase must itself
+        # contain an explicit year.
+        if not re.search(
+            r"\b20\d{2}\b",
+            matched_text,
+        ):
             continue
 
-        try:
-            dt = date_parser.parse(
-                match.group(0),
-                fuzzy=True,
-                dayfirst=True,
-            )
-
-            return dt.date()
-
-        except Exception:
-            continue
+        return parsed.date()
 
     return None
 
