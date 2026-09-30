@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import re
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
@@ -459,7 +460,121 @@ def signal_is_high_value(signal):
 # Date detection
 # --------------------------------------------------
 
-def safe_date(year, month, day):
+MONTH_NAMES = {
+    # January
+    "jan": 1,
+    "january": 1,
+    "janeiro": 1,
+    "enero": 1,
+    "janvier": 1,
+
+    # February
+    "feb": 2,
+    "february": 2,
+    "fevereiro": 2,
+    "febrero": 2,
+    "fevrier": 2,
+
+    # March
+    "mar": 3,
+    "march": 3,
+    "marco": 3,
+    "marzo": 3,
+    "mars": 3,
+
+    # April
+    "apr": 4,
+    "april": 4,
+    "abril": 4,
+    "avr": 4,
+    "avril": 4,
+
+    # May
+    "may": 5,
+    "maio": 5,
+    "mayo": 5,
+    "mai": 5,
+
+    # June
+    "jun": 6,
+    "june": 6,
+    "junho": 6,
+    "junio": 6,
+    "juin": 6,
+
+    # July
+    "jul": 7,
+    "july": 7,
+    "julho": 7,
+    "julio": 7,
+    "juillet": 7,
+
+    # August
+    "aug": 8,
+    "august": 8,
+    "agosto": 8,
+    "aout": 8,
+
+    # September
+    "sep": 9,
+    "sept": 9,
+    "september": 9,
+    "set": 9,
+    "setembro": 9,
+    "septiembre": 9,
+    "septembre": 9,
+
+    # October
+    "oct": 10,
+    "october": 10,
+    "out": 10,
+    "outubro": 10,
+    "octubre": 10,
+    "octobre": 10,
+
+    # November
+    "nov": 11,
+    "november": 11,
+    "novembro": 11,
+    "noviembre": 11,
+    "novembre": 11,
+
+    # December
+    "dec": 12,
+    "december": 12,
+    "dez": 12,
+    "dezembro": 12,
+    "diciembre": 12,
+    "decembre": 12,
+}
+
+
+def normalize_word(value):
+    value = value.strip(
+        " .,"
+    ).lower()
+
+    value = unicodedata.normalize(
+        "NFKD",
+        value,
+    )
+
+    value = "".join(
+        char
+        for char in value
+        if not unicodedata.combining(
+            char
+        )
+    )
+
+    return value
+
+
+def safe_date(
+    year,
+    month,
+    day,
+):
     try:
         return datetime(
             int(year),
@@ -475,23 +590,77 @@ def safe_date(year, month, day):
         return None
 
 
+def month_number(
+    value,
+):
+    return MONTH_NAMES.get(
+        normalize_word(
+            value
+        )
+    )
+
+
 def extract_explicit_date(text):
     """
-    Extract an explicitly written calendar date.
+    Extract a calendar date only when
+    a four-digit year is explicitly present.
 
-    Important:
-    - Requires a visible 4-digit year.
-    - Does not infer a missing year.
-    - Supports several languages.
+    Handles:
+      16 Sept. 2026
+      September 16, 2026
+
+      16 de set. de 2026
+      16 de setembro de 2026
+
+      16 de septiembre de 2026
+      16 septembre 2026
+
+      2026-09-16
+      16/09/2026
+
+      2026년 9월 16일
+      2026年9月16日
     """
 
     if not re.search(
-        r"\b20\d{2}\b",
+        r"20\d{2}",
         text,
     ):
         return None
 
-    # Numeric year-first fallback:
+    # Korean:
+    # 2026년 9월 16일
+    match = re.search(
+        r"(20\d{2})\s*년\s*"
+        r"(\d{1,2})\s*월\s*"
+        r"(\d{1,2})\s*일",
+        text,
+    )
+
+    if match:
+        return safe_date(
+            match.group(1),
+            match.group(2),
+            match.group(3),
+        )
+
+    # Chinese/Japanese:
+    # 2026年9月16日
+    match = re.search(
+        r"(20\d{2})\s*年\s*"
+        r"(\d{1,2})\s*月\s*"
+        r"(\d{1,2})\s*日",
+        text,
+    )
+
+    if match:
+        return safe_date(
+            match.group(1),
+            match.group(2),
+            match.group(3),
+        )
+
+    # Year first:
     # 2026-09-16
     # 2026/09/16
     # 2026.09.16
@@ -509,7 +678,7 @@ def extract_explicit_date(text):
             match.group(3),
         )
 
-    # Numeric day-first:
+    # Day first numeric:
     # 16/09/2026
     # 16.09.2026
     # 16-09-2026
@@ -527,6 +696,68 @@ def extract_explicit_date(text):
             match.group(1),
         )
 
+    # Day + month name + year.
+    #
+    # Examples:
+    # 16 Sept. 2026
+    # 16 de set. de 2026
+    # 16 de septiembre de 2026
+    # 16 septembre 2026
+    match = re.search(
+        r"\b(\d{1,2})"
+        r"(?:st|nd|rd|th)?"
+        r"\s+"
+        r"(?:de\s+)?"
+        r"([A-Za-zÀ-ÿ]+\.?)"
+        r"\s+"
+        r"(?:de\s+)?"
+        r"(20\d{2})\b",
+        text,
+        re.IGNORECASE,
+    )
+
+    if match:
+        month = month_number(
+            match.group(2)
+        )
+
+        if month:
+            return safe_date(
+                match.group(3),
+                month,
+                match.group(1),
+            )
+
+    # Month name + day + year.
+    #
+    # Example:
+    # September 16, 2026
+    match = re.search(
+        r"\b([A-Za-zÀ-ÿ]+\.?)"
+        r"\s+"
+        r"(\d{1,2})"
+        r"(?:st|nd|rd|th)?"
+        r",?"
+        r"\s+"
+        r"(20\d{2})\b",
+        text,
+        re.IGNORECASE,
+    )
+
+    if match:
+        month = month_number(
+            match.group(1)
+        )
+
+        if month:
+            return safe_date(
+                match.group(3),
+                month,
+                match.group(2),
+            )
+
+    # Last fallback for other supported
+    # localized formats.
     try:
         found = search_dates(
             text,
@@ -540,34 +771,36 @@ def extract_explicit_date(text):
                 "ja",
             ],
             settings={
-                "STRICT_PARSING": True,
-                "DATE_ORDER": "DMY",
+                "DATE_ORDER":
+                    "DMY",
+                "PREFER_DATES_FROM":
+                    "future",
             },
         )
 
     except Exception:
         found = None
 
-    if not found:
-        return None
+    if found:
+        for matched_text, parsed in found:
+            if not re.search(
+                r"20\d{2}",
+                matched_text,
+            ):
+                continue
 
-    for matched_text, parsed in found:
-        # The actual matched phrase must itself
-        # contain an explicit year.
-        if not re.search(
-            r"\b20\d{2}\b",
-            matched_text,
-        ):
-            continue
-
-        return parsed.date()
+            return parsed.date()
 
     return None
 
 
-def signal_is_past_event(signal):
-    explicit_date = extract_explicit_date(
-        signal
+def signal_is_past_event(
+    signal,
+):
+    explicit_date = (
+        extract_explicit_date(
+            signal
+        )
     )
 
     if not explicit_date:
@@ -577,7 +810,10 @@ def signal_is_past_event(signal):
         timezone.utc
     ).date()
 
-    return explicit_date < today
+    return (
+        explicit_date
+        < today
+    )
 
 
 def format_signal(signal):
@@ -622,6 +858,7 @@ def send_discord(
             "DISCORD_WEBHOOK_URL "
             "not configured."
         )
+
         return False
 
     lines = [
@@ -638,15 +875,16 @@ def send_discord(
         )
 
     payload = {
-        "username": (
-            "Hackathon Monitor"
-        ),
+        "username":
+            "Hackathon Monitor",
+
         "embeds": [
             {
                 "title": (
                     "🔎 POSSIBLE NEW "
                     "HACKATHON / COMPETITION"
                 ),
+
                 "description": (
                     f"**{club['name']}** "
                     f"({club['school']}) "
@@ -657,6 +895,7 @@ def send_discord(
                         lines
                     )
                 ),
+
                 "footer": {
                     "text": (
                         "Discovery alert — "
@@ -843,13 +1082,16 @@ def main():
         )
 
         current = {
-            "urls": successful_urls,
-            "fingerprint": (
+            "urls":
+                successful_urls,
+
+            "fingerprint":
                 fingerprint(
                     signals
-                )
-            ),
-            "signals": signals,
+                ),
+
+            "signals":
+                signals,
         }
 
         previous = state.get(
@@ -977,7 +1219,9 @@ def main():
             club_id
         ] = current
 
-    save_state(state)
+    save_state(
+        state
+    )
 
     print()
 
