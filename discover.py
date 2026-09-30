@@ -26,6 +26,7 @@ import html as html_std
 import json
 import os
 import re
+import socket
 import sys
 import time
 import urllib.error
@@ -363,6 +364,11 @@ class Client:
         except urllib.error.URLError as exc:
             raise SourceUnavailableError(
                 str(exc.reason)
+            ) from exc
+
+        except (socket.timeout, TimeoutError) as exc:
+            raise SourceUnavailableError(
+                str(exc)
             ) from exc
 
     def page(self, url):
@@ -1800,9 +1806,13 @@ def process_notifications(
 
     for key, item in alert_candidates:
         if notify:
-            send_discord(
-                item
-            )
+            try:
+                sent = send_discord(item)
+            except Exception:
+                raise RuntimeError("Discord delivery failed") from None
+
+            if not sent:
+                continue
 
             alerts += 1
 

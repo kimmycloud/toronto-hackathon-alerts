@@ -552,13 +552,15 @@ def main():
 
                     if sent:
                         alerts_sent += 1
+                    else:
+                        continue
 
                 except Exception as exc:
                     failed += 1
 
                     print(
                         "DISCORD FAILED: "
-                        f"{exc}"
+                        f"{type(exc).__name__}"
                     )
 
                     # Do not advance this

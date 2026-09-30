@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: club-discovery-watch
+  group: monitor-health-state
   cancel-in-progress: false
 
 jobs:
@@ -39,7 +39,7 @@ jobs:
             | tee club-discovery-output.txt
 
       - name: Report monitor health
-        if: always()
+        if: success()
         env:
           MONITOR_ERROR_WEBHOOK_URL: ${{ secrets.MONITOR_ERROR_WEBHOOK_URL }}
         run: |
@@ -49,6 +49,7 @@ jobs:
               --file club-discovery-output.txt
           else
             echo "Club discovery output file was not created."
+            exit 1
           fi
 
       - name: Save monitor states

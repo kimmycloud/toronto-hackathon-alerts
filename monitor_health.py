@@ -1,3 +1,5 @@
+"""Report changes in source health to the private Discord webhook."""
+
 import argparse
 import hashlib
 import json
@@ -7,474 +9,191 @@ import sys
 import urllib.request
 from pathlib import Path
 
+STATE_FILE = Path("monitor_health_state.json")
+BAD_STATUSES = {"BLOCKED", "UNAVAILABLE", "FAILED"}
+HEALTH_STATUSES = BAD_STATUSES | {"UNCHANGED", "CHANGED", "BASELINE", "SKIPPED"}
 
-ERROR_WEBHOOK_URL = os.environ.get(
-    "MONITOR_ERROR_WEBHOOK_URL"
-)
-
-STATE_FILE = Path(
-    "monitor_health_state.json"
-)
-
-BAD_STATUSES = {
-    "FAILED",
-    "BLOCKED",
-    "UNAVAILABLE",
-}
-
-
-# --------------------------------------------------
-# State
-# --------------------------------------------------
 
 def load_state():
     if not STATE_FILE.exists():
         return {}
-
-    try:
-        with STATE_FILE.open(
-            "r",
-            encoding="utf-8",
-        ) as f:
-            return json.load(f)
-
-    except Exception:
-        return {}
+    with STATE_FILE.open(encoding="utf-8") as stream:
+        state = json.load(stream)
+    if not isinstance(state, dict):
+        raise ValueError("Health state must be a JSON object")
+    return state
 
 
 def save_state(state):
-    with STATE_FILE.open(
-        "w",
-        encoding="utf-8",
-    ) as f:
-        json.dump(
-            state,
-            f,
-            indent=2,
-            ensure_ascii=False,
-            sort_keys=True,
-        )
-
-        f.write("\n")
+    temporary = STATE_FILE.with_suffix(".json.tmp")
+    with temporary.open("w", encoding="utf-8") as stream:
+        json.dump(state, stream, indent=2, ensure_ascii=False, sort_keys=True)
+        stream.write("\n")
+    temporary.replace(STATE_FILE)
 
 
-# --------------------------------------------------
-# Discord
-# --------------------------------------------------
-
-def send_discord(
-    title,
-    description,
-):
-    if not ERROR_WEBHOOK_URL:
-        print(
-            "ERROR DISCORD SKIPPED: "
-            "MONITOR_ERROR_WEBHOOK_URL "
-            "not configured."
-        )
-
-        return False
-
+def send_discord(description):
+    webhook = os.environ.get("MONITOR_ERROR_WEBHOOK_URL")
+    if not webhook:
+        raise RuntimeError("MONITOR_ERROR_WEBHOOK_URL is not configured")
     payload = {
         "username": "Monitor Health",
-        "embeds": [
-            {
-                "title": title,
-                "description": description,
-            }
-        ],
+        "embeds": [{"title": "⚠️ Monitor Health Changed", "description": description}],
     }
-
-    body = json.dumps(
-        payload
-    ).encode(
-        "utf-8"
-    )
-
     request = urllib.request.Request(
-        ERROR_WEBHOOK_URL,
-        data=body,
-        headers={
-            "Content-Type":
-                "application/json"
-        },
+        webhook,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
         method="POST",
     )
-
-    with urllib.request.urlopen(
-        request,
-        timeout=30,
-    ) as response:
-        if not (
-            200
-            <= response.status
-            < 300
-        ):
-            raise RuntimeError(
-                "Discord returned "
-                f"HTTP {response.status}"
-            )
-
-    print(
-        "ERROR DISCORD: "
-        "health alert sent."
-    )
-
-    return True
+    with urllib.request.urlopen(request, timeout=30) as response:
+        if not 200 <= response.status < 300:
+            raise RuntimeError(f"Discord returned HTTP {response.status}")
+    print("ERROR DISCORD: health alert sent.")
 
 
-# --------------------------------------------------
-# Problem normalization
-# --------------------------------------------------
-
-def problem_key(
-    monitor,
-    name,
-):
-    raw = (
-        f"{monitor}|{name}"
-    )
-
-    return hashlib.sha256(
-        raw.encode(
-            "utf-8"
-        )
-    ).hexdigest()
+def problem_key(monitor, name):
+    return hashlib.sha256(f"{monitor}|{name}".encode("utf-8")).hexdigest()
 
 
-def compare_health(
-    monitor,
-    current_problems,
-):
+def clean_error(value):
+    # Keep volatile transport details out of the state and Discord message.
+    return re.sub(r"\s+", " ", str(value or "")).strip()[:180]
+
+
+def compare_health(monitor, problems, skipped=()):
     state = load_state()
-
-    monitor_state = state.get(
-        monitor
-    )
-
+    previous = state.get(monitor)
+    if previous is not None and not isinstance(previous, dict):
+        raise ValueError(f"Invalid health state for {monitor}")
     current = {}
+    for problem in problems:
+        if problem["status"] not in BAD_STATUSES:
+            continue
+        name = problem["name"]
+        current[problem_key(monitor, name)] = {
+            "name": name,
+            "status": problem["status"],
+            "error": clean_error(problem.get("error")),
+        }
 
-    for problem in current_problems:
-        key = problem_key(
-            monitor,
-            problem["name"],
-        )
+    # A skipped source gives no evidence of recovery.
+    for name in skipped:
+        key = problem_key(monitor, name)
+        if previous and key in previous:
+            current[key] = previous[key]
 
-        current[key] = problem
-
-    # First run for this monitor:
-    # baseline existing problems silently.
-    if monitor_state is None:
+    if previous is None:
         state[monitor] = current
-
-        save_state(
-            state
-        )
-
-        print(
-            f"HEALTH BASELINE: "
-            f"{len(current)} known "
-            f"problem(s) stored; "
-            f"no Discord alert."
-        )
-
+        save_state(state)
+        print(f"HEALTH BASELINE: {len(current)} known problem(s) stored; no Discord alert.")
         return
 
-    previous = monitor_state
-
-    new_or_changed = []
-
-    recovered = []
-
-    for key, problem in current.items():
-        old = previous.get(
-            key
-        )
-
-        if old is None:
-            new_or_changed.append(
-                problem
-            )
-
-            continue
-
-        if (
-            old.get("status")
-            != problem.get("status")
-            or old.get("error")
-            != problem.get("error")
-        ):
-            new_or_changed.append(
-                problem
-            )
-
-    for key, old in previous.items():
-        if key not in current:
-            recovered.append(
-                old
-            )
-
-    if (
-        not new_or_changed
-        and not recovered
-    ):
-        print(
-            "HEALTH UNCHANGED: "
-            f"{len(current)} known "
-            f"problem(s)."
-        )
-
-        state[
-            monitor
-        ] = current
-
-        save_state(
-            state
-        )
-
+    changed = [item for key, item in current.items()
+               if key not in previous or previous[key].get("status") != item["status"]]
+    recovered = [item for key, item in previous.items() if key not in current]
+    if not changed and not recovered:
+        print(f"HEALTH UNCHANGED: {len(current)} known problem(s).")
         return
 
     lines = []
+    for item in changed:
+        line = f"• **{item['status']}** — {item['name']}"
+        if item["error"]:
+            line += f"\n  {item['error']}"
+        lines.append(line)
+    for item in recovered:
+        lines.append(f"• ✅ **RECOVERED** — {item['name']}")
 
-    for problem in new_or_changed[
-        :12
-    ]:
-        line = (
-            f"• **{problem['status']}** — "
-            f"{problem['name']}"
-        )
+    # One Discord embed has a 4096-character description limit.
+    message = f"{monitor}: {len(lines)} change(s)\n"
+    shown = 0
+    for line in lines:
+        candidate = message + line + "\n"
+        if len(candidate) > 3800:
+            break
+        message = candidate
+        shown += 1
+    if shown < len(lines):
+        message += f"• +{len(lines) - shown} more change(s)\n"
 
-        error = problem.get(
-            "error",
-            ""
-        )
-
-        if error:
-            line += (
-                f"\n  {error[:250]}"
-            )
-
-        lines.append(
-            line
-        )
-
-    for problem in recovered[
-        :12
-    ]:
-        lines.append(
-            f"• ✅ **RECOVERED** — "
-            f"{problem['name']}"
-        )
-
-    extra = (
-        len(new_or_changed)
-        + len(recovered)
-        - len(lines)
-    )
-
-    if extra > 0:
-        lines.append(
-            f"• +{extra} more change(s)"
-        )
-
-    description = "\n".join(
-        lines
-    )
-
-    send_discord(
-        "⚠️ Monitor Health Changed",
-        description,
-    )
-
-    state[
-        monitor
-    ] = current
-
-    save_state(
-        state
-    )
+    # Preserve the previous state until delivery succeeds, so the next run retries.
+    send_discord(message)
+    state[monitor] = current
+    save_state(state)
+    print(f"HEALTH CHANGED: {len(lines)} change(s).")
 
 
-# --------------------------------------------------
-# University discovery JSON
-# --------------------------------------------------
-
-def university_discovery_health(
-    path,
-):
-    with Path(path).open(
-        "r",
-        encoding="utf-8",
-    ) as f:
-        data = json.load(f)
-
+def university_discovery_health(path):
+    with Path(path).open(encoding="utf-8") as stream:
+        data = json.load(stream)
+    sources = data.get("sources")
+    if not isinstance(sources, list) or not sources:
+        raise ValueError("Discovery JSON has no source statuses")
     problems = []
-
-    for source in data.get(
-        "sources",
-        [],
-    ):
-        status = source.get(
-            "status",
-            ""
-        )
-
-        if status not in BAD_STATUSES:
-            continue
-
-        problems.append(
-            {
-                "name":
-                    source.get(
-                        "source",
-                        "unknown",
-                    ),
-
-                "status":
-                    status,
-
-                "error":
-                    source.get(
-                        "error",
-                        "",
-                    ),
-            }
-        )
-
-    compare_health(
-        "university-discovery",
-        problems,
-    )
-
-    return 0
+    names = set()
+    for source in sources:
+        name, status = source.get("source"), source.get("status")
+        if not name or not status or name in names:
+            raise ValueError("Invalid or duplicate discovery source status")
+        names.add(name)
+        if status in BAD_STATUSES:
+            problems.append({"name": name, "status": status, "error": source.get("error")})
+        elif status != "SUCCEEDED":
+            raise ValueError(f"Unknown discovery status: {status}")
+    compare_health("university-discovery", problems)
 
 
-# --------------------------------------------------
-# Club discovery log
-# --------------------------------------------------
-
-def club_discovery_health(
-    path,
-):
-    text = Path(path).read_text(
-        encoding="utf-8"
-    )
-
+def log_health(path, monitor, heading_pattern):
+    text = Path(path).read_text(encoding="utf-8")
+    lines = text.splitlines()
+    match = re.search(r"^Loaded (\d+) (?:club discovery entries|annual organizer sources)\.$", text, re.M)
+    if not match or not re.search(r"^Finished:", text, re.M):
+        raise ValueError("Incomplete monitor log")
+    expected = int(match.group(1))
     current_name = None
-
-    problems = []
-
-    heading_pattern = re.compile(
-        r"^\[\d+/\d+\]\s+(.+?)\s+—\s+(.+)$"
-    )
-
-    for raw_line in text.splitlines():
-        line = raw_line.strip()
-
-        heading = heading_pattern.match(
-            line
-        )
-
+    seen = set()
+    statuses = {}
+    for raw in lines:
+        heading = heading_pattern.match(raw)
         if heading:
-            school = heading.group(
-                1
-            )
-
-            club = heading.group(
-                2
-            )
-
-            current_name = (
-                f"{school} — {club}"
-            )
-
+            current_name = f"{heading.group(1)} — {heading.group(2)}"
+            if current_name in seen:
+                raise ValueError("Duplicate monitor heading")
+            seen.add(current_name)
             continue
-
-        if current_name is None:
+        if current_name is None or raw.startswith("  "):
             continue
+        status_line = re.match(r"^(BLOCKED|UNAVAILABLE|FAILED|UNCHANGED|CHANGED|BASELINE|SKIPPED):\s*(.*)$", raw)
+        if status_line:
+            status, error = status_line.groups()
+            statuses[current_name] = {"name": current_name, "status": status, "error": error}
+    if len(seen) != expected or set(statuses) != seen:
+        raise ValueError("Incomplete monitor source statuses")
+    problems = [item for item in statuses.values() if item["status"] in BAD_STATUSES]
+    skipped = [item["name"] for item in statuses.values() if item["status"] == "SKIPPED"]
+    compare_health(monitor, problems, skipped)
 
-        for status in [
-            "BLOCKED",
-            "UNAVAILABLE",
-            "FAILED",
-        ]:
-            prefix = (
-                status + ":"
-            )
-
-            if line.startswith(
-                prefix
-            ):
-                error = line[
-                    len(prefix):
-                ].strip()
-
-                problems.append(
-                    {
-                        "name":
-                            current_name,
-
-                        "status":
-                            status,
-
-                        "error":
-                            error,
-                    }
-                )
-
-                break
-
-    compare_health(
-        "club-discovery",
-        problems,
-    )
-
-    return 0
-
-
-# --------------------------------------------------
-# Main
-# --------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--type",
-        required=True,
-        choices=[
-            "university-discovery",
-            "club-discovery",
-        ],
-    )
-
-    parser.add_argument(
-        "--file",
-        required=True,
-    )
-
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--type", required=True, choices=[
+        "university-discovery", "club-discovery", "annual-organizer"])
+    parser.add_argument("--file", required=True)
     args = parser.parse_args()
-
-    if (
-        args.type
-        == "university-discovery"
-    ):
-        return university_discovery_health(
-            args.file
-        )
-
-    if (
-        args.type
-        == "club-discovery"
-    ):
-        return club_discovery_health(
-            args.file
-        )
-
+    try:
+        if args.type == "university-discovery":
+            university_discovery_health(args.file)
+        else:
+            heading = (r"^\[\d+/\d+\] (.+?) — (.+)$" if args.type == "club-discovery"
+                       else r"^Checking: (.+?) — (.+)$")
+            log_health(args.file, args.type, re.compile(heading))
+    except Exception as exc:
+        # Never print an exception that could include the webhook URL.
+        print(f"HEALTH REPORT FAILED: {type(exc).__name__}; state not advanced.", file=sys.stderr)
+        return 1
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(
-        main()
-    )
+    sys.exit(main())

@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: organizer-watch
+  group: monitor-health-state
   cancel-in-progress: false
 
 jobs:
@@ -37,14 +37,21 @@ jobs:
       - name: Run annual organizer watch
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python annual_organizer_watch.py
+        run: python annual_organizer_watch.py | tee organizer-output.txt
+
+      - name: Report monitor health
+        if: success()
+        env:
+          MONITOR_ERROR_WEBHOOK_URL: ${{ secrets.MONITOR_ERROR_WEBHOOK_URL }}
+        run: python monitor_health.py --type annual-organizer --file organizer-output.txt
 
       - name: Save organizer state
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add organizer_state.json
+          git add organizer_state.json monitor_health_state.json
 
           if git diff --cached --quiet; then
             echo "No organizer state changes to save."

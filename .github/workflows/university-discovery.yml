@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: university-event-discovery
+  group: monitor-health-state
   cancel-in-progress: false
 
 jobs:
@@ -44,6 +44,7 @@ jobs:
         run: cat university-discovery-output.json
 
       - name: Report monitor health
+        id: health
         if: always()
         env:
           MONITOR_ERROR_WEBHOOK_URL: ${{ secrets.MONITOR_ERROR_WEBHOOK_URL }}
@@ -54,15 +55,16 @@ jobs:
               --file university-discovery-output.json
           else
             echo "Discovery output file was not created."
+            exit 1
           fi
 
       - name: Save university discovery state
-        if: success()
+        if: always() && steps.health.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add university_discovery_state.json
+          git add university_discovery_state.json monitor_health_state.json
 
           if git diff --cached --quiet; then
             echo "No university discovery state changes to save."

@@ -1235,11 +1235,13 @@ def main():
                     alertworthy,
                 ):
                     alerts += 1
+                else:
+                    continue
 
             except Exception as exc:
                 print(
                     "DISCORD FAILED: "
-                    f"{exc}"
+                    f"{type(exc).__name__}"
                 )
 
                 continue
