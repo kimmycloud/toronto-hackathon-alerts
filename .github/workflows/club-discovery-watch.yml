@@ -2,8 +2,6 @@ name: University Club Discovery Watch
 
 on:
   schedule:
-    # Twice daily.
-    # 00:17 UTC and 12:17 UTC.
     - cron: "17 0,12 * * *"
 
   workflow_dispatch:
@@ -36,19 +34,37 @@ jobs:
       - name: Run university club discovery watch
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python club_discovery_watch.py
+        run: |
+          python club_discovery_watch.py \
+            | tee club-discovery-output.txt
 
-      - name: Save discovery state
+      - name: Report monitor health
+        if: always()
+        env:
+          MONITOR_ERROR_WEBHOOK_URL: ${{ secrets.MONITOR_ERROR_WEBHOOK_URL }}
+        run: |
+          if [ -f club-discovery-output.txt ]; then
+            python monitor_health.py \
+              --type club-discovery \
+              --file club-discovery-output.txt
+          else
+            echo "Club discovery output file was not created."
+          fi
+
+      - name: Save monitor states
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add club_discovery_state.json
+          git add \
+            club_discovery_state.json \
+            monitor_health_state.json
 
           if git diff --cached --quiet; then
-            echo "No club discovery state changes to save."
+            echo "No monitor state changes to save."
           else
-            git commit -m "Update club discovery state"
+            git commit -m "Update club discovery monitor state"
             git pull --rebase origin main
             git push origin main
           fi
