@@ -1,0 +1,61 @@
+name: University Event Discovery
+
+on:
+  schedule:
+    # Twice daily.
+    # 01:17 UTC and 13:17 UTC.
+    - cron: "17 1,13 * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: university-event-discovery
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run university discovery
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python discover.py \
+            --sources tmu waterloo uottawa carleton carleton_scs \
+            --notify \
+            > university-discovery-output.json
+
+      - name: Show discovery result
+        run: cat university-discovery-output.json
+
+      - name: Save university discovery state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add university_discovery_state.json
+
+          if git diff --cached --quiet; then
+            echo "No university discovery state changes to save."
+          else
+            git commit -m "Update university discovery state"
+            git pull --rebase origin main
+            git push origin main
+          fi
