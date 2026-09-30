@@ -2,8 +2,6 @@ name: University Event Discovery
 
 on:
   schedule:
-    # Twice daily.
-    # 01:17 UTC and 13:17 UTC.
     - cron: "17 1,13 * * *"
 
   workflow_dispatch:
@@ -45,7 +43,21 @@ jobs:
       - name: Show discovery result
         run: cat university-discovery-output.json
 
+      - name: Report monitor health
+        if: always()
+        env:
+          MONITOR_ERROR_WEBHOOK_URL: ${{ secrets.MONITOR_ERROR_WEBHOOK_URL }}
+        run: |
+          if [ -f university-discovery-output.json ]; then
+            python monitor_health.py \
+              --type university-discovery \
+              --file university-discovery-output.json
+          else
+            echo "Discovery output file was not created."
+          fi
+
       - name: Save university discovery state
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
