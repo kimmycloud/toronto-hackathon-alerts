@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 from urllib.parse import urljoin
@@ -10,6 +11,10 @@ from bs4 import BeautifulSoup
 
 SOURCES_FILE = Path("university_sources.json")
 STATE_FILE = Path("organizer_state.json")
+
+DISCORD_WEBHOOK_URL = os.environ.get(
+    "DISCORD_WEBHOOK_URL"
+)
 
 HEADERS = {
     "User-Agent": (
@@ -43,6 +48,24 @@ WATCH_TERMS = [
     "event",
     "participants",
     "hacker",
+]
+
+
+ALERT_PATTERNS = [
+    r"\b2027\b",
+    r"\bapplications?\b",
+    r"\bapply\b",
+    r"\bregistration\b",
+    r"\bregister\b",
+    r"\bdeadline\b",
+    r"\bdates?\b",
+    r"\bschedule\b",
+    r"\bhackathon\b",
+    r"\bmakeathon\b",
+    r"\bdatathon\b",
+    r"\bdesignathon\b",
+    r"\bctf\b",
+    r"\bcapture\s+the\s+flag\b",
 ]
 
 
@@ -136,7 +159,6 @@ def extract_signals(html, base_url):
 
     signals = set()
 
-    # Page title
     if soup.title:
         title = clean_text(
             soup.title.get_text(
@@ -150,7 +172,6 @@ def extract_signals(html, base_url):
                 f"TITLE|{title}"
             )
 
-    # Important headings
     for tag in soup.find_all(
         [
             "h1",
@@ -174,8 +195,6 @@ def extract_signals(html, base_url):
                 f"HEADING|{text}"
             )
 
-    # Links are especially useful because
-    # registration/application URLs often change.
     for link in soup.find_all(
         "a",
         href=True,
@@ -196,12 +215,13 @@ def extract_signals(html, base_url):
             f"{text} {url}"
         )
 
-        if relevant_text(combined):
+        if relevant_text(
+            combined
+        ):
             signals.add(
                 f"LINK|{text}|{url}"
             )
 
-    # Short text blocks containing strong signals.
     for tag in soup.find_all(
         [
             "p",
@@ -232,10 +252,14 @@ def extract_signals(html, base_url):
 
 
 def fingerprint(signals):
-    joined = "\n".join(signals)
+    joined = "\n".join(
+        signals
+    )
 
     return hashlib.sha256(
-        joined.encode("utf-8")
+        joined.encode(
+            "utf-8"
+        )
     ).hexdigest()
 
 
@@ -254,6 +278,136 @@ def interesting_new_signals(
     ]
 
 
+def signal_is_alertworthy(
+    signal,
+):
+    return any(
+        re.search(
+            pattern,
+            signal,
+            re.IGNORECASE,
+        )
+        for pattern
+        in ALERT_PATTERNS
+    )
+
+
+def clean_signal_for_discord(
+    signal,
+):
+    parts = signal.split(
+        "|"
+    )
+
+    if not parts:
+        return signal
+
+    kind = parts[0]
+
+    if (
+        kind == "LINK"
+        and len(parts) >= 3
+    ):
+        label = (
+            parts[1]
+            or "New link"
+        )
+
+        url = parts[2]
+
+        return (
+            f"• **{label}** — {url}"
+        )
+
+    if len(parts) >= 2:
+        text = "|".join(
+            parts[1:]
+        )
+
+        return (
+            f"• {text}"
+        )
+
+    return (
+        f"• {signal}"
+    )
+
+
+def send_discord_change(
+    source,
+    signals,
+):
+    if not DISCORD_WEBHOOK_URL:
+        print(
+            "DISCORD SKIPPED: "
+            "DISCORD_WEBHOOK_URL "
+            "not configured."
+        )
+        return False
+
+    display_signals = [
+        clean_signal_for_discord(
+            signal
+        )
+        for signal in signals[:6]
+    ]
+
+    description = "\n".join(
+        display_signals
+    )
+
+    if len(signals) > 6:
+        description += (
+            f"\n• +{len(signals) - 6} "
+            f"more new signals"
+        )
+
+    payload = {
+        "username": "Hackathon Monitor",
+        "embeds": [
+            {
+                "title": (
+                    "🔎 HACKATHON ORGANIZER "
+                    "UPDATE DETECTED"
+                ),
+                "description": (
+                    f"**{source['name']}** "
+                    f"({source['school']}) "
+                    f"changed its public "
+                    f"event information.\n\n"
+                    f"{description}"
+                ),
+                "url": source["url"],
+                "footer": {
+                    "text": (
+                        "Discovery alert — "
+                        "verify event date, "
+                        "eligibility, and "
+                        "registration before "
+                        "treating this as a "
+                        "confirmed hackathon."
+                    )
+                },
+            }
+        ],
+    }
+
+    response = requests.post(
+        DISCORD_WEBHOOK_URL,
+        json=payload,
+        timeout=30,
+    )
+
+    response.raise_for_status()
+
+    print(
+        "DISCORD: organizer "
+        "change alert sent."
+    )
+
+    return True
+
+
 def main():
     sources = load_sources()
     state = load_state()
@@ -268,6 +422,7 @@ def main():
     changed = 0
     blocked = 0
     failed = 0
+    alerts_sent = 0
 
     for source in sources:
         source_id = source["id"]
@@ -305,7 +460,7 @@ def main():
                 source_id
             )
 
-            state[source_id] = {
+            new_state = {
                 "url": response.url,
                 "fingerprint": current_hash,
                 "signals": signals,
@@ -314,9 +469,14 @@ def main():
             if not previous:
                 baseline += 1
 
+                state[
+                    source_id
+                ] = new_state
+
                 print(
                     f"BASELINE: "
-                    f"{len(signals)} signals saved."
+                    f"{len(signals)} "
+                    f"signals saved."
                 )
 
                 continue
@@ -333,9 +493,14 @@ def main():
             ):
                 unchanged += 1
 
+                state[
+                    source_id
+                ] = new_state
+
                 print(
                     f"UNCHANGED: "
-                    f"{len(signals)} signals."
+                    f"{len(signals)} "
+                    f"signals."
                 )
 
                 continue
@@ -352,10 +517,20 @@ def main():
                 )
             )
 
+            alertworthy = [
+                signal
+                for signal in new_signals
+                if signal_is_alertworthy(
+                    signal
+                )
+            ]
+
             print(
                 f"CHANGED: "
                 f"{len(new_signals)} "
-                f"new signals."
+                f"new signals, "
+                f"{len(alertworthy)} "
+                f"alertworthy."
             )
 
             for signal in new_signals[
@@ -365,6 +540,35 @@ def main():
                     f"  NEW: "
                     f"{signal[:300]}"
                 )
+
+            if alertworthy:
+                try:
+                    sent = (
+                        send_discord_change(
+                            source,
+                            alertworthy,
+                        )
+                    )
+
+                    if sent:
+                        alerts_sent += 1
+
+                except Exception as exc:
+                    failed += 1
+
+                    print(
+                        "DISCORD FAILED: "
+                        f"{exc}"
+                    )
+
+                    # Do not advance this
+                    # source's state if the
+                    # notification failed.
+                    continue
+
+            state[
+                source_id
+            ] = new_state
 
         except Exception as exc:
             failed += 1
@@ -385,7 +589,8 @@ def main():
         f"{unchanged} unchanged, "
         f"{changed} changed, "
         f"{blocked} blocked, "
-        f"{failed} failed."
+        f"{failed} failed, "
+        f"{alerts_sent} Discord alerts."
     )
 
 
