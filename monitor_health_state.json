@@ -1,23 +1,8 @@
 {
   "club-discovery": {
-    "098334f46703b28b167b7c32996e6032837ac647ad0e4f416adc394fa0c21099": {
-      "error": "https://linktr.ee/yorkudatascience -> HTTP 406",
-      "name": "York — Data Science Club at YorkU",
-      "status": "BLOCKED"
-    },
     "0cb80e14642df630c0809b87ced5b43c0031fff50d4e34a0e75610d2ca75be2c": {
       "error": "https://uwquantum.com -> HTTP 403",
       "name": "Waterloo — Waterloo Quantum Club",
-      "status": "BLOCKED"
-    },
-    "42ec6d170338fe17b1798630a9426b4d9597fd9b12735932eec6f102d224f073": {
-      "error": "https://linktr.ee/tmu_ux -> HTTP 406",
-      "name": "TMU — UX",
-      "status": "BLOCKED"
-    },
-    "42f43b0edbabdb3415ec85305fee0b509e73eda324b643ba8ad01dee07eaf12c": {
-      "error": "https://linktr.ee/metrocketry -> HTTP 406",
-      "name": "TMU — MetRocketry",
       "status": "BLOCKED"
     },
     "4f2c724cd3637b82acfe779571e9a1e469df086ffdf0d849fe858c6c0dee82e2": {
@@ -33,11 +18,6 @@
     "6359f53a94f18f6dbce96873dea486a8d491230b086540622fa8e7a054e05ff0": {
       "error": "https://linktr.ee/mdsa_tmu -> HTTP 406",
       "name": "TMU — Data Science Association (MDSA)",
-      "status": "BLOCKED"
-    },
-    "683b960abb139ab70fe71dcf3c833e4615fb51c02386108f04ef398c9fe487aa": {
-      "error": "https://linktr.ee/macengcomp -> HTTP 406",
-      "name": "McMaster — McMaster Engineering Competition (MEC)",
       "status": "BLOCKED"
     },
     "6c59af2a72436f5a40e1e5fbe8847acd3b1e7fa104700616e43e9bb19a47e473": {
