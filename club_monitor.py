@@ -1,5 +1,4 @@
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin
@@ -12,8 +11,21 @@ from dateutil import parser as date_parser
 SOURCES_FILE = Path("university_sources.json")
 
 HEADERS = {
-    "User-Agent": "hackathon-alert-monitor/1.0"
+    "User-Agent": (
+        "Mozilla/5.0 (X11; Linux x86_64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/140.0 Safari/537.36"
+    ),
+    "Accept": (
+        "text/html,application/xhtml+xml,"
+        "application/xml;q=0.9,*/*;q=0.8"
+    ),
+    "Accept-Language": "en-CA,en;q=0.9",
 }
+
+
+class SourceBlockedError(Exception):
+    pass
 
 
 def load_sources():
@@ -27,18 +39,54 @@ def load_sources():
     ]
 
 
-def fetch_html(url):
-    response = requests.get(
-        url,
-        headers=HEADERS,
-        timeout=30,
+def fetch_html(source):
+    urls = [source["url"]]
+
+    for backup in source.get("backup_urls", []):
+        if backup and backup not in urls:
+            urls.append(backup)
+
+    errors = []
+
+    for url in urls:
+        try:
+            response = requests.get(
+                url,
+                headers=HEADERS,
+                timeout=30,
+                allow_redirects=True,
+            )
+
+            if response.status_code == 403:
+                errors.append(
+                    f"{url} -> HTTP 403"
+                )
+                continue
+
+            response.raise_for_status()
+
+            return response.text, response.url
+
+        except requests.RequestException as exc:
+            errors.append(
+                f"{url} -> {exc}"
+            )
+
+    if errors and all(
+        "HTTP 403" in error
+        for error in errors
+    ):
+        raise SourceBlockedError(
+            "; ".join(errors)
+        )
+
+    raise RuntimeError(
+        "; ".join(errors)
     )
-    response.raise_for_status()
-    return response.text
 
 
 def parse_luma_schema_org(source):
-    html = fetch_html(source["url"])
+    html, final_url = fetch_html(source)
     soup = BeautifulSoup(html, "html.parser")
 
     events = []
@@ -92,7 +140,9 @@ def parse_luma_schema_org(source):
                 continue
 
             if start.tzinfo is None:
-                start = start.replace(tzinfo=timezone.utc)
+                start = start.replace(
+                    tzinfo=timezone.utc
+                )
 
             location = item.get("location")
 
@@ -103,7 +153,9 @@ def parse_luma_schema_org(source):
                     or ""
                 )
             else:
-                location_name = str(location or "")
+                location_name = str(
+                    location or ""
+                )
 
             events.append(
                 {
@@ -114,7 +166,10 @@ def parse_luma_schema_org(source):
                     "start": start.isoformat(),
                     "end": item.get("endDate"),
                     "location": location_name,
-                    "url": item.get("url", source["url"]),
+                    "url": item.get(
+                        "url",
+                        final_url,
+                    ),
                 }
             )
 
@@ -122,7 +177,7 @@ def parse_luma_schema_org(source):
 
 
 def parse_next_data_future_events(source):
-    html = fetch_html(source["url"])
+    html, final_url = fetch_html(source)
     soup = BeautifulSoup(html, "html.parser")
 
     script = soup.find(
@@ -186,7 +241,7 @@ def parse_next_data_future_events(source):
         url = (
             item.get("url")
             or item.get("link")
-            or source["url"]
+            or final_url
         )
 
         events.append(
@@ -209,28 +264,15 @@ def parse_next_data_future_events(source):
 
 
 def parse_html_upcoming_events(source):
-    html = fetch_html(source["url"])
+    html, final_url = fetch_html(source)
     soup = BeautifulSoup(html, "html.parser")
 
     events = []
 
-    date_pattern = re.compile(
-        r"\b("
-        r"Jan(?:uary)?|"
-        r"Feb(?:ruary)?|"
-        r"Mar(?:ch)?|"
-        r"Apr(?:il)?|"
-        r"May|"
-        r"Jun(?:e)?|"
-        r"Jul(?:y)?|"
-        r"Aug(?:ust)?|"
-        r"Sep(?:tember)?|"
-        r"Oct(?:ober)?|"
-        r"Nov(?:ember)?|"
-        r"Dec(?:ember)?"
-        r")\s+\d{1,2}"
-        r"(?:,\s+\d{4})?",
-        re.IGNORECASE,
+    month_names = (
+        "January February March April May June "
+        "July August September October November December "
+        "Jan Feb Mar Apr Jun Jul Aug Sep Sept Oct Nov Dec"
     )
 
     for element in soup.find_all(
@@ -244,15 +286,24 @@ def parse_html_upcoming_events(source):
         if not block_text:
             continue
 
-        match = date_pattern.search(block_text)
-
-        if not match:
+        if not any(
+            month.lower() in block_text.lower()
+            for month in month_names.split()
+        ):
             continue
 
         try:
             start = date_parser.parse(
-                match.group(0),
+                block_text,
                 fuzzy=True,
+                default=datetime.now(
+                    timezone.utc
+                ).replace(
+                    hour=0,
+                    minute=0,
+                    second=0,
+                    microsecond=0,
+                ),
             )
         except Exception:
             continue
@@ -280,12 +331,12 @@ def parse_html_upcoming_events(source):
         )
 
         if link:
-            url = urljoin(
-                source["url"],
+            event_url = urljoin(
+                final_url,
                 link["href"],
             )
         else:
-            url = source["url"]
+            event_url = final_url
 
         events.append(
             {
@@ -296,7 +347,7 @@ def parse_html_upcoming_events(source):
                 "start": start.isoformat(),
                 "end": None,
                 "location": "",
-                "url": url,
+                "url": event_url,
             }
         )
 
@@ -353,6 +404,8 @@ def main():
     )
 
     tested = 0
+    blocked = 0
+    failed = 0
     found = 0
 
     for source in sources:
@@ -394,18 +447,29 @@ def main():
                     f"| {event['start']}"
                 )
 
+        except SourceBlockedError as exc:
+            blocked += 1
+
+            print(
+                f"BLOCKED: "
+                f"{source['id']}: {exc}"
+            )
+
         except Exception as exc:
+            failed += 1
+
             print(
                 f"FAILED: "
-                f"{source['id']}: "
-                f"{exc}"
+                f"{source['id']}: {exc}"
             )
 
     print()
 
     print(
         f"Finished: "
-        f"{tested} sources tested, "
+        f"{tested} succeeded, "
+        f"{blocked} blocked, "
+        f"{failed} failed, "
         f"{found} future events found."
     )
 
