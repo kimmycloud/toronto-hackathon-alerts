@@ -1,0 +1,54 @@
+name: University Club Discovery Watch
+
+on:
+  schedule:
+    # Twice daily.
+    # 00:17 UTC and 12:17 UTC.
+    - cron: "17 0,12 * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: club-discovery-watch
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run university club discovery watch
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python club_discovery_watch.py
+
+      - name: Save discovery state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add club_discovery_state.json
+
+          if git diff --cached --quiet; then
+            echo "No club discovery state changes to save."
+          else
+            git commit -m "Update club discovery state"
+            git pull --rebase origin main
+            git push origin main
+          fi
