@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -39,6 +39,24 @@ def load_sources():
     ]
 
 
+def fetch_url(url):
+    response = requests.get(
+        url,
+        headers=HEADERS,
+        timeout=30,
+        allow_redirects=True,
+    )
+
+    if response.status_code == 403:
+        raise SourceBlockedError(
+            f"{url} -> HTTP 403"
+        )
+
+    response.raise_for_status()
+
+    return response.text, response.url
+
+
 def fetch_html(source):
     urls = [source["url"]]
 
@@ -50,22 +68,10 @@ def fetch_html(source):
 
     for url in urls:
         try:
-            response = requests.get(
-                url,
-                headers=HEADERS,
-                timeout=30,
-                allow_redirects=True,
-            )
+            return fetch_url(url)
 
-            if response.status_code == 403:
-                errors.append(
-                    f"{url} -> HTTP 403"
-                )
-                continue
-
-            response.raise_for_status()
-
-            return response.text, response.url
+        except SourceBlockedError as exc:
+            errors.append(str(exc))
 
         except requests.RequestException as exc:
             errors.append(
@@ -86,10 +92,32 @@ def fetch_html(source):
 
 
 def normalize_datetime(value):
+    if value is None:
+        return None
+
     try:
+        # Unix timestamp support
+        if isinstance(value, (int, float)):
+            return datetime.fromtimestamp(
+                value,
+                tz=timezone.utc,
+            )
+
+        value_string = str(value).strip()
+
+        if value_string.isdigit():
+            number = int(value_string)
+
+            if number > 1000000000:
+                return datetime.fromtimestamp(
+                    number,
+                    tz=timezone.utc,
+                )
+
         dt = date_parser.parse(
-            str(value)
+            value_string
         )
+
     except Exception:
         return None
 
@@ -99,6 +127,46 @@ def normalize_datetime(value):
         )
 
     return dt
+
+
+def make_event(
+    source,
+    title,
+    start,
+    url,
+    location="",
+    end=None,
+):
+    return {
+        "source_id": source["id"],
+        "school": source["school"],
+        "organizer": source["name"],
+        "title": str(title or "").strip(),
+        "start": start.isoformat(),
+        "end": end,
+        "location": str(location or ""),
+        "url": str(url),
+    }
+
+
+def dedupe_events(events):
+    deduped = []
+    seen = set()
+
+    for event in events:
+        key = (
+            event.get("title", "").strip().lower(),
+            event.get("start"),
+            event.get("url"),
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        deduped.append(event)
+
+    return deduped
 
 
 def parse_luma_schema_org(source):
@@ -126,7 +194,10 @@ def parse_luma_schema_org(source):
         if isinstance(data, dict):
             if data.get("@type") == "ItemList":
                 items.extend(
-                    data.get("itemListElement", [])
+                    data.get(
+                        "itemListElement",
+                        [],
+                    )
                 )
 
             elif data.get("@type") == "Event":
@@ -136,7 +207,10 @@ def parse_luma_schema_org(source):
             items.extend(data)
 
         for item in items:
-            if isinstance(item, dict) and "item" in item:
+            if (
+                isinstance(item, dict)
+                and "item" in item
+            ):
                 item = item["item"]
 
             if not isinstance(item, dict):
@@ -152,7 +226,9 @@ def parse_luma_schema_org(source):
             if not start:
                 continue
 
-            location = item.get("location")
+            location = item.get(
+                "location"
+            )
 
             if isinstance(location, dict):
                 location_name = (
@@ -166,22 +242,25 @@ def parse_luma_schema_org(source):
                 )
 
             events.append(
-                {
-                    "source_id": source["id"],
-                    "school": source["school"],
-                    "organizer": source["name"],
-                    "title": item.get("name", ""),
-                    "start": start.isoformat(),
-                    "end": item.get("endDate"),
-                    "location": location_name,
-                    "url": item.get(
+                make_event(
+                    source=source,
+                    title=item.get(
+                        "name",
+                        "",
+                    ),
+                    start=start,
+                    end=item.get(
+                        "endDate"
+                    ),
+                    location=location_name,
+                    url=item.get(
                         "url",
                         final_url,
                     ),
-                }
+                )
             )
 
-    return events
+    return dedupe_events(events)
 
 
 def parse_next_data_future_events(source):
@@ -198,7 +277,9 @@ def parse_next_data_future_events(source):
             "__NEXT_DATA__ not found"
         )
 
-    data = json.loads(script.string)
+    data = json.loads(
+        script.string
+    )
 
     future_events = (
         data
@@ -245,22 +326,20 @@ def parse_next_data_future_events(source):
         )
 
         events.append(
-            {
-                "source_id": source["id"],
-                "school": source["school"],
-                "organizer": source["name"],
-                "title": str(title),
-                "start": start.isoformat(),
-                "end": (
+            make_event(
+                source=source,
+                title=title,
+                start=start,
+                end=(
                     item.get("endDate")
                     or item.get("end")
                 ),
-                "location": str(location),
-                "url": str(url),
-            }
+                location=location,
+                url=url,
+            )
         )
 
-    return events
+    return dedupe_events(events)
 
 
 def parse_html_upcoming_events(source):
@@ -270,10 +349,12 @@ def parse_html_upcoming_events(source):
     events = []
 
     month_names = (
-        "January February March April May June "
-        "July August September October November December "
-        "Jan Feb Mar Apr Jun Jul Aug Sep Sept Oct Nov Dec"
-    )
+        "January February March April "
+        "May June July August September "
+        "October November December "
+        "Jan Feb Mar Apr Jun Jul Aug "
+        "Sep Sept Oct Nov Dec"
+    ).split()
 
     for element in soup.find_all(
         ["article", "section", "div", "li"]
@@ -286,9 +367,11 @@ def parse_html_upcoming_events(source):
         if not block_text:
             continue
 
+        lower = block_text.lower()
+
         if not any(
-            month.lower() in block_text.lower()
-            for month in month_names.split()
+            month.lower() in lower
+            for month in month_names
         ):
             continue
 
@@ -305,6 +388,7 @@ def parse_html_upcoming_events(source):
                     microsecond=0,
                 ),
             )
+
         except Exception:
             continue
 
@@ -314,7 +398,13 @@ def parse_html_upcoming_events(source):
             )
 
         heading = element.find(
-            ["h1", "h2", "h3", "h4", "strong"]
+            [
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "strong",
+            ]
         )
 
         if heading:
@@ -339,34 +429,15 @@ def parse_html_upcoming_events(source):
             event_url = final_url
 
         events.append(
-            {
-                "source_id": source["id"],
-                "school": source["school"],
-                "organizer": source["name"],
-                "title": title,
-                "start": start.isoformat(),
-                "end": None,
-                "location": "",
-                "url": event_url,
-            }
+            make_event(
+                source=source,
+                title=title,
+                start=start,
+                url=event_url,
+            )
         )
 
-    deduped = []
-    seen = set()
-
-    for event in events:
-        key = (
-            event["title"].lower(),
-            event["start"],
-        )
-
-        if key in seen:
-            continue
-
-        seen.add(key)
-        deduped.append(event)
-
-    return deduped
+    return dedupe_events(events)
 
 
 def parse_gdg_event_cards(source):
@@ -375,10 +446,12 @@ def parse_gdg_event_cards(source):
 
     events = []
 
-    # First try structured JSON-LD events.
+    # Prefer JSON-LD.
     for script in soup.find_all(
         "script",
-        attrs={"type": "application/ld+json"},
+        attrs={
+            "type": "application/ld+json"
+        },
     ):
         raw = script.string
 
@@ -394,6 +467,7 @@ def parse_gdg_event_cards(source):
             candidates = [data]
 
             graph = data.get("@graph")
+
             if isinstance(graph, list):
                 candidates.extend(graph)
 
@@ -404,10 +478,15 @@ def parse_gdg_event_cards(source):
             candidates = []
 
         for item in candidates:
-            if not isinstance(item, dict):
+            if not isinstance(
+                item,
+                dict,
+            ):
                 continue
 
-            if item.get("@type") != "Event":
+            if item.get(
+                "@type"
+            ) != "Event":
                 continue
 
             start = normalize_datetime(
@@ -417,19 +496,33 @@ def parse_gdg_event_cards(source):
             if not start:
                 continue
 
-            location = item.get("location")
+            location = item.get(
+                "location"
+            )
 
-            if isinstance(location, dict):
+            location_name = ""
+
+            if isinstance(
+                location,
+                dict,
+            ):
                 location_name = (
                     location.get("name")
                     or ""
                 )
 
-                address = location.get("address")
+                address = location.get(
+                    "address"
+                )
 
-                if isinstance(address, dict):
+                if isinstance(
+                    address,
+                    dict,
+                ):
                     address_text = ", ".join(
-                        str(address.get(key))
+                        str(
+                            address.get(key)
+                        )
                         for key in [
                             "streetAddress",
                             "addressLocality",
@@ -440,33 +533,43 @@ def parse_gdg_event_cards(source):
 
                     if address_text:
                         if location_name:
-                            location_name += f" — {address_text}"
+                            location_name += (
+                                f" — {address_text}"
+                            )
                         else:
-                            location_name = address_text
-
-            else:
-                location_name = str(
-                    location or ""
-                )
+                            location_name = (
+                                address_text
+                            )
 
             events.append(
-                {
-                    "source_id": source["id"],
-                    "school": source["school"],
-                    "organizer": source["name"],
-                    "title": item.get("name", ""),
-                    "start": start.isoformat(),
-                    "end": item.get("endDate"),
-                    "location": location_name,
-                    "url": item.get(
+                make_event(
+                    source=source,
+                    title=item.get(
+                        "name",
+                        "",
+                    ),
+                    start=start,
+                    end=item.get(
+                        "endDate"
+                    ),
+                    location=location_name,
+                    url=item.get(
                         "url",
                         final_url,
                     ),
-                }
+                )
             )
 
-    # Fallback: inspect links/cards containing event-like date text.
+    # Fallback to visible event links.
     if not events:
+        month_words = (
+            "jan feb mar apr may jun jul "
+            "aug sep sept oct nov dec "
+            "january february march april "
+            "june july august september "
+            "october november december"
+        ).split()
+
         for link in soup.find_all(
             "a",
             href=True,
@@ -482,18 +585,10 @@ def parse_gdg_event_cards(source):
             lower = text.lower()
 
             if (
-                "no upcoming events" in lower
-                or "past events" in lower
+                "no upcoming events"
+                in lower
             ):
                 continue
-
-            month_words = (
-                "jan feb mar apr may jun jul aug "
-                "sep sept oct nov dec "
-                "january february march april "
-                "june july august september "
-                "october november december"
-            ).split()
 
             if not any(
                 month in lower
@@ -506,6 +601,7 @@ def parse_gdg_event_cards(source):
                     text,
                     fuzzy=True,
                 )
+
             except Exception:
                 continue
 
@@ -514,50 +610,263 @@ def parse_gdg_event_cards(source):
                     tzinfo=timezone.utc
                 )
 
-            title = text[:160]
+            events.append(
+                make_event(
+                    source=source,
+                    title=text[:160],
+                    start=start,
+                    url=urljoin(
+                        final_url,
+                        link["href"],
+                    ),
+                )
+            )
 
-            event_url = urljoin(
+    return dedupe_events(events)
+
+
+def is_itch_jam_url(url):
+    try:
+        parsed = urlparse(url)
+
+        host = parsed.netloc.lower()
+
+        return (
+            host.endswith("itch.io")
+            and "/jam/" in parsed.path
+        )
+
+    except Exception:
+        return False
+
+
+def extract_itch_datetime(element):
+    attributes = [
+        "datetime",
+        "title",
+        "data-time",
+        "data-timestamp",
+        "data-date",
+    ]
+
+    for attribute in attributes:
+        value = element.get(
+            attribute
+        )
+
+        if not value:
+            continue
+
+        dt = normalize_datetime(
+            value
+        )
+
+        if dt:
+            return dt
+
+    text = element.get_text(
+        " ",
+        strip=True,
+    )
+
+    if text:
+        return normalize_datetime(
+            text
+        )
+
+    return None
+
+
+def parse_itch_jam_page(
+    source,
+    jam_url,
+):
+    html, final_url = fetch_url(
+        jam_url
+    )
+
+    soup = BeautifulSoup(
+        html,
+        "html.parser",
+    )
+
+    title_element = soup.find("h1")
+
+    if title_element:
+        title = title_element.get_text(
+            " ",
+            strip=True,
+        )
+    elif soup.title:
+        title = soup.title.get_text(
+            " ",
+            strip=True,
+        )
+    else:
+        title = "itch.io jam"
+
+    date_candidates = []
+
+    # itch.io commonly exposes formatted dates
+    # in abbr/time elements.
+    for element in soup.find_all(
+        ["abbr", "time"]
+    ):
+        dt = extract_itch_datetime(
+            element
+        )
+
+        if dt:
+            date_candidates.append(dt)
+
+    # Also inspect elements with timestamp attrs.
+    for element in soup.find_all(
+        attrs={"data-time": True}
+    ):
+        dt = extract_itch_datetime(
+            element
+        )
+
+        if dt:
+            date_candidates.append(dt)
+
+    for element in soup.find_all(
+        attrs={"data-timestamp": True}
+    ):
+        dt = extract_itch_datetime(
+            element
+        )
+
+        if dt:
+            date_candidates.append(dt)
+
+    if not date_candidates:
+        return None
+
+    # The earliest exposed jam date is normally
+    # the start/opening date.
+    start = min(
+        date_candidates
+    )
+
+    end = None
+
+    if len(date_candidates) > 1:
+        latest = max(
+            date_candidates
+        )
+
+        if latest != start:
+            end = latest.isoformat()
+
+    return make_event(
+        source=source,
+        title=title,
+        start=start,
+        end=end,
+        location="Online / see jam page",
+        url=final_url,
+    )
+
+
+def parse_itch_io_jams(source):
+    candidate_urls = []
+
+    primary_urls = [
+        source["url"],
+        *source.get(
+            "backup_urls",
+            [],
+        ),
+    ]
+
+    # Direct jam links from registry.
+    for url in primary_urls:
+        if is_itch_jam_url(url):
+            candidate_urls.append(url)
+
+    # Search organizer/profile pages for
+    # links to hosted jams.
+    for profile_url in primary_urls:
+        if is_itch_jam_url(
+            profile_url
+        ):
+            continue
+
+        try:
+            html, final_url = fetch_url(
+                profile_url
+            )
+
+        except SourceBlockedError:
+            continue
+
+        except requests.RequestException:
+            continue
+
+        soup = BeautifulSoup(
+            html,
+            "html.parser",
+        )
+
+        for link in soup.find_all(
+            "a",
+            href=True,
+        ):
+            linked_url = urljoin(
                 final_url,
                 link["href"],
             )
 
-            events.append(
-                {
-                    "source_id": source["id"],
-                    "school": source["school"],
-                    "organizer": source["name"],
-                    "title": title,
-                    "start": start.isoformat(),
-                    "end": None,
-                    "location": "",
-                    "url": event_url,
-                }
+            if is_itch_jam_url(
+                linked_url
+            ):
+                candidate_urls.append(
+                    linked_url
+                )
+
+    candidate_urls = list(
+        dict.fromkeys(
+            candidate_urls
+        )
+    )
+
+    events = []
+
+    for jam_url in candidate_urls:
+        try:
+            event = parse_itch_jam_page(
+                source,
+                jam_url,
             )
 
-    deduped = []
-    seen = set()
-
-    for event in events:
-        key = (
-            event["title"].strip().lower(),
-            event["start"],
-            event["url"],
-        )
-
-        if key in seen:
+        except SourceBlockedError:
             continue
 
-        seen.add(key)
-        deduped.append(event)
+        except requests.RequestException:
+            continue
 
-    return deduped
+        if event:
+            events.append(event)
+
+    return dedupe_events(events)
 
 
 PARSERS = {
-    "luma_schema_org": parse_luma_schema_org,
-    "next_data_future_events": parse_next_data_future_events,
-    "html_upcoming_events": parse_html_upcoming_events,
-    "gdg_event_cards": parse_gdg_event_cards,
+    "luma_schema_org":
+        parse_luma_schema_org,
+
+    "next_data_future_events":
+        parse_next_data_future_events,
+
+    "html_upcoming_events":
+        parse_html_upcoming_events,
+
+    "gdg_event_cards":
+        parse_gdg_event_cards,
+
+    "itch_io_jams":
+        parse_itch_io_jams,
 }
 
 
@@ -589,12 +898,16 @@ def main():
     found = 0
 
     for source in sources:
-        parser_name = source.get("parser")
+        parser_name = source.get(
+            "parser"
+        )
 
         if parser_name not in PARSERS:
             continue
 
-        parser = PARSERS[parser_name]
+        parser = PARSERS[
+            parser_name
+        ]
 
         print(
             f"\nChecking: "
@@ -603,12 +916,16 @@ def main():
         )
 
         try:
-            events = parser(source)
+            events = parser(
+                source
+            )
 
             future = [
                 event
                 for event in events
-                if is_future_event(event)
+                if is_future_event(
+                    event
+                )
             ]
 
             succeeded += 1
