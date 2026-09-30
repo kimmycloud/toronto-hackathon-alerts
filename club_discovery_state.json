@@ -215,14 +215,10 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "44d36e1d8685eb7614f7b9943ee3e7343648af309ce15e720fa8660e9c491c34",
-    "signals": [
-      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7",
-      "LINK|TMU Cyber Summit Registration|https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform"
-    ],
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "signals": [],
     "urls": [
-      "https://luma.com/user/tmu_byte",
-      "https://linktr.ee/BYTETMU"
+      "https://luma.com/user/tmu_byte"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
@@ -340,9 +336,9 @@
     ]
   },
   "u_of_t_gdg_u_of_t_st_george": {
-    "fingerprint": "ac39725c8f71b777992b4786fb5e26fa6e78bd855fcf72a435794a62014b9733",
+    "fingerprint": "913411be98191f2e7c6fe6603c07e0d24aa414a6833d2e0af56e97316b401fd7",
     "signals": [
-      "LINK|16. Sept. 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
+      "LINK|2026년 9월 16일 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "TEXT|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton"
     ],
@@ -904,7 +900,6 @@
       "TEXT|You may work alone or in a team, team up is recommended. We are also hosting a Game Jam Announcement event on October 5th at 4:30 - 6:30, FC 152 (Founders Assembly Hall) . Please come and meet your other Game dev fellas."
     ],
     "urls": [
-      "https://gdyu.itch.io/",
       "https://itch.io/jam/yudum"
     ]
   },
