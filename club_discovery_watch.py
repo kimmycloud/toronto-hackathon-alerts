@@ -33,6 +33,7 @@ HEADERS = {
 
 
 DISCOVERY_PATTERNS = [
+    # Hackathons
     r"\bhackathon\b",
     r"\bhack[\s-]?athon\b",
     r"\bdatathon\b",
@@ -40,25 +41,44 @@ DISCOVERY_PATTERNS = [
     r"\bdesignathon\b",
     r"\bbuildathon\b",
     r"\bcodeathon\b",
+
+    # Game / security events
     r"\bgame\s*jam\b",
     r"\bctf\b",
     r"\bcapture\s+the\s+flag\b",
+
+    # Programming competitions
     r"\bcoding\s+competition\b",
     r"\bcoding\s+contest\b",
     r"\bprogramming\s+competition\b",
     r"\bprogramming\s+contest\b",
     r"\bcompetitive\s+programming\b",
+
+    # Engineering / robotics
     r"\brobotics\s+competition\b",
     r"\brobotics\s+challenge\b",
     r"\bengineering\s+competition\b",
     r"\bengineering\s+challenge\b",
     r"\binnovation\s+challenge\b",
+
+    # AI / ML / data
     r"\bai\s+competition\b",
     r"\bai\s+challenge\b",
     r"\bml\s+competition\b",
     r"\bml\s+challenge\b",
+    r"\bmachine\s+learning\s+competition\b",
+    r"\bmachine\s+learning\s+challenge\b",
     r"\bdata\s+competition\b",
     r"\bdata\s+challenge\b",
+
+    # High-value technical events
+    r"\bcyber\s+summit\b",
+    r"\bcybersecurity\s+summit\b",
+    r"\btech(?:nology)?\s+summit\b",
+    r"\bdeveloper\s+conference\b",
+    r"\bengineering\s+conference\b",
+    r"\bai\s+conference\b",
+    r"\bmachine\s+learning\s+conference\b",
 ]
 
 
