@@ -9,7 +9,6 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
-from dateparser.search import search_dates
 
 
 CLUBS_FILE = Path("university_club_watch.json")
@@ -171,8 +170,7 @@ def matches_discovery(text):
             text,
             re.IGNORECASE,
         )
-        for pattern
-        in DISCOVERY_PATTERNS
+        for pattern in DISCOVERY_PATTERNS
     )
 
 
@@ -183,8 +181,7 @@ def matches_registration(text):
             text,
             re.IGNORECASE,
         )
-        for pattern
-        in REGISTRATION_PATTERNS
+        for pattern in REGISTRATION_PATTERNS
     )
 
 
@@ -219,8 +216,7 @@ def is_generic_directory(url):
 
     return any(
         pattern in lower
-        for pattern
-        in GENERIC_DIRECTORY_PATTERNS
+        for pattern in GENERIC_DIRECTORY_PATTERNS
     )
 
 
@@ -434,8 +430,7 @@ def new_signals(
 
     return [
         signal
-        for signal
-        in current_signals
+        for signal in current_signals
         if signal not in old_set
     ]
 
@@ -457,65 +452,56 @@ def signal_is_high_value(signal):
 
 
 # --------------------------------------------------
-# Date detection
+# Explicit date detection
 # --------------------------------------------------
 
 MONTH_NAMES = {
-    # January
     "jan": 1,
     "january": 1,
     "janeiro": 1,
     "enero": 1,
     "janvier": 1,
 
-    # February
     "feb": 2,
     "february": 2,
     "fevereiro": 2,
     "febrero": 2,
     "fevrier": 2,
 
-    # March
     "mar": 3,
     "march": 3,
     "marco": 3,
     "marzo": 3,
     "mars": 3,
 
-    # April
     "apr": 4,
     "april": 4,
     "abril": 4,
     "avr": 4,
     "avril": 4,
 
-    # May
     "may": 5,
     "maio": 5,
     "mayo": 5,
     "mai": 5,
 
-    # June
     "jun": 6,
     "june": 6,
     "junho": 6,
     "junio": 6,
     "juin": 6,
 
-    # July
     "jul": 7,
     "july": 7,
     "julho": 7,
     "julio": 7,
     "juillet": 7,
 
-    # August
     "aug": 8,
     "august": 8,
     "agosto": 8,
     "aout": 8,
 
-    # September
     "sep": 9,
     "sept": 9,
     "september": 9,
@@ -524,7 +510,6 @@ MONTH_NAMES = {
     "septiembre": 9,
     "septembre": 9,
 
-    # October
     "oct": 10,
     "october": 10,
     "out": 10,
@@ -532,14 +517,12 @@ MONTH_NAMES = {
     "octubre": 10,
     "octobre": 10,
 
-    # November
     "nov": 11,
     "november": 11,
     "novembro": 11,
     "noviembre": 11,
     "novembre": 11,
 
-    # December
     "dec": 12,
     "december": 12,
     "dez": 12,
@@ -551,7 +534,7 @@ MONTH_NAMES = {
 
 def normalize_word(value):
     value = value.strip(
-        " .,"
+        " .,;"
     ).lower()
 
     value = unicodedata.normalize(
@@ -559,7 +542,7 @@ def normalize_word(value):
         value,
     )
 
-    value = "".join(
+    return "".join(
         char
         for char in value
         if not unicodedata.combining(
@@ -567,7 +550,13 @@ def normalize_word(value):
         )
     )
 
-    return value
+
+def month_number(value):
+    return MONTH_NAMES.get(
+        normalize_word(
+            value
+        )
+    )
 
 
 def safe_date(
@@ -590,34 +579,22 @@ def safe_date(
         return None
 
 
-def month_number(
-    value,
-):
-    return MONTH_NAMES.get(
-        normalize_word(
-            value
-        )
-    )
-
-
 def extract_explicit_date(text):
     """
-    Extract a calendar date only when
-    a four-digit year is explicitly present.
+    Only recognizes explicit dates.
 
-    Handles:
-      16 Sept. 2026
+    It never guesses missing pieces.
+
+    Supported examples:
+      16. Sept. 2026
       September 16, 2026
-
       16 de set. de 2026
       16 de setembro de 2026
-
       16 de septiembre de 2026
       16 septembre 2026
-
       2026-09-16
       16/09/2026
-
+      16.09.2026
       2026년 9월 16일
       2026年9月16日
     """
@@ -644,7 +621,7 @@ def extract_explicit_date(text):
             match.group(3),
         )
 
-    # Chinese/Japanese:
+    # Chinese / Japanese:
     # 2026年9月16日
     match = re.search(
         r"(20\d{2})\s*年\s*"
@@ -678,7 +655,7 @@ def extract_explicit_date(text):
             match.group(3),
         )
 
-    # Day first numeric:
+    # Day first:
     # 16/09/2026
     # 16.09.2026
     # 16-09-2026
@@ -696,16 +673,20 @@ def extract_explicit_date(text):
             match.group(1),
         )
 
-    # Day + month name + year.
+    # Day + month word + year.
     #
-    # Examples:
-    # 16 Sept. 2026
+    # Allows punctuation after the day:
+    # 16. Sept. 2026
+    #
+    # Allows Portuguese / Spanish "de":
     # 16 de set. de 2026
-    # 16 de septiembre de 2026
+    #
+    # Allows French:
     # 16 septembre 2026
     match = re.search(
         r"\b(\d{1,2})"
         r"(?:st|nd|rd|th)?"
+        r"\.?"
         r"\s+"
         r"(?:de\s+)?"
         r"([A-Za-zÀ-ÿ]+\.?)"
@@ -728,9 +709,7 @@ def extract_explicit_date(text):
                 match.group(1),
             )
 
-    # Month name + day + year.
-    #
-    # Example:
+    # Month + day + year:
     # September 16, 2026
     match = re.search(
         r"\b([A-Za-zÀ-ÿ]+\.?)"
@@ -756,41 +735,17 @@ def extract_explicit_date(text):
                 match.group(2),
             )
 
-    # Last fallback for other supported
-    # localized formats.
-    try:
-        found = search_dates(
-            text,
-            languages=[
-                "en",
-                "fr",
-                "es",
-                "pt",
-                "ko",
-                "zh",
-                "ja",
-            ],
-            settings={
-                "DATE_ORDER":
-                    "DMY",
-                "PREFER_DATES_FROM":
-                    "future",
-            },
-        )
-
-    except Exception:
-        found = None
-
-    if found:
-        for matched_text, parsed in found:
-            if not re.search(
-                r"20\d{2}",
-                matched_text,
-            ):
-                continue
-
-            return parsed.date()
-
+    # IMPORTANT:
+    # No fuzzy/dateparser fallback here.
+    #
+    # If we cannot explicitly identify
+    # year + month + day, return None.
+    # This prevents dates like:
+    #
+    #   "16. Sept. 2026"
+    #
+    # from accidentally turning into
+    # today's date.
     return None
 
 
