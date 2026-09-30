@@ -1,1 +1,69 @@
-{}
+{
+  "club-discovery": {
+    "098334f46703b28b167b7c32996e6032837ac647ad0e4f416adc394fa0c21099": {
+      "error": "https://linktr.ee/yorkudatascience -> HTTP 406",
+      "name": "York — Data Science Club at YorkU",
+      "status": "BLOCKED"
+    },
+    "0cb80e14642df630c0809b87ced5b43c0031fff50d4e34a0e75610d2ca75be2c": {
+      "error": "https://uwquantum.com -> HTTP 403",
+      "name": "Waterloo — Waterloo Quantum Club",
+      "status": "BLOCKED"
+    },
+    "42ec6d170338fe17b1798630a9426b4d9597fd9b12735932eec6f102d224f073": {
+      "error": "https://linktr.ee/tmu_ux -> HTTP 406",
+      "name": "TMU — UX",
+      "status": "BLOCKED"
+    },
+    "42f43b0edbabdb3415ec85305fee0b509e73eda324b643ba8ad01dee07eaf12c": {
+      "error": "https://linktr.ee/metrocketry -> HTTP 406",
+      "name": "TMU — MetRocketry",
+      "status": "BLOCKED"
+    },
+    "4f2c724cd3637b82acfe779571e9a1e469df086ffdf0d849fe858c6c0dee82e2": {
+      "error": "https://mcp-team.com/ -> connection unavailable: HTTPSConnectionPool(host='mcp-team.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='mcp-team.com', port=443): Failed to resolve 'mcp-team.com' ([Errno -2] Name or service not known)\"))",
+      "name": "McMaster — McMaster Competitive Programming",
+      "status": "UNAVAILABLE"
+    },
+    "5ba289894c8fd69f6ed86eec2c6aa90f22670c8e2150268b6486cc4a73177fc1": {
+      "error": "https://uofthacks.com/ -> HTTP 403",
+      "name": "U of T — UofTHacks",
+      "status": "BLOCKED"
+    },
+    "6359f53a94f18f6dbce96873dea486a8d491230b086540622fa8e7a054e05ff0": {
+      "error": "https://linktr.ee/mdsa_tmu -> HTTP 406",
+      "name": "TMU — Data Science Association (MDSA)",
+      "status": "BLOCKED"
+    },
+    "683b960abb139ab70fe71dcf3c833e4615fb51c02386108f04ef398c9fe487aa": {
+      "error": "https://linktr.ee/macengcomp -> HTTP 406",
+      "name": "McMaster — McMaster Engineering Competition (MEC)",
+      "status": "BLOCKED"
+    },
+    "6c59af2a72436f5a40e1e5fbe8847acd3b1e7fa104700616e43e9bb19a47e473": {
+      "error": "https://essaeg.ca/en/events/upcoming/ -> HTTP 403",
+      "name": "uOttawa — Engineering Students Society (ESS)",
+      "status": "BLOCKED"
+    },
+    "87d11d84b9a9f7a042f5b50ac2dd4bb529253d93734846c94e056f14787d4a83": {
+      "error": "https://sop.utoronto.ca/group/uoft-competitive-programming-club-uoftcpc/ -> HTTP 404",
+      "name": "U of T — UofT Competitive Programming Club (UTM)",
+      "status": "UNAVAILABLE"
+    },
+    "c6667008997d542c3143f9814c22752b52e3597ae382b09208d65c4573b25964": {
+      "error": "https://linktr.ee/macaisociety -> HTTP 406",
+      "name": "McMaster — Mac AI Society",
+      "status": "BLOCKED"
+    },
+    "fb23db0e1e181ee0440191be6a7bc872794095f6b755e639aac6b4e482b11693": {
+      "error": "https://linktr.ee/healthtechinnovators -> HTTP 406",
+      "name": "Carleton — Health Tech Innovators",
+      "status": "BLOCKED"
+    },
+    "fb2b6999960b0ccd6cd204c557b07eeee4ca8514dade5dc38f66cba2b485c5d7": {
+      "error": "https://ctf.uoftctf.org/ -> HTTP 403; https://uoftctf.org/ -> HTTP 403",
+      "name": "U of T — UofT Capture the Flag Club",
+      "status": "BLOCKED"
+    }
+  }
+}

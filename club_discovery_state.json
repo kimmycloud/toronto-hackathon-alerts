@@ -336,9 +336,9 @@
     ]
   },
   "u_of_t_gdg_u_of_t_st_george": {
-    "fingerprint": "913411be98191f2e7c6fe6603c07e0d24aa414a6833d2e0af56e97316b401fd7",
+    "fingerprint": "94361a7591b2ac5000f28dee9dfc37437d2024a1ed4439df84205c7bb1c8abca",
     "signals": [
-      "LINK|2026년 9월 16일 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
+      "LINK|16 de set. de 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "TEXT|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton"
     ],
@@ -892,14 +892,15 @@
     ]
   },
   "york_game_devs_at_yorku": {
-    "fingerprint": "6825bf2f03dc7f37305bdb2d00911a05210e28692220b8ad64f9d92b33ada2d7",
+    "fingerprint": "23b52d0346c550ad2f1c6ffb093436fb249abea3c9c53e4a91e1ed75e2550eef",
     "signals": [
       "LINK|Register|https://itch.io/register",
       "TEXT|Hi everyone, welcome back to another of YUdum Dare! This is GDYU seventh game jam, and we're siuuuuper excited to get started!",
-      "TEXT|YUdum Dare #7 is a game jam hosted by Game Devs at YorkU (GDYU)! Whether you're an experienced developer or making your first game, everyone is welcome to participate, experiment, and have fun",
-      "TEXT|You may work alone or in a team, team up is recommended. We are also hosting a Game Jam Announcement event on October 5th at 4:30 - 6:30, FC 152 (Founders Assembly Hall) . Please come and meet your other Game dev fellas."
+      "TEXT|YUdum Dare #7 is a game jam hosted by Game Devs at YorkU (GDYU)! Whether you're an experienced developer or making your first game, everyone is welcome to participate, experiment, and have fun!!!",
+      "TEXT|You may work alone or in a team, team up is recommended. We are also hosting a Game Jam Announcement event on October 5th at 4:30 - 8:30, FC 152 (Founders Assembly Hall) . Please come and meet your other Game dev fellas."
     ],
     "urls": [
+      "https://gdyu.itch.io/",
       "https://itch.io/jam/yudum"
     ]
   },
