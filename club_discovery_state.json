@@ -28,8 +28,10 @@
     ]
   },
   "carleton_carleton_cusec_society": {
-    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "signals": [],
+    "fingerprint": "6e3d9ecef6d7d2b5037d34d0226b56db45ed8513dca71d616c89ba873644d4f8",
+    "signals": [
+      "TEXT|Carleton Canadian University Software Engineering Conference Society (Carleton CUSEC Society)"
+    ],
     "urls": [
       "https://www.cusaclubs.ca/club/carleton-canadian-university-software-engineering-conference-society-carleton-cusec-society/"
     ]
@@ -515,9 +517,11 @@
     ]
   },
   "u_of_t_utmist": {
-    "fingerprint": "360fe57303df9171610711ac1fd86adb8b4b01fd46fe1a5a9aaa28e6116ce46b",
+    "fingerprint": "7871af7bb975833a69c61d1361974a5dfcec02d3a5c20d742725d564ee5c50f1",
     "signals": [
-      "TEXT|GenAI Genesis is Canada's largest AI hackathon, uniting over 700 participants to develop generative AI solutions addressing the U.N Sustainable Development Goals, powered by UTMIST and Google Developers"
+      "TEXT|A student-led AI conference featuring hands-on workshops, expert talks, and diverse perspectives across fields like fintech, healthcare, and robotics.",
+      "TEXT|GenAI Genesis is Canada's largest AI hackathon, uniting over 700 participants to develop generative AI solutions addressing the U.N Sustainable Development Goals, powered by UTMIST and Google Developers",
+      "TEXT|a student-led AI conference featuring hands-on workshops, expert talks, and diverse perspectives across fields like fintech, healthcare, and robotics."
     ],
     "urls": [
       "https://www.utmist.ca/"

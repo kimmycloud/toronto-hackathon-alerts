@@ -5,6 +5,16 @@
       "name": "Waterloo — Waterloo Quantum Club",
       "status": "BLOCKED"
     },
+    "42ec6d170338fe17b1798630a9426b4d9597fd9b12735932eec6f102d224f073": {
+      "error": "https://linktr.ee/tmu_ux -> HTTP 406",
+      "name": "TMU — UX",
+      "status": "BLOCKED"
+    },
+    "42f43b0edbabdb3415ec85305fee0b509e73eda324b643ba8ad01dee07eaf12c": {
+      "error": "https://linktr.ee/metrocketry -> HTTP 406",
+      "name": "TMU — MetRocketry",
+      "status": "BLOCKED"
+    },
     "4f2c724cd3637b82acfe779571e9a1e469df086ffdf0d849fe858c6c0dee82e2": {
       "error": "https://mcp-team.com/ -> connection unavailable: HTTPSConnectionPool(host='mcp-team.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='mcp-team.com', port=443): Failed to resolve 'mcp-team.com' ([Errno -2] Name or service not known)\"))",
       "name": "McMaster — McMaster Competitive Programming",
@@ -13,11 +23,6 @@
     "5ba289894c8fd69f6ed86eec2c6aa90f22670c8e2150268b6486cc4a73177fc1": {
       "error": "https://uofthacks.com/ -> HTTP 403",
       "name": "U of T — UofTHacks",
-      "status": "BLOCKED"
-    },
-    "6359f53a94f18f6dbce96873dea486a8d491230b086540622fa8e7a054e05ff0": {
-      "error": "https://linktr.ee/mdsa_tmu -> HTTP 406",
-      "name": "TMU — Data Science Association (MDSA)",
       "status": "BLOCKED"
     },
     "6c59af2a72436f5a40e1e5fbe8847acd3b1e7fa104700616e43e9bb19a47e473": {
@@ -30,15 +35,10 @@
       "name": "U of T — UofT Competitive Programming Club (UTM)",
       "status": "UNAVAILABLE"
     },
-    "c6667008997d542c3143f9814c22752b52e3597ae382b09208d65c4573b25964": {
-      "error": "https://linktr.ee/macaisociety -> HTTP 406",
-      "name": "McMaster — Mac AI Society",
-      "status": "BLOCKED"
-    },
-    "fb23db0e1e181ee0440191be6a7bc872794095f6b755e639aac6b4e482b11693": {
-      "error": "https://linktr.ee/healthtechinnovators -> HTTP 406",
-      "name": "Carleton — Health Tech Innovators",
-      "status": "BLOCKED"
+    "a588fc4261e3bbad839b974c8c2dd1585be10c532d0f42badd036610324536dc": {
+      "error": "https://arbalestrocketry.ca -> connection unavailable: HTTPSConnectionPool(host='arbalestrocketry.ca', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='arbalestrocketry.ca', port=443) at 0x7ff044add580>, 'Connection to arbalestrocketry.ca timed out. (connect timeout=20)'))",
+      "name": "York — Arbalest Rocketry",
+      "status": "UNAVAILABLE"
     },
     "fb2b6999960b0ccd6cd204c557b07eeee4ca8514dade5dc38f66cba2b485c5d7": {
       "error": "https://ctf.uoftctf.org/ -> HTTP 403; https://uoftctf.org/ -> HTTP 403",
