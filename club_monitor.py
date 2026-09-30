@@ -85,6 +85,22 @@ def fetch_html(source):
     )
 
 
+def normalize_datetime(value):
+    try:
+        dt = date_parser.parse(
+            str(value)
+        )
+    except Exception:
+        return None
+
+    if dt.tzinfo is None:
+        dt = dt.replace(
+            tzinfo=timezone.utc
+        )
+
+    return dt
+
+
 def parse_luma_schema_org(source):
     html, final_url = fetch_html(source)
     soup = BeautifulSoup(html, "html.parser")
@@ -129,20 +145,12 @@ def parse_luma_schema_org(source):
             if item.get("@type") != "Event":
                 continue
 
-            start_raw = item.get("startDate")
+            start = normalize_datetime(
+                item.get("startDate")
+            )
 
-            if not start_raw:
+            if not start:
                 continue
-
-            try:
-                start = date_parser.parse(start_raw)
-            except Exception:
-                continue
-
-            if start.tzinfo is None:
-                start = start.replace(
-                    tzinfo=timezone.utc
-                )
 
             location = item.get("location")
 
@@ -211,20 +219,12 @@ def parse_next_data_future_events(source):
             or item.get("date")
         )
 
-        if not start_raw:
-            continue
+        start = normalize_datetime(
+            start_raw
+        )
 
-        try:
-            start = date_parser.parse(
-                str(start_raw)
-            )
-        except Exception:
+        if not start:
             continue
-
-        if start.tzinfo is None:
-            start = start.replace(
-                tzinfo=timezone.utc
-            )
 
         title = (
             item.get("name")
@@ -369,25 +369,205 @@ def parse_html_upcoming_events(source):
     return deduped
 
 
+def parse_gdg_event_cards(source):
+    html, final_url = fetch_html(source)
+    soup = BeautifulSoup(html, "html.parser")
+
+    events = []
+
+    # First try structured JSON-LD events.
+    for script in soup.find_all(
+        "script",
+        attrs={"type": "application/ld+json"},
+    ):
+        raw = script.string
+
+        if not raw:
+            continue
+
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+
+        if isinstance(data, dict):
+            candidates = [data]
+
+            graph = data.get("@graph")
+            if isinstance(graph, list):
+                candidates.extend(graph)
+
+        elif isinstance(data, list):
+            candidates = data
+
+        else:
+            candidates = []
+
+        for item in candidates:
+            if not isinstance(item, dict):
+                continue
+
+            if item.get("@type") != "Event":
+                continue
+
+            start = normalize_datetime(
+                item.get("startDate")
+            )
+
+            if not start:
+                continue
+
+            location = item.get("location")
+
+            if isinstance(location, dict):
+                location_name = (
+                    location.get("name")
+                    or ""
+                )
+
+                address = location.get("address")
+
+                if isinstance(address, dict):
+                    address_text = ", ".join(
+                        str(address.get(key))
+                        for key in [
+                            "streetAddress",
+                            "addressLocality",
+                            "addressRegion",
+                        ]
+                        if address.get(key)
+                    )
+
+                    if address_text:
+                        if location_name:
+                            location_name += f" — {address_text}"
+                        else:
+                            location_name = address_text
+
+            else:
+                location_name = str(
+                    location or ""
+                )
+
+            events.append(
+                {
+                    "source_id": source["id"],
+                    "school": source["school"],
+                    "organizer": source["name"],
+                    "title": item.get("name", ""),
+                    "start": start.isoformat(),
+                    "end": item.get("endDate"),
+                    "location": location_name,
+                    "url": item.get(
+                        "url",
+                        final_url,
+                    ),
+                }
+            )
+
+    # Fallback: inspect links/cards containing event-like date text.
+    if not events:
+        for link in soup.find_all(
+            "a",
+            href=True,
+        ):
+            text = link.get_text(
+                " ",
+                strip=True,
+            )
+
+            if not text:
+                continue
+
+            lower = text.lower()
+
+            if (
+                "no upcoming events" in lower
+                or "past events" in lower
+            ):
+                continue
+
+            month_words = (
+                "jan feb mar apr may jun jul aug "
+                "sep sept oct nov dec "
+                "january february march april "
+                "june july august september "
+                "october november december"
+            ).split()
+
+            if not any(
+                month in lower
+                for month in month_words
+            ):
+                continue
+
+            try:
+                start = date_parser.parse(
+                    text,
+                    fuzzy=True,
+                )
+            except Exception:
+                continue
+
+            if start.tzinfo is None:
+                start = start.replace(
+                    tzinfo=timezone.utc
+                )
+
+            title = text[:160]
+
+            event_url = urljoin(
+                final_url,
+                link["href"],
+            )
+
+            events.append(
+                {
+                    "source_id": source["id"],
+                    "school": source["school"],
+                    "organizer": source["name"],
+                    "title": title,
+                    "start": start.isoformat(),
+                    "end": None,
+                    "location": "",
+                    "url": event_url,
+                }
+            )
+
+    deduped = []
+    seen = set()
+
+    for event in events:
+        key = (
+            event["title"].strip().lower(),
+            event["start"],
+            event["url"],
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        deduped.append(event)
+
+    return deduped
+
+
 PARSERS = {
     "luma_schema_org": parse_luma_schema_org,
     "next_data_future_events": parse_next_data_future_events,
     "html_upcoming_events": parse_html_upcoming_events,
+    "gdg_event_cards": parse_gdg_event_cards,
 }
 
 
 def is_future_event(event):
-    try:
-        start = date_parser.parse(
-            event["start"]
-        )
-    except Exception:
-        return False
+    start = normalize_datetime(
+        event["start"]
+    )
 
-    if start.tzinfo is None:
-        start = start.replace(
-            tzinfo=timezone.utc
-        )
+    if not start:
+        return False
 
     return (
         start
@@ -403,7 +583,7 @@ def main():
         f"active university sources."
     )
 
-    tested = 0
+    succeeded = 0
     blocked = 0
     failed = 0
     found = 0
@@ -431,7 +611,7 @@ def main():
                 if is_future_event(event)
             ]
 
-            tested += 1
+            succeeded += 1
             found += len(future)
 
             print(
@@ -452,7 +632,8 @@ def main():
 
             print(
                 f"BLOCKED: "
-                f"{source['id']}: {exc}"
+                f"{source['id']}: "
+                f"{exc}"
             )
 
         except Exception as exc:
@@ -460,14 +641,15 @@ def main():
 
             print(
                 f"FAILED: "
-                f"{source['id']}: {exc}"
+                f"{source['id']}: "
+                f"{exc}"
             )
 
     print()
 
     print(
         f"Finished: "
-        f"{tested} succeeded, "
+        f"{succeeded} succeeded, "
         f"{blocked} blocked, "
         f"{failed} failed, "
         f"{found} future events found."
