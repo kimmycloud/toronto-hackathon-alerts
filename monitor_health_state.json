@@ -1,4 +1,16 @@
 {
+  "annual-organizer": {
+    "23af5d13c5a4473350e89dc6c9e750034d0ae92276c016fe47fffc294ace7f0c": {
+      "error": "HTTP 403",
+      "name": "U of T — UofTHacks",
+      "status": "BLOCKED"
+    },
+    "7e60e02fa79072e1fdde3839e895e490adf3e43ffc2333accb33511280f4011d": {
+      "error": "HTTP 403",
+      "name": "U of T — UofT Capture the Flag Club",
+      "status": "BLOCKED"
+    }
+  },
   "bio-link": {},
   "club-discovery": {
     "0cb80e14642df630c0809b87ced5b43c0031fff50d4e34a0e75610d2ca75be2c": {
