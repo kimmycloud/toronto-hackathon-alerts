@@ -2,7 +2,7 @@
   "events": {
     "2407e6bae89498570e9cea76c3187d6f62c0db0655d538408bef2e7c78fc37ef": {
       "end_date": "2026-11-18",
-      "last_seen": "2026-09-30T17:16:54.180116+00:00",
+      "last_seen": "2026-10-01T07:11:01.450339+00:00",
       "school": "Waterloo",
       "source": "waterloo",
       "start_date": "2026-11-02",
@@ -11,5 +11,5 @@
     }
   },
   "initialized": true,
-  "last_run": "2026-09-30T17:16:54.180129+00:00"
+  "last_run": "2026-10-01T07:11:01.450355+00:00"
 }

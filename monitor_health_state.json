@@ -46,5 +46,12 @@
       "name": "U of T — UofT Capture the Flag Club",
       "status": "BLOCKED"
     }
+  },
+  "university-discovery": {
+    "2f1562135245978af98a66907f5b58e9bac96677baca2fcb6bb05a12808b488d": {
+      "error": "The read operation timed out",
+      "name": "carleton",
+      "status": "UNAVAILABLE"
+    }
   }
 }
