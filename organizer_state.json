@@ -166,12 +166,12 @@
     "url": "https://makeuoft.ca/"
   },
   "uottawa_uottahack": {
-    "fingerprint": "e55acefcd0dbca0100a24b12c93fa9730db53ee08c80ac12270ad014a84c9798",
+    "fingerprint": "5af6eee460e583fd6a636807e50f0c27cf2d72af639da2d4334e8c633fade6bf",
     "signals": [
       "TEXT|Can I start working on a project before the event?",
-      "TEXT|Canadaâs Capital Hackathon",
-      "TEXT|Canadaâs Capital Hackathon Canadaâs Capital Hackathon Canadaâs Capital Hackathon",
-      "TEXT|Canadaâs Capital Hackathon Canadaâs Capital Hackathon Canadaâs Capital Hackathon See 2027",
+      "TEXT|Ottawa's Largest Hackathon",
+      "TEXT|Ottawa's Largest Hackathon Ottawa's Largest Hackathon Ottawa's Largest Hackathon",
+      "TEXT|Ottawa's Largest Hackathon Ottawa's Largest Hackathon Ottawa's Largest Hackathon See 2027",
       "TEXT|See 2027",
       "TEXT|The capital of Canadaâs largest hackathon.",
       "TEXT|The capital of Canadaâs largest hackathon. Privacy Policy Code of Conduct GitHub Contact",
