@@ -129,6 +129,14 @@ def relevant(source, link):
     text = f"{link['label']} {link['context']} {link['url']}"
     if matches_patterns(text, CORE_EVENT_PATTERNS):
         return True
+    # Annual organizers often advertise the next edition on a year-specific
+    # subdomain through a public bio-link before their homepage is updated.
+    organizer_name = re.sub(r"[^a-z0-9]", "", source["organization"].lower())
+    label_name = re.sub(r"[^a-z0-9]", "", link["label"].lower())
+    if (organizer_name and organizer_name in label_name
+            and re.search(r"\b20\d{2}\b", link["label"])
+            and any(host_is(host, domain) for domain in source.get("organizer_domains", []))):
+        return True
     if source["school"] not in TORONTO_GTA_SCHOOLS:
         return False
     if matches_patterns(text, LOCAL_TECH_EVENT_PATTERNS):

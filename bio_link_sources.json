@@ -9,6 +9,7 @@
     {"id": "york_data_science_club_at_yorku", "school": "York", "organization": "Data Science Club at YorkU", "url": "https://linktr.ee/yorkudatascience", "source_type": "linktree", "active": true},
     {"id": "mcmaster_mcmaster_engineering_competition_mec", "school": "McMaster", "organization": "McMaster Engineering Competition (MEC)", "url": "https://linktr.ee/macengcomp", "source_type": "linktree", "active": true},
     {"id": "mcmaster_mac_ai_society", "school": "McMaster", "organization": "Mac AI Society", "url": "https://linktr.ee/macaisociety", "source_type": "linktree", "active": true},
-    {"id": "carleton_health_tech_innovators", "school": "Carleton", "organization": "Health Tech Innovators", "url": "https://linktr.ee/healthtechinnovators", "source_type": "linktree", "active": true}
+    {"id": "carleton_health_tech_innovators", "school": "Carleton", "organization": "Health Tech Innovators", "url": "https://linktr.ee/healthtechinnovators", "source_type": "linktree", "active": true},
+    {"id": "uottawa_uottahack", "school": "uOttawa", "organization": "uOttaHack", "url": "https://linktr.ee/uottahack", "source_type": "linktree", "organizer_domains": ["uottahack.ca"], "active": true}
   ]
 }

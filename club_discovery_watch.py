@@ -5,13 +5,14 @@ import re
 import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
+from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlsplit, urlunsplit
 
 import requests
 from bs4 import BeautifulSoup
 
 
 CLUBS_FILE = Path("university_club_watch.json")
+PUBLIC_SOURCES_FILE = Path("public_organizer_sources.json")
 STATE_FILE = Path("club_discovery_state.json")
 
 DISCORD_WEBHOOK_URL = os.environ.get(
@@ -159,6 +160,11 @@ GENERIC_DIRECTORY_PATTERNS = [
     "yourtmsu.ca/groups/student-groups",
 ]
 
+TRACKING_QUERY_KEYS = {
+    "fbclid", "gclid", "dclid", "msclkid", "igshid",
+    "mc_cid", "mc_eid", "ref_src",
+}
+
 
 class SourceBlockedError(Exception):
     pass
@@ -175,9 +181,12 @@ def load_clubs():
     ) as f:
         data = json.load(f)
 
+    with PUBLIC_SOURCES_FILE.open("r", encoding="utf-8") as f:
+        public_sources = json.load(f)["sources"]
+
     return [
         club
-        for club in data["clubs"]
+        for club in data["clubs"] + public_sources
         if club.get(
             "active_watch",
             True,
@@ -444,6 +453,21 @@ def extract_signals(
         if len(text) > 300:
             continue
 
+        # A tag wrapping an event link is the same candidate. Keep the link,
+        # whose target provides a durable identity across copy changes.
+        linked_candidate = False
+        for link in tag.find_all("a", href=True):
+            target = urljoin(base_url, link["href"])
+            label = clean_text(link.get_text(" ", strip=True))
+            combined = f"{label} {target}"
+            if matches_discovery(combined) or (
+                is_event_platform(target) and matches_registration(combined)
+            ):
+                linked_candidate = True
+                break
+        if linked_candidate:
+            continue
+
         if matches_discovery(
             text
         ):
@@ -520,6 +544,73 @@ def new_signals(
     ]
 
 
+def canonical_event_url(url):
+    """Remove URL decoration without discarding event-identifying query fields."""
+    try:
+        parts = urlsplit(url)
+        if parts.scheme.lower() not in {"http", "https"} or not parts.hostname:
+            return None
+        host = parts.hostname.lower().rstrip(".")
+        port = parts.port
+        netloc = host if port is None or (parts.scheme.lower(), port) in {
+            ("http", 80), ("https", 443),
+        } else f"{host}:{port}"
+        query = [
+            (key, value) for key, value in parse_qsl(parts.query, keep_blank_values=True)
+            if not key.lower().startswith("utm_")
+            and key.lower() not in TRACKING_QUERY_KEYS
+        ]
+        path = parts.path.rstrip("/") or "/"
+        return urlunsplit((parts.scheme.lower(), netloc, path, urlencode(query), ""))
+    except ValueError:
+        return None
+
+
+def normalized_identity_text(value):
+    return clean_text(unicodedata.normalize("NFKC", value)).casefold()
+
+
+def signal_identity(club_id, signal):
+    """Use a target URL when possible; otherwise use the exact normalized title/date."""
+    kind, _, value = signal.partition("|")
+    if kind == "LINK":
+        label, _, url = value.partition("|")
+        canonical = canonical_event_url(url)
+        if canonical:
+            return f"url:{canonical}"
+        title = label
+    elif kind == "TEXT":
+        title = value
+    else:
+        title = signal
+    date = extract_explicit_date(title)
+    return "text:{}:{}:{}".format(
+        normalized_identity_text(club_id),
+        normalized_identity_text(title),
+        date.isoformat() if date else "",
+    )
+
+
+def signal_identities(club_id, signals):
+    """Associate a text mention with its linked event when the title is clear."""
+    identities = {signal: signal_identity(club_id, signal) for signal in signals}
+    linked_titles = []
+    for signal in signals:
+        if not signal.startswith("LINK|"):
+            continue
+        label = normalized_identity_text(signal.split("|", 2)[1])
+        if len(label) >= 12 and matches_discovery(label):
+            linked_titles.append((label, identities[signal]))
+    for signal in signals:
+        if not signal.startswith("TEXT|"):
+            continue
+        title = normalized_identity_text(signal[5:])
+        matches = {event_id for label, event_id in linked_titles if label in title}
+        if len(matches) == 1:
+            identities[signal] = matches.pop()
+    return identities
+
+
 def signal_is_high_value(
     club,
     signal,
@@ -550,6 +641,14 @@ def signal_is_high_value(
 
     if matches_core_event(
         signal
+    ):
+        return True
+
+    if (
+        club.get("core_event_organizer")
+        and signal.startswith("LINK|")
+        and any(host in signal.lower() for host in EVENT_PLATFORM_HOSTS)
+        and matches_registration(signal)
     ):
         return True
 
@@ -1125,9 +1224,28 @@ def main():
         previous = state.get(
             club_id
         )
+        identities = signal_identities(club_id, signals)
+
+        # Migrate existing snapshots without treating their current candidates
+        # as new. Historical signals that already disappeared cannot be recovered.
+        seen_ids = set(previous.get("seen_event_ids", [])) if previous else set()
+        if previous and "seen_event_ids" not in previous:
+            old_signals = previous.get("signals", [])
+            old_identities = signal_identities(club_id, old_signals)
+            seen_ids.update(
+                old_identities[signal]
+                for signal in old_signals
+                if signal_is_high_value(club, signal)
+            )
 
         if not previous:
             baseline += 1
+
+            current["seen_event_ids"] = sorted(
+                {identities[signal]
+                for signal in signals
+                if signal_is_high_value(club, signal)}
+            )
 
             state[
                 club_id
@@ -1141,29 +1259,23 @@ def main():
 
             continue
 
-        if (
+        page_unchanged = (
             previous.get(
                 "fingerprint"
             )
             == current[
                 "fingerprint"
             ]
-        ):
+        )
+        if page_unchanged:
             unchanged += 1
-
-            state[
-                club_id
-            ] = current
-
             print(
                 f"UNCHANGED: "
                 f"{len(signals)} "
                 f"signals."
             )
-
-            continue
-
-        changed += 1
+        else:
+            changed += 1
 
         additions = new_signals(
             previous.get(
@@ -1175,7 +1287,7 @@ def main():
 
         high_value = [
             signal
-            for signal in additions
+            for signal in signals
             if signal_is_high_value(
                 club,
                 signal,
@@ -1183,8 +1295,13 @@ def main():
         ]
 
         alertworthy = []
+        pending_ids = set()
 
         for signal in high_value:
+            event_id = identities[signal]
+            if event_id in seen_ids or event_id in pending_ids:
+                continue
+
             explicit_date = (
                 extract_explicit_date(
                     signal
@@ -1205,38 +1322,40 @@ def main():
                     f"| {signal[:250]}"
                 )
 
+                seen_ids.add(event_id)
+
                 continue
 
             alertworthy.append(
                 signal
             )
+            pending_ids.add(event_id)
 
-        print(
-            f"CHANGED: "
-            f"{len(additions)} new, "
-            f"{len(high_value)} "
-            f"high-value, "
-            f"{len(alertworthy)} "
-            f"alertworthy."
-        )
-
-        for signal in additions[
-            :10
-        ]:
+        if not page_unchanged or alertworthy:
             print(
-                f"  NEW: "
-                f"{signal[:300]}"
+                f"CHANGED: "
+                f"{len(additions)} new signals, "
+                f"{len(alertworthy)} "
+                f"new event identities."
             )
 
-        if alertworthy:
+            for signal in additions[:10]:
+                print(f"  NEW: {signal[:300]}")
+
+        # Each delivered batch contains only identities that will be marked sent.
+        for offset in range(0, len(alertworthy), 6):
+            batch = alertworthy[offset:offset + 6]
             try:
                 if send_discord(
                     club,
-                    alertworthy,
+                    batch,
                 ):
                     alerts += 1
+                    seen_ids.update(identities[signal] for signal in batch)
+                    state[club_id] = {**current, "seen_event_ids": sorted(seen_ids)}
+                    save_state(state)
                 else:
-                    continue
+                    break
 
             except Exception as exc:
                 print(
@@ -1244,8 +1363,9 @@ def main():
                     f"{type(exc).__name__}"
                 )
 
-                continue
+                break
 
+        current["seen_event_ids"] = sorted(seen_ids)
         state[
             club_id
         ] = current

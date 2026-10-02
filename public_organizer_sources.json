@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "toronto_techto_calendar",
+      "school": "Toronto",
+      "name": "TechTO Events Calendar",
+      "monitor_url": "https://luma.com/TechTO-Events",
+      "backup_urls": [],
+      "active_watch": true
+    },
+    {
+      "id": "markham_gdg_chapter",
+      "school": "Markham",
+      "name": "GDG Markham",
+      "monitor_url": "https://gdg.community.dev/gdg-markham/",
+      "backup_urls": [],
+      "active_watch": true
+    },
+    {
+      "id": "waterloo_engineering_ideas_clinic",
+      "school": "Waterloo",
+      "name": "Waterloo Engineering IDEAs Clinic",
+      "monitor_url": "https://uwaterloo.ca/engineering-ideas-clinic/",
+      "backup_urls": [],
+      "active_watch": true
+    },
+    {
+      "id": "ottawa_space_apps_organizer",
+      "school": "Ottawa",
+      "name": "Space Apps Ottawa",
+      "monitor_url": "https://www.spaceappsottawa.com/",
+      "backup_urls": [],
+      "core_event_organizer": true,
+      "active_watch": true
+    }
+  ]
+}

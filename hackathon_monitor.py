@@ -14,7 +14,8 @@ from zoneinfo import ZoneInfo
 
 DEVPOST_API = "https://devpost.com/api/hackathons"
 
-MLH_SEASON = 2027
+now_toronto = datetime.now(ZoneInfo("America/Toronto"))
+MLH_SEASON = now_toronto.year + (now_toronto.month >= 9)
 MLH_URL = f"https://www.mlh.com/seasons/{MLH_SEASON}/events"
 
 DATABASE_FILE = "sent_hackathons.json"
@@ -45,6 +46,9 @@ LOCATION_ALIASES = {
     "kitchener": "Kitchener",
     "cambridge": "Cambridge",
     "hamilton": "Hamilton",
+    "ottawa": "Ottawa",
+    # Devpost sometimes publishes a campus name instead of its city.
+    "sheridan college hazel mccallion campus": "Mississauga",
 }
 
 LINK_KEYWORDS = [
