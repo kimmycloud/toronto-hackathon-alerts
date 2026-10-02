@@ -196,6 +196,30 @@
       }
     }
   },
+  "uottawa_uottahack": {
+    "links": {
+      "https://2026.uottahack.ca/": {
+        "context": "2026 Website 2026 Website",
+        "label": "2026 Website",
+        "url": "https://2026.uottahack.ca/"
+      },
+      "https://2027.uottahack.ca/": {
+        "context": "uOttaHack 9 | 2027 uOttaHack 9 | 2027 The capital's biggest hackathon returns for its ninth showing. uOttaHack 9 takes over the University of Ottawa this January 2027 for a weekend of big ideas. Tickets drop soon, grab your seat.",
+        "label": "uOttaHack 9 | 2027",
+        "url": "https://2027.uottahack.ca/"
+      },
+      "https://forms.gle/W12agtWPvxqrANLz6": {
+        "context": "Fall Organizer Applications | uOttaHack 9 Fall Organizer Applications | uOttaHack 9 Access Google Forms with a personal Google account or Google Workspace account (for business use).",
+        "label": "Fall Organizer Applications | uOttaHack 9",
+        "url": "https://forms.gle/W12agtWPvxqrANLz6"
+      },
+      "https://youtu.be/RCi04EDupSw": {
+        "context": "uOttaHack 8 Recap Video uOttaHack 8 Recap Video",
+        "label": "uOttaHack 8 Recap Video",
+        "url": "https://youtu.be/RCi04EDupSw"
+      }
+    }
+  },
   "york_data_science_club_at_yorku": {
     "links": {
       "https://docs.google.com/forms/d/e/1FAIpQLSeef6jkhRjooj0qa3L18BVg-W2dAkGuLomCLPAc8_6MsLYgTA/viewform": {
