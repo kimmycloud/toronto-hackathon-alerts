@@ -1,6 +1,7 @@
 {
   "carleton_bachelor_of_information_technology_society_bitsoc": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.cusaclubs.ca/club/carleton-bit-socciety/"
@@ -8,6 +9,7 @@
   },
   "carleton_biocare_design_team": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://carleton-biocare.ca/"
@@ -15,6 +17,7 @@
   },
   "carleton_carleton_ai_society": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://carletonai.com/"
@@ -22,6 +25,7 @@
   },
   "carleton_carleton_blueprint": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://carletonblueprint.org/"
@@ -29,6 +33,7 @@
   },
   "carleton_carleton_cusec_society": {
     "fingerprint": "6e3d9ecef6d7d2b5037d34d0226b56db45ed8513dca71d616c89ba873644d4f8",
+    "seen_event_ids": [],
     "signals": [
       "TEXT|Carleton Canadian University Software Engineering Conference Society (Carleton CUSEC Society)"
     ],
@@ -38,6 +43,9 @@
   },
   "carleton_carleton_cybersecurity_club": {
     "fingerprint": "5082e189aab6ffc868868c625e03f5a3e24f18ce2a2c19b9e2ba95549fe38f42",
+    "seen_event_ids": [
+      "text:carleton_carleton_cybersecurity_club:competitions and challenges: test your skills through ctfs (capture the flag), hackathons, and other engaging competitions.:"
+    ],
     "signals": [
       "TEXT|Competitions and Challenges: Test your skills through CTFs (Capture The Flag), hackathons, and other engaging competitions."
     ],
@@ -46,14 +54,17 @@
     ]
   },
   "carleton_carleton_game_development_club": {
-    "fingerprint": "ac37f5d7187360251857916120e54dc1c61c080accdcbcf37c2999d803958d59",
+    "fingerprint": "36c0b460176b0ac32d25b21b7e19dfa797552e2bcdedeb40509211e833794ca8",
+    "seen_event_ids": [
+      "text:carleton_carleton_game_development_club:stay tuned for our next game jam coming near you!:",
+      "url:https://itch.io/c/4967190/2023-2024-cgdc-game-jam-games",
+      "url:https://itch.io/c/4967201/2024-2025-cgdc-game-jam-games",
+      "url:https://itch.io/c/6409066/2025-2026-cgdc-game-jam-games"
+    ],
     "signals": [
       "LINK|2023 - 2024 CGDC Game Jam Games|https://itch.io/c/4967190/2023-2024-cgdc-game-jam-games",
       "LINK|2024-2025 CGDC Game Jam Games|https://itch.io/c/4967201/2024-2025-cgdc-game-jam-games",
       "LINK|2025- 2026 CGDC Game Jam Games|https://itch.io/c/6409066/2025-2026-cgdc-game-jam-games",
-      "TEXT|2023 - 2024 CGDC Game Jam Games",
-      "TEXT|2024-2025 CGDC Game Jam Games",
-      "TEXT|2025- 2026 CGDC Game Jam Games",
       "TEXT|STAY TUNED FOR OUR NEXT GAME JAM COMING NEAR YOU!"
     ],
     "urls": [
@@ -62,6 +73,7 @@
   },
   "carleton_carleton_planetary_robotics_team": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://curover.ca/"
@@ -69,6 +81,7 @@
   },
   "carleton_carleton_quantum_computing_society": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://cqcs.carleton.ca/"
@@ -76,6 +89,7 @@
   },
   "carleton_carleton_systems_and_computer_engineering_society": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.scesoc.ca/events/"
@@ -83,6 +97,7 @@
   },
   "carleton_cu_inspace": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.cuinspace.ca/"
@@ -90,6 +105,14 @@
   },
   "carleton_cuhacking": {
     "fingerprint": "f3144bd2a17c129bde8e1e7a05cb38d690ef3b6f701321b1d1b5334dd4e5b392",
+    "seen_event_ids": [
+      "text:carleton_cuhacking:carleton's official hackathon coming to you july 10 – 12, 2026:",
+      "text:carleton_cuhacking:carleton's official hackathon:",
+      "text:carleton_cuhacking:cuhacking is a 36-hour hackathon that ✨sparks creativity and problem-solving among 🍁ottawa's brightest minds.:",
+      "text:carleton_cuhacking:cuhacking is an in-person 36 hour hackathon.:",
+      "text:carleton_cuhacking:join 500+ hackers at ottawa's biggest hackathon.:",
+      "url:https://mlh.io/na"
+    ],
     "signals": [
       "LINK||https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2026-season&utm_content=blue",
       "TEXT|Carleton's official hackathon",
@@ -104,6 +127,7 @@
   },
   "carleton_health_tech_innovators": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://linktr.ee/healthtechinnovators"
@@ -111,6 +135,7 @@
   },
   "carleton_ieee_carleton": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.ieeecarleton.ca/"
@@ -118,13 +143,31 @@
   },
   "carleton_ravens_racing_formula_sae": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://ravensracing.com/"
     ]
   },
+  "markham_gdg_chapter": {
+    "fingerprint": "59464660aa8b054d4e03b77210d1126a855767b475f7681a112c8dfd38674143",
+    "seen_event_ids": [
+      "text:markham_gdg_chapter:gdg markham october hackathon 2026:",
+      "text:markham_gdg_chapter:join gdg markham's ai hackathon on oct 24, 2026, in thornhill. collaborate with developers, designers, and community members to solve local challenges. form teams, build tech solutions, and compete for awards. ideal for tech enthusiasts and first-time participants. registration is required.:2026-10-24",
+      "url:https://gdg.community.dev/events/details/google-gdg-markham-presents-gdg-markham-october-hackathon-2026"
+    ],
+    "signals": [
+      "LINK|→ View details|https://gdg.community.dev/events/details/google-gdg-markham-presents-gdg-markham-october-hackathon-2026/",
+      "TEXT|GDG Markham October Hackathon 2026",
+      "TEXT|Join GDG Markham's AI Hackathon on Oct 24, 2026, in Thornhill. Collaborate with developers, designers, and community members to solve local challenges. Form teams, build tech solutions, and compete for awards. Ideal for tech enthusiasts and first-time participants. Registration is required."
+    ],
+    "urls": [
+      "https://gdg.community.dev/gdg-markham/"
+    ]
+  },
   "mcmaster_aimed": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://campus.hellorubric.com/?s=16472"
@@ -132,6 +175,11 @@
   },
   "mcmaster_deltahacks": {
     "fingerprint": "9f9e1acdac2b541794b7c481fd74f6b3182fabedfac4d080353052aa0352b817",
+    "seen_event_ids": [
+      "text:mcmaster_deltahacks:deltahacks is an annual 24-hour hackathon empowering 600+ students across north america to build impactful projects that spark positive change.:",
+      "text:mcmaster_deltahacks:mcmaster university's annual hackathon for change.:",
+      "url:https://mlh.io/na"
+    ],
     "signals": [
       "LINK||https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2026-season&utm_content=gray",
       "TEXT|DeltaHacks is an annual 24-hour hackathon empowering 600+ students across North America to build impactful projects that spark positive change.",
@@ -143,6 +191,7 @@
   },
   "mcmaster_gdg_mcmasteru": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://gdg.community.dev/gdg-on-campus-mcmaster-university-hamilton-canada/"
@@ -150,6 +199,7 @@
   },
   "mcmaster_igem": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://campus.hellorubric.com/?s=16492"
@@ -157,6 +207,7 @@
   },
   "mcmaster_mac_ai_society": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://linktr.ee/macaisociety"
@@ -164,6 +215,10 @@
   },
   "mcmaster_mac_robomaster": {
     "fingerprint": "5bf784ada5c32afddc397707126e359de2a27cca7bc24a52887cb5f2fe5d706a",
+    "seen_event_ids": [
+      "text:mcmaster_mac_robomaster:arc robotics competition (rmul) assessment:",
+      "text:mcmaster_mac_robomaster:arc robotics competition (rmul):"
+    ],
     "signals": [
       "TEXT|ARC Robotics competition (RMUL)",
       "TEXT|ARC Robotics competition (RMUL) assessment"
@@ -174,6 +229,9 @@
   },
   "mcmaster_mcmaster_ecocar": {
     "fingerprint": "8ee95d27dad855b1c476bef6c549ab8ac2146527972d6d16186f45d89d6a813a",
+    "seen_event_ids": [
+      "text:mcmaster_mcmaster_ecocar:participating in north america’s premier collegiate automotive engineering competition.:"
+    ],
     "signals": [
       "TEXT|Participating in North America’s Premier Collegiate Automotive Engineering Competition."
     ],
@@ -183,6 +241,9 @@
   },
   "mcmaster_mcmaster_engineering_competition_mec": {
     "fingerprint": "29f6deeedcaae6b997a4041d0dfe2595cd81221dc157e342d698bd3590fddcdf",
+    "seen_event_ids": [
+      "text:mcmaster_mcmaster_engineering_competition_mec:mcmaster's annual engineering competition:"
+    ],
     "signals": [
       "TEXT|McMaster's annual engineering competition"
     ],
@@ -192,6 +253,7 @@
   },
   "mcmaster_mcmaster_sumobot": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.sumobot.ca/"
@@ -199,6 +261,12 @@
   },
   "mcmaster_mes_infrastructure_technology": {
     "fingerprint": "ae29517277685c013be7584991dd233abb62c721bd04d962e5579d323099cea8",
+    "seen_event_ids": [
+      "text:mcmaster_mes_infrastructure_technology:mac robomaster is a team of highly motivated and passionate students. we compete in the robomaster robotics competition, building rc and autonomous battle robots. our multidisciplinary project is challenging, but we're committed to learning and excellence.:",
+      "text:mcmaster_mes_infrastructure_technology:mcmaster competitive programming:",
+      "text:mcmaster_mes_infrastructure_technology:mcmaster's annual student hackathon for change. encouraging students in all fields of study to come together to build real world applications that create positive change.:",
+      "text:mcmaster_mes_infrastructure_technology:mcp is a community of passionate individuals dedicated to increasing the technical skills of mcmaster students. our members are well-versed in competitive computing concepts and represent international collegiate programming competition (icpc).:"
+    ],
     "signals": [
       "TEXT|MAC RoboMaster is a team of highly motivated and passionate students. We compete in the RoboMaster Robotics Competition, building RC and autonomous battle robots. Our multidisciplinary project is challenging, but we're committed to learning and excellence.",
       "TEXT|MCP is a community of passionate individuals dedicated to increasing the technical skills of McMaster students. Our members are well-versed in competitive computing concepts and represent International Collegiate Programming Competition (ICPC).",
@@ -209,6 +277,21 @@
       "https://ses.eng.mcmaster.ca/experiences/clubs-and-teams/"
     ]
   },
+  "ottawa_space_apps_organizer": {
+    "fingerprint": "4ec736620d04ccec2b6b6669bf3c2b10700f309b0705882ddd597c06ac728dd6",
+    "seen_event_ids": [
+      "text:ottawa_space_apps_organizer:ottawa's 10th year hosting the world's largest space hackathon. one weekend, real challenges, free to join.:",
+      "url:https://www.eventbrite.ca/e/space-apps-ottawa-2026-tickets-1993462104818"
+    ],
+    "signals": [
+      "LINK|Register Free|https://www.eventbrite.ca/e/space-apps-ottawa-2026-tickets-1993462104818",
+      "LINK|Register|https://www.eventbrite.ca/e/space-apps-ottawa-2026-tickets-1993462104818",
+      "TEXT|Ottawa's 10th year hosting the world's largest space hackathon. One weekend, real challenges, free to join."
+    ],
+    "urls": [
+      "https://www.spaceappsottawa.com/"
+    ]
+  },
   "tmu_ai_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "signals": [],
@@ -217,18 +300,19 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "44d36e1d8685eb7614f7b9943ee3e7343648af309ce15e720fa8660e9c491c34",
-    "signals": [
-      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7",
-      "LINK|TMU Cyber Summit Registration|https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform"
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [
+      "url:https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform",
+      "url:https://forms.gle/rd4XuDbJJ2fsrU3n7"
     ],
+    "signals": [],
     "urls": [
-      "https://luma.com/user/tmu_byte",
-      "https://linktr.ee/BYTETMU"
+      "https://luma.com/user/tmu_byte"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://tmucscu.com/"
@@ -245,6 +329,7 @@
   },
   "tmu_ecestorms": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.ecestorms.ca/events"
@@ -252,20 +337,29 @@
   },
   "tmu_ieee_computer_chapter": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://ieeecstmc.ca/"
     ]
   },
   "tmu_ieee_engineering_in_medicine_biology": {
-    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "signals": [],
+    "fingerprint": "d64f5d69e90841785312b5c1193daa4f3a4465304525000c78881175487364d5",
+    "seen_event_ids": [
+      "url:https://edu.ieee.org/ca-ryersonembs/2025-winter-ieee-embs-x-tetra-case-competition",
+      "url:https://edu.ieee.org/ca-ryersonembs/2026-winter-ieee-embs-x-vision4all-case-competition"
+    ],
+    "signals": [
+      "LINK|2025 Winter – IEEE EMBS x TETRA Case Competition|https://edu.ieee.org/ca-ryersonembs/2025-winter-ieee-embs-x-tetra-case-competition/",
+      "LINK|2026 Winter – IEEE EMBS x Vision4All Case Competition|https://edu.ieee.org/ca-ryersonembs/2026-winter-ieee-embs-x-vision4all-case-competition/"
+    ],
     "urls": [
       "https://edu.ieee.org/ca-ryersonembs/"
     ]
   },
   "tmu_metrocketry": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://linktr.ee/metrocketry"
@@ -273,6 +367,7 @@
   },
   "tmu_metropolitan_aerospace_rocket_society_mars": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://marstmu.com/"
@@ -280,6 +375,7 @@
   },
   "tmu_metropolitan_undergraduate_engineering_society_mues": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://mues.ca/calendar/"
@@ -287,6 +383,7 @@
   },
   "tmu_tmu_aero_design": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://tmetaero.space/"
@@ -294,6 +391,7 @@
   },
   "tmu_tmu_formula_racing": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://torontometformularacing.squarespace.com/"
@@ -301,6 +399,7 @@
   },
   "tmu_toronto_metrobotics": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.torontometrobotics.com/"
@@ -308,6 +407,9 @@
   },
   "tmu_ux": {
     "fingerprint": "8b25bf648068975de2ca360f59e0f6aeb2b6d16544857791dbbd255493b482b5",
+    "seen_event_ids": [
+      "url:https://forms.gle/iggE6crRGFHckDq6A"
+    ],
     "signals": [
       "LINK|TMU UX — President Applications (2026–2027)|https://forms.gle/iggE6crRGFHckDq6A"
     ],
@@ -315,19 +417,37 @@
       "https://linktr.ee/tmu_ux"
     ]
   },
+  "toronto_techto_calendar": {
+    "fingerprint": "f566fe82cd1e6a7c102e08e28e68a330bddfacc8db62ca4d964820eae04afd8c",
+    "seen_event_ids": [
+      "text:toronto_techto_calendar:techto hackathon:",
+      "url:https://luma.com/hackathon-oct-17-2026"
+    ],
+    "signals": [
+      "LINK||https://luma.com/hackathon-oct-17-2026",
+      "TEXT|TechTO Hackathon"
+    ],
+    "urls": [
+      "https://luma.com/TechTO-Events"
+    ]
+  },
   "u_of_t_ahead_utsc": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/copy-of-ai-for-healthcare-equity-data-ahead/"
     ]
   },
   "u_of_t_competitive_programming_club_st_george": {
-    "fingerprint": "a317c29a438283850ada5806e88671d35c06bb36967045ed3678efc06e04dca3",
+    "fingerprint": "05a77d2240e8bd09203d69b1c2a4b0d05a4ac4c6830b28ec3fdace8a8a198df2",
+    "seen_event_ids": [
+      "text:u_of_t_competitive_programming_club_st_george:competitive programming club practices are announced in our discord server, and usually take place on saturday afternoons. these events typically take the form of a practice contest and solution discussions, though we may occasionally hold team practices or topic-specific sessions as well.:",
+      "url:http://www.comp.nus.edu.sg/~stevenha/myteaching/competitive_programming/cp1.pdf"
+    ],
     "signals": [
       "LINK|Competitive Programming v1 Ebook| http://www.comp.nus.edu.sg/~stevenha/myteaching/competitive_programming/cp1.pdf",
-      "TEXT|Competitive Programming Club practices are announced in our discord server, and usually take place on Saturday afternoons. These events typically take the form of a practice contest and solution discussions, though we may occasionally hold team practices or topic-specific sessions as well.",
-      "TEXT|Practice Resources: CSES , Codeforces , AtCoder , CP-Algorithms , Competitive Programming v1 Ebook"
+      "TEXT|Competitive Programming Club practices are announced in our discord server, and usually take place on Saturday afternoons. These events typically take the form of a practice contest and solution discussions, though we may occasionally hold team practices or topic-specific sessions as well."
     ],
     "urls": [
       "https://www.teach.cs.toronto.edu/~acm/"
@@ -335,16 +455,20 @@
   },
   "u_of_t_computer_science_enrichment_club_utsc": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://csecuoft.ca/"
     ]
   },
   "u_of_t_data_science_statistics_society_ds3_utsc": {
-    "fingerprint": "9944dce56c6ec29c74286e5e95332d621b8404d657559ad15ea565552910fe6c",
+    "fingerprint": "06d9f6f998fd57da926791c5859c5b539b3759c0a0a034f484b23a3c1208a5ad",
+    "seen_event_ids": [
+      "text:u_of_t_data_science_statistics_society_ds3_utsc:hackathon:",
+      "url:https://ds3utsc.com/hackathon"
+    ],
     "signals": [
-      "LINK|Hackathon|https://ds3utsc.com/hackathon",
-      "TEXT|Hackathon"
+      "LINK|Hackathon|https://ds3utsc.com/hackathon"
     ],
     "urls": [
       "https://ds3utsc.com/"
@@ -352,6 +476,7 @@
   },
   "u_of_t_game_design_and_development_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.utgddc.com/"
@@ -359,6 +484,9 @@
   },
   "u_of_t_gdg_u_of_t_st_george": {
     "fingerprint": "038665c4e6e053c3acf5673baec5b0571419bd358d9a213f38c66dea40d81aec",
+    "seen_event_ids": [
+      "url:https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton"
+    ],
     "signals": [
       "LINK|16 sept 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
@@ -370,6 +498,7 @@
   },
   "u_of_t_gdg_utm": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.gdscutm.com/events"
@@ -377,6 +506,7 @@
   },
   "u_of_t_gdg_utsc": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.gdgutsc.ca/events"
@@ -384,6 +514,7 @@
   },
   "u_of_t_genai_genesis": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://genaigenesis.ca/"
@@ -391,6 +522,10 @@
   },
   "u_of_t_hack_the_valley": {
     "fingerprint": "2878a45e6c48f68ea337ee0438e73a72789f1438768663929b7982a56f0bf012",
+    "seen_event_ids": [
+      "text:u_of_t_hack_the_valley:remember, you don't need to be a pro to attend. if this is your first hackathon, we can't wait to expose you to the incomparable world of creation.:",
+      "text:u_of_t_hack_the_valley:remember, you don't need to be a pro to attend. so if this is your first hackathon, we can't wait to expose you to the incomparable world of creation.:"
+    ],
     "signals": [
       "TEXT|Remember, you don't need to be a pro to attend. If this is your first hackathon, we can't wait to expose you to the incomparable world of creation.",
       "TEXT|Remember, you don't need to be a pro to attend. So if this is your first hackathon, we can't wait to expose you to the incomparable world of creation."
@@ -400,13 +535,21 @@
     ]
   },
   "u_of_t_ieee_u_of_t_makeuoft_newhacks": {
-    "fingerprint": "995f588fd1d2098d734b87ccca8392d9460b6630346abf22082d05625b28f012",
+    "fingerprint": "8313ba4967cbacfbf64ffd77232eb170567ef595d78658d939b933499cba7685",
+    "seen_event_ids": [
+      "text:u_of_t_ieee_u_of_t_makeuoft_newhacks:2026 hackathon stats:",
+      "text:u_of_t_ieee_u_of_t_makeuoft_newhacks:a hackathon where hardware-based projects are manifested:",
+      "text:u_of_t_ieee_u_of_t_makeuoft_newhacks:canada's largest makeathon:",
+      "text:u_of_t_ieee_u_of_t_makeuoft_newhacks:is the makeathon in-person? this year (2026), makeuoft will be fully in person. the event will be hosted at the university of toronto st.george campus in myhal centre for engineering innovation and entrepreneurship (my).:",
+      "text:u_of_t_ieee_u_of_t_makeuoft_newhacks:need a platform for your hackathon? we're open source !:",
+      "text:u_of_t_ieee_u_of_t_makeuoft_newhacks:yes! once you are accepted, each team will be able to select and sign out a wide range of hardware on our hardware signout site hardware.makeuoft.ca . the site opens for ordering on the first day of the hackathon, you must be in a team of 2 to 4 to order from our inventory.:",
+      "url:https://github.com/ieeeuoft/hackathon-template"
+    ],
     "signals": [
       "LINK|open source|https://github.com/ieeeuoft/hackathon-template/",
       "TEXT|2026 Hackathon Stats",
       "TEXT|Canada's Largest Makeathon",
       "TEXT|Is the makeathon in-person? This year (2026), MakeUofT will be fully in person. The event will be hosted at the University of Toronto St.George Campus in Myhal Centre for Engineering Innovation and Entrepreneurship (MY).",
-      "TEXT|Need a platform for your hackathon? We're open source !",
       "TEXT|Yes! Once you are accepted, each team will be able to select and sign out a wide range of hardware on our Hardware Signout Site hardware.makeuoft.ca . The site opens for ordering on the first day of the hackathon, you must be in a team of 2 to 4 to order from our inventory.",
       "TEXT|a hackathon where hardware-based projects are manifested"
     ],
@@ -417,6 +560,7 @@
   },
   "u_of_t_neurotechuoft": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://neurotechuoft.ca/"
@@ -424,6 +568,7 @@
   },
   "u_of_t_spark_design_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/spark-design-club/"
@@ -431,6 +576,7 @@
   },
   "u_of_t_students_in_data_science_statistics_sdss": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.sdssuoft.com/"
@@ -438,6 +584,7 @@
   },
   "u_of_t_university_of_toronto_aerospace_and_robotics_club_utair": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/university-of-toronto-aerospace-and-robotics-utair/"
@@ -445,6 +592,7 @@
   },
   "u_of_t_university_of_toronto_biomedical_engineering_design_team_ut_biome": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/university-of-toronto-biomedical-engineering-design-team/"
@@ -452,6 +600,7 @@
   },
   "u_of_t_university_of_toronto_robotics_association": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://utra.ca/"
@@ -459,6 +608,7 @@
   },
   "u_of_t_university_of_toronto_student_team_for_amateur_rocketry_utstar": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/university-of-toronto-student-team-for-amateur-rocketry-utstar/",
@@ -467,6 +617,7 @@
   },
   "u_of_t_uoft_ai_agents_utm": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uoftaiagents.com/"
@@ -474,6 +625,7 @@
   },
   "u_of_t_uoft_ai_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/university-of-toronto-artificial-intelligence-club-uoft-ai/"
@@ -481,6 +633,18 @@
   },
   "u_of_t_uoft_claude_builder_club": {
     "fingerprint": "990a7b0cd11f719a5d856110d69d4bcdca8a71298622a52d9116523d87d10393",
+    "seen_event_ids": [
+      "text:u_of_t_uoft_claude_builder_club:build session: pre-hackathon prep:",
+      "text:u_of_t_uoft_claude_builder_club:compete in our global hackathon with $1,500+ in prizes across 78 universities.:",
+      "text:u_of_t_uoft_claude_builder_club:demo day: hackathon showcase:",
+      "text:u_of_t_uoft_claude_builder_club:form teams, brainstorm ideas, and get your dev environment ready for the hackathon.:",
+      "text:u_of_t_uoft_claude_builder_club:hackathon access:",
+      "text:u_of_t_uoft_claude_builder_club:hackathon:",
+      "text:u_of_t_uoft_claude_builder_club:our flagship event: a global 12-hour hackathon across 78 universities with $1,500+ in prizes.:",
+      "text:u_of_t_uoft_claude_builder_club:the hackathon:",
+      "text:u_of_t_uoft_claude_builder_club:watch the top hackathon projects present and celebrate what our community built.:",
+      "url:https://claudeatuoft.vercel.app/hackathon"
+    ],
     "signals": [
       "LINK|Hackathon|https://claudeatuoft.vercel.app/hackathon",
       "LINK|Learn More & Register|https://claudeatuoft.vercel.app/hackathon",
@@ -504,6 +668,7 @@
   },
   "u_of_t_uoft_project_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/uoft-project-club/"
@@ -511,6 +676,7 @@
   },
   "u_of_t_utm_robotics_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://robotics-club.utm.utoronto.ca/"
@@ -518,6 +684,10 @@
   },
   "u_of_t_utmist": {
     "fingerprint": "7871af7bb975833a69c61d1361974a5dfcec02d3a5c20d742725d564ee5c50f1",
+    "seen_event_ids": [
+      "text:u_of_t_utmist:a student-led ai conference featuring hands-on workshops, expert talks, and diverse perspectives across fields like fintech, healthcare, and robotics.:",
+      "text:u_of_t_utmist:genai genesis is canada's largest ai hackathon, uniting over 700 participants to develop generative ai solutions addressing the u.n sustainable development goals, powered by utmist and google developers:"
+    ],
     "signals": [
       "TEXT|A student-led AI conference featuring hands-on workshops, expert talks, and diverse perspectives across fields like fintech, healthcare, and robotics.",
       "TEXT|GenAI Genesis is Canada's largest AI hackathon, uniting over 700 participants to develop generative AI solutions addressing the U.N Sustainable Development Goals, powered by UTMIST and Google Developers",
@@ -529,6 +699,7 @@
   },
   "u_of_t_utsc_competitive_coding_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/copy-of-utsc-competitive-coding-club-utsc-ccc/"
@@ -536,6 +707,7 @@
   },
   "uottawa_computer_science_students_association_cssa": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://cssa-aei.ca/"
@@ -543,6 +715,7 @@
   },
   "uottawa_formula_sae_uottawa": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.formulauottawa.ca/"
@@ -550,6 +723,9 @@
   },
   "uottawa_great_northern_concrete_toboggan_race_team": {
     "fingerprint": "0568dec3042bdcda19dc711fd04ac6a48c8a38b618fbf43e93dfc6785aeeca47",
+    "seen_event_ids": [
+      "text:uottawa_great_northern_concrete_toboggan_race_team:boler mountain will host about 450 students from across canada as the ski club transforms to accommodate concrete sleds for a national engineering competition.:"
+    ],
     "signals": [
       "TEXT|Boler Mountain will host about 450 students from across Canada as the ski club transforms to accommodate concrete sleds for a national engineering competition."
     ],
@@ -559,6 +735,10 @@
   },
   "uottawa_ieee_uottawa": {
     "fingerprint": "4c9f0a0fe5817ebbd13a3669745ae1a41a528d0c156c5c336a50214fd4c9f0a2",
+    "seen_event_ids": [
+      "text:uottawa_ieee_uottawa:hack the hill hackathon:",
+      "url:https://ieeeuottawa.ca/en/events/hack-the-hill-hackathon"
+    ],
     "signals": [
       "LINK|Mar 3, 2023 Hack the Hill Hackathon CRX|https://ieeeuottawa.ca/en/events/hack-the-hill-hackathon/",
       "TEXT|Hack the Hill Hackathon"
@@ -569,6 +749,9 @@
   },
   "uottawa_igem_uottawa": {
     "fingerprint": "86bbe8e1ef71a387be5c16b2486cc0f49720afc3f15c298221bf69ba160899b9",
+    "seen_event_ids": [
+      "text:uottawa_igem_uottawa:this is the largest undergraduate engineering competition in canada where students have the chance to stand out in academic, sports, social and cultural competitions. your body and mind will be put to the test, but without a doubt, these will be four days you will not forget.:"
+    ],
     "signals": [
       "TEXT|This is the largest undergraduate engineering competition in Canada where students have the chance to stand out in academic, sports, social and cultural competitions. Your body and mind will be put to the test, but without a doubt, these will be four days you will not forget."
     ],
@@ -578,6 +761,7 @@
   },
   "uottawa_kelpie_robotics": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://kelpierobotics.ca/"
@@ -585,6 +769,7 @@
   },
   "uottawa_software_engineering_students_association_sesa": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.sesa-aegl.ca/en"
@@ -592,6 +777,7 @@
   },
   "uottawa_uorocketry": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uorocketry.ca/"
@@ -599,15 +785,23 @@
   },
   "uottawa_uorover": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uorover.org/"
     ]
   },
   "uottawa_uottahack": {
-    "fingerprint": "17e45b22f86b8bc1172a5003bada902bceb187b5d9e0b7fc2698d51a5dc889e2",
+    "fingerprint": "49eecb2e31aec62a62ef28c46961f058627818ac3ba6f17127bd545afca1094e",
+    "seen_event_ids": [
+      "text:uottawa_uottahack:canadaâs capital hackathon:",
+      "text:uottawa_uottahack:ottawa's largest hackathon:",
+      "text:uottawa_uottahack:the capital of canadaâs largest hackathon.:",
+      "text:uottawa_uottahack:uottahack is ottawaâs premier hackathon community since 2017. it is organized by a student group directly with the university of ottawa's faculty of engineering and the president and vice-chancellor's team to deliver ottawa's largest annual technology event.:",
+      "text:uottawa_uottahack:what if iâve never been to a hackathon before?:"
+    ],
     "signals": [
-      "TEXT|Canadaâs Capital Hackathon",
+      "TEXT|Ottawa's Largest Hackathon",
       "TEXT|The capital of Canadaâs largest hackathon.",
       "TEXT|What if Iâve never been to a hackathon before?",
       "TEXT|uOttaHack is Ottawaâs Premier Hackathon community since 2017. It is organized by a student group directly with the University of Ottawa's Faculty of Engineering and the President and Vice-Chancellor's team to deliver Ottawa's largest annual technology event."
@@ -618,6 +812,7 @@
   },
   "uottawa_uottawa_aeronautics": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://aeronautics.uottawa.xyz/"
@@ -625,6 +820,7 @@
   },
   "uottawa_uottawa_foss_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://github.com/uottawa-foss-club"
@@ -632,6 +828,7 @@
   },
   "waterloo_analytics_group_for_games_and_sports": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://clubs.wusa.ca/clubs/462"
@@ -639,13 +836,41 @@
   },
   "waterloo_baja_sae": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/student-design-teams/baja-sae"
     ]
   },
+  "waterloo_engineering_ideas_clinic": {
+    "fingerprint": "a2aa82da81367982fe2fc2368e7066b05ce5c4b5d6cc3e784facb67d8697803e",
+    "seen_event_ids": [
+      "url:https://uwaterloo.ca/engineering-ideas-clinic/airport-automation",
+      "url:https://uwaterloo.ca/engineering-ideas-clinic/brookfield-challenge",
+      "url:https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/canadian-nuclear-laboratories-innovation-challenge",
+      "url:https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/health-tech-innovation-challenge",
+      "url:https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/toyota-innovation-challenge"
+    ],
+    "signals": [
+      "LINK|Brock Solutions Airport Automation Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/airport-automation",
+      "LINK|Brookfield Renewable Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/brookfield-challenge",
+      "LINK|Canadian Nuclear Laboratories Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/canadian-nuclear-laboratories-innovation-challenge",
+      "LINK|Health Tech Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/health-tech-innovation-challenge",
+      "LINK|Toyota Innovation Challenge Build your engineering skills while working on real-world problems|https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/toyota-innovation-challenge",
+      "LINK|Toyota Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/toyota-innovation-challenge",
+      "TEXT|Brock Solutions Airport Automation Innovation Challenge",
+      "TEXT|Brookfield Renewable Innovation Challenge",
+      "TEXT|Canadian Nuclear Laboratories Innovation Challenge",
+      "TEXT|Health Tech Innovation Challenge",
+      "TEXT|Toyota Innovation Challenge"
+    ],
+    "urls": [
+      "https://uwaterloo.ca/engineering-ideas-clinic/"
+    ]
+  },
   "waterloo_formulatech": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://clubs.wusa.ca/clubs/452"
@@ -653,6 +878,7 @@
   },
   "waterloo_game_development_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://clubs.wusa.ca/clubs/147"
@@ -660,6 +886,7 @@
   },
   "waterloo_medtechrobotics": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwmedtechresolve.ca/"
@@ -667,6 +894,7 @@
   },
   "waterloo_sustainable_physical_ai_society": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://clubs.wusa.ca/clubs/473"
@@ -674,6 +902,7 @@
   },
   "waterloo_uw_biomechatronics_biotron": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/student-design-teams/uw-biomechatronics-design-team-biotron"
@@ -681,6 +910,7 @@
   },
   "waterloo_uw_blueprint": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwblueprint.org/"
@@ -688,6 +918,7 @@
   },
   "waterloo_uw_formula_electric": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.uwfsae.ca/"
@@ -695,6 +926,7 @@
   },
   "waterloo_uw_high_performance_computing": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.uwhpc.com/"
@@ -702,6 +934,7 @@
   },
   "waterloo_uw_nanorobotics_group": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/student-design-teams/uw-nanorobotics-group"
@@ -709,6 +942,7 @@
   },
   "waterloo_uw_orbital": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.uworbital.org/"
@@ -716,6 +950,7 @@
   },
   "waterloo_uw_reality_labs": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://github.com/uwrealitylabs"
@@ -723,6 +958,7 @@
   },
   "waterloo_uw_ux": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://clubs.wusa.ca/clubs/444"
@@ -730,6 +966,7 @@
   },
   "waterloo_uw_vex_u_robotics": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/directory-teams/uw-vex-u-robotics"
@@ -737,6 +974,7 @@
   },
   "waterloo_uwasic": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/student-design-teams/uwasic"
@@ -744,6 +982,7 @@
   },
   "waterloo_wat_ai": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "http://watai.ca/"
@@ -751,6 +990,7 @@
   },
   "waterloo_wat_street": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/student-design-teams/wat-street"
@@ -758,6 +998,7 @@
   },
   "waterloo_watbots": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/directory-teams/watbots"
@@ -765,6 +1006,7 @@
   },
   "waterloo_waterloo_aerial_robotics_group_warg": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/directory-teams/waterloo-aerial-robotics-group-warg"
@@ -772,6 +1014,7 @@
   },
   "waterloo_waterloo_computational_physics_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://clubs.wusa.ca/clubs/472"
@@ -779,6 +1022,7 @@
   },
   "waterloo_waterloo_computer_science_club_csc": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://csclub.uwaterloo.ca/events/"
@@ -786,6 +1030,7 @@
   },
   "waterloo_waterloo_hacker_fab": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.waterloofab.com/"
@@ -793,6 +1038,7 @@
   },
   "waterloo_waterloo_robosoccer_team": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/student-design-teams/waterloo-robosoccer-team-uwrs"
@@ -800,6 +1046,7 @@
   },
   "waterloo_waterloo_robotics_team": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/student-design-teams/robotics-team-uwrt"
@@ -807,6 +1054,7 @@
   },
   "waterloo_waterloo_rocketry": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.waterloorocketry.com/"
@@ -814,6 +1062,7 @@
   },
   "waterloo_waterloo_space_research_team": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://uwaterloo.ca/sedra-student-design-centre/catalogs/directory-teams/waterloo-space-research-team-wsrt"
@@ -821,6 +1070,7 @@
   },
   "waterloo_watonomous": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://www.watonomous.ca/"
@@ -828,6 +1078,7 @@
   },
   "york_ai_ignite_at_york": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/webapp/auth/login?redirect=%2fAIIG%2f&msg=LOGIN_REQUIRED"
@@ -835,6 +1086,7 @@
   },
   "york_arbalest_rocketry": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://arbalestrocketry.ca/"
@@ -842,6 +1094,7 @@
   },
   "york_artificial_intelligence_in_healthcare_society": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/webapp/auth/login?redirect=https%3a%2f%2fyuconnect.yorku.ca%2fgroups&msg=Sorry+but+you+are+not+authorized+to+access+this+resource."
@@ -849,6 +1102,7 @@
   },
   "york_baja_sae_design_team": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/webapp/auth/login?redirect=%2fYUBaja%2f&msg=LOGIN_REQUIRED"
@@ -856,6 +1110,7 @@
   },
   "york_blueprint_york_university": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yublueprint.org/"
@@ -863,6 +1118,11 @@
   },
   "york_computing_students_hub": {
     "fingerprint": "33683965a0b5e9064ef7522dec17ccd85c0c38c0761cd3a3da06fd5c15c63a25",
+    "seen_event_ids": [
+      "text:york_computing_students_hub:we also host york university's premier annual hackathon, ctrl+hack+del . to learn more, visit the hackathon website linked under the hackathons item in the navbar.:",
+      "url:https://luma.com/yorkcshub",
+      "url:https://www.ctrlhackdel.com/"
+    ],
     "signals": [
       "LINK|Full calendar Open Luma for the complete list and one-tap registration. Open Luma →|https://luma.com/yorkcshub",
       "LINK|Hackathon|https://www.ctrlhackdel.com/",
@@ -875,6 +1135,7 @@
   },
   "york_computing_students_hub_markham": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/webapp/auth/login?redirect=%2fCSHM%2f&msg=LOGIN_REQUIRED"
@@ -882,6 +1143,7 @@
   },
   "york_creative_technologies_students_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/webapp/auth/login?redirect=%2fCRTESC%2f&msg=LOGIN_REQUIRED"
@@ -889,6 +1151,7 @@
   },
   "york_cyber_security_and_cloud_computing": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/csccy/home/"
@@ -903,6 +1166,7 @@
   },
   "york_design_students_association": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/dsa/home/"
@@ -910,6 +1174,7 @@
   },
   "york_ellehacks": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://ellehacks.com/"
@@ -917,6 +1182,12 @@
   },
   "york_game_devs_at_yorku": {
     "fingerprint": "23b52d0346c550ad2f1c6ffb093436fb249abea3c9c53e4a91e1ed75e2550eef",
+    "seen_event_ids": [
+      "text:york_game_devs_at_yorku:hi everyone, welcome back to another of yudum dare! this is gdyu seventh game jam, and we're siuuuuper excited to get started!:",
+      "text:york_game_devs_at_yorku:you may work alone or in a team, team up is recommended. we are also hosting a game jam announcement event on october 5th at 4:30 - 8:30, fc 152 (founders assembly hall) . please come and meet your other game dev fellas.:",
+      "text:york_game_devs_at_yorku:yudum dare #7 is a game jam hosted by game devs at yorku (gdyu)! whether you're an experienced developer or making your first game, everyone is welcome to participate, experiment, and have fun!!!:",
+      "url:https://itch.io/register"
+    ],
     "signals": [
       "LINK|Register|https://itch.io/register",
       "TEXT|Hi everyone, welcome back to another of YUdum Dare! This is GDYU seventh game jam, and we're siuuuuper excited to get started!",
@@ -930,6 +1201,7 @@
   },
   "york_google_developer_group_on_campus": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://gdg.community.dev/gdg-on-campus-york-university-keele-campus-toronto-canada/"
@@ -937,6 +1209,7 @@
   },
   "york_ieee_yorku_student_branch": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/ieeeyorku/home/"
@@ -944,6 +1217,7 @@
   },
   "york_lassonde_engineering_society": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/les/home/"
@@ -951,6 +1225,7 @@
   },
   "york_quantum_information_and_computing_club": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/quicc/home/"
@@ -958,6 +1233,7 @@
   },
   "york_robotics_society": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yorkurobotics.com/"
@@ -965,6 +1241,7 @@
   },
   "york_stem_fellowship_at_york_university": {
     "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
     "signals": [],
     "urls": [
       "https://yuconnect.yorku.ca/sfyu/home/"
