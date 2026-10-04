@@ -30,6 +30,11 @@
   },
   "mcmaster_mac_ai_society": {
     "links": {
+      "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=B2M3RCm0rUKMJSjNSW9Hcug-TrzsvrtBkxczjzN_QFFUMUhXRVZNNzUwOVE0R0tTQlU5R1k4QU5RUi4u": {
+        "context": "Project Team Member Applications Project Team Member Applications",
+        "label": "Project Team Member Applications",
+        "url": "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=B2M3RCm0rUKMJSjNSW9Hcug-TrzsvrtBkxczjzN_QFFUMUhXRVZNNzUwOVE0R0tTQlU5R1k4QU5RUi4u"
+      },
       "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=B2M3RCm0rUKMJSjNSW9Hcug-TrzsvrtBkxczjzN_QFFUOFNNNFREUktRVldITTQzRjI0OVVSNENMVC4u": {
         "context": "Partnership Team Member Applications Partnership Team Member Applications",
         "label": "Partnership Team Member Applications",
@@ -97,15 +102,10 @@
   },
   "tmu_data_science_association_mdsa": {
     "links": {
-      "https://docs.google.com/forms/d/18h497wzvYPmRvGMqVtDZKQw8T19j3IjcLO3GRcLvePk/edit": {
-        "context": "Early Access to General Associate Hiring! Early Access to General Associate Hiring! Hey First Years! Welcome to TMU and to MDSA! We're excited to announce our General Associate Hiring for the 2026-2027 school year! The Metropolitan Data Science Association, also known as MDSA, operates as an innovative and ambitious student organization affiliated with the Ted Rogers Student Society. As a team, we",
-        "label": "Early Access to General Associate Hiring!",
-        "url": "https://docs.google.com/forms/d/18h497wzvYPmRvGMqVtDZKQw8T19j3IjcLO3GRcLvePk/edit"
-      },
-      "https://docs.google.com/forms/d/e/1FAIpQLSd3MDgO162ZutaAFS2ToN6fCToG0IiZQfVdFnZmV_nuWWGRYg/viewform": {
-        "context": "DataWorks ‘26-27 Registration Form! DataWorks ‘26-27 Registration Form!",
-        "label": "DataWorks ‘26-27 Registration Form!",
-        "url": "https://docs.google.com/forms/d/e/1FAIpQLSd3MDgO162ZutaAFS2ToN6fCToG0IiZQfVdFnZmV_nuWWGRYg/viewform"
+      "https://forms.gle/pi9vodT6zPgguqNdA": {
+        "context": "General Associate Application Form ‘26/27 General Associate Application Form ‘26/27",
+        "label": "General Associate Application Form ‘26/27",
+        "url": "https://forms.gle/pi9vodT6zPgguqNdA"
       },
       "https://mdsa.ca/": {
         "context": "MDSA's Website MDSA's Website",
@@ -116,11 +116,6 @@
         "context": "FREE Data Science Resources FREE Data Science Resources",
         "label": "FREE Data Science Resources",
         "url": "https://mdsa.ca/resources"
-      },
-      "https://www.tickettailor.com/events/metropolitandatascienceassociation/2415407": {
-        "context": "Launchpoint Registration! Launchpoint Registration! MDSA: Launchpoint – Thomas Lounge, Mon 21 Sep 2026 - Event Title: MDSA: Launchpoint (In-Person) | September 21st at 6:00 p.m.Target Audience: TMU StudentsDescription: Step into the world of data science with MDSA: Launchpoint, an in-person kickoff hosted by the Metr...",
-        "label": "Launchpoint Registration!",
-        "url": "https://www.tickettailor.com/events/metropolitandatascienceassociation/2415407"
       }
     }
   },
