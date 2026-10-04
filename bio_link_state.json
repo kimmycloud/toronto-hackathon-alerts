@@ -126,11 +126,6 @@
   },
   "tmu_ecestorms": {
     "links": {
-      "https://docs.google.com/forms/d/e/1FAIpQLSc9Vqvaq1ybNZm6FvxxRxCJrAj5-YL95tm-7pcTlIOXM-a6NA/viewform": {
-        "context": "ECESTORMS 26/27 Hiring Application ECESTORMS 26/27 Hiring Application",
-        "label": "ECESTORMS 26/27 Hiring Application",
-        "url": "https://docs.google.com/forms/d/e/1FAIpQLSc9Vqvaq1ybNZm6FvxxRxCJrAj5-YL95tm-7pcTlIOXM-a6NA/viewform"
-      },
       "https://docs.google.com/presentation/d/19uf9DbPNZChMfY7bJweugHXqXdcj64KtnAMVBcdDHIs/edit": {
         "context": "PCB Tutorial KiCAD Series Basics PCB Tutorial KiCAD Series Basics",
         "label": "PCB Tutorial KiCAD Series Basics",
@@ -141,10 +136,10 @@
         "label": "Python Tutorial Recording",
         "url": "https://drive.google.com/drive/folders/1k2AjmOYebAvJhoATCjb4T7m5Jc22WpTL?usp=sharing"
       },
-      "https://forms.gle/4zwiNZJ4CQnFhurW6": {
-        "context": "ECE Mock Final Request Forum ECE Mock Final Request Forum",
-        "label": "ECE Mock Final Request Forum",
-        "url": "https://forms.gle/4zwiNZJ4CQnFhurW6"
+      "https://www.eventbrite.ca/e/ece-meet-and-greet-tickets-2002482962446": {
+        "context": "ECE Meet and Greet Tickets ECE Meet and Greet Tickets Come meet your fellow ECE students and learn what ECESTORMS, IEEE CSTMC, and MUES has to offer you!",
+        "label": "ECE Meet and Greet Tickets",
+        "url": "https://www.eventbrite.ca/e/ece-meet-and-greet-tickets-2002482962446"
       },
       "https://www.torontomu.ca/engineering-architectural-science/current-undergraduate/transition-program/": {
         "context": "Transition Program Info Transition Program Info",
