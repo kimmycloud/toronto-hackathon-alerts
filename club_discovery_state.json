@@ -425,14 +425,15 @@
     ]
   },
   "toronto_techto_calendar": {
-    "fingerprint": "f566fe82cd1e6a7c102e08e28e68a330bddfacc8db62ca4d964820eae04afd8c",
+    "fingerprint": "b9770055fd854169e3bc06fe2e0a096caf6ee168f4dcc5c7e95a01a9df7abb08",
     "seen_event_ids": [
+      "text:toronto_techto_calendar:techto fast and frugal hackathon:",
       "text:toronto_techto_calendar:techto hackathon:",
       "url:https://luma.com/hackathon-oct-17-2026"
     ],
     "signals": [
       "LINK||https://luma.com/hackathon-oct-17-2026",
-      "TEXT|TechTO Hackathon"
+      "TEXT|TechTO Fast and Frugal Hackathon"
     ],
     "urls": [
       "https://luma.com/TechTO-Events"
