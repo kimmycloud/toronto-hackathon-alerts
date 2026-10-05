@@ -322,12 +322,13 @@
     ]
   },
   "tmu_data_science_association_mdsa": {
-    "fingerprint": "55e336001992a30d2b1d4d4b3c7c23c0cac1bfadd22ccc4c536e2a65951922f6",
+    "fingerprint": "f324fe290fe56da4ea67345a35118bfd8ba7942f365af84ede3df93a34a8fb71",
     "seen_event_ids": [
-      "url:https://docs.google.com/forms/d/e/1FAIpQLSd3MDgO162ZutaAFS2ToN6fCToG0IiZQfVdFnZmV_nuWWGRYg/viewform?usp=header"
+      "url:https://docs.google.com/forms/d/e/1FAIpQLSd3MDgO162ZutaAFS2ToN6fCToG0IiZQfVdFnZmV_nuWWGRYg/viewform?usp=header",
+      "url:https://forms.gle/pi9vodT6zPgguqNdA"
     ],
     "signals": [
-      "LINK|DataWorks ‘26-27 Registration Form!|https://docs.google.com/forms/d/e/1FAIpQLSd3MDgO162ZutaAFS2ToN6fCToG0IiZQfVdFnZmV_nuWWGRYg/viewform?usp=header"
+      "LINK|General Associate Application Form ‘26/27|https://forms.gle/pi9vodT6zPgguqNdA"
     ],
     "urls": [
       "https://linktr.ee/mdsa_tmu"
@@ -489,12 +490,12 @@
     ]
   },
   "u_of_t_gdg_u_of_t_st_george": {
-    "fingerprint": "913411be98191f2e7c6fe6603c07e0d24aa414a6833d2e0af56e97316b401fd7",
+    "fingerprint": "038665c4e6e053c3acf5673baec5b0571419bd358d9a213f38c66dea40d81aec",
     "seen_event_ids": [
       "url:https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton"
     ],
     "signals": [
-      "LINK|2026년 9월 16일 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
+      "LINK|16 sept 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "TEXT|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton"
     ],
@@ -740,17 +741,17 @@
     ]
   },
   "uottawa_ieee_uottawa": {
-    "fingerprint": "4c9f0a0fe5817ebbd13a3669745ae1a41a528d0c156c5c336a50214fd4c9f0a2",
+    "fingerprint": "c4493007307b62c8f77c3711bf9875e834d665bb989fdcb7cd855b035256503f",
     "seen_event_ids": [
       "text:uottawa_ieee_uottawa:hack the hill hackathon:",
       "url:https://ieeeuottawa.ca/en/events/hack-the-hill-hackathon"
     ],
     "signals": [
-      "LINK|Mar 3, 2023 Hack the Hill Hackathon CRX|https://ieeeuottawa.ca/en/events/hack-the-hill-hackathon/",
+      "LINK|Mar 3, 2023 Hack the Hill Hackathon CRX|https://ieeeuottawa.ca/en/events/hack-the-hill-hackathon",
       "TEXT|Hack the Hill Hackathon"
     ],
     "urls": [
-      "https://ieeeuottawa.ca/en/events/"
+      "https://ieeeuottawa.ca/en/events"
     ]
   },
   "uottawa_igem_uottawa": {
