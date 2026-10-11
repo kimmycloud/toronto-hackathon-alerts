@@ -300,17 +300,14 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "bcff308ea326a35a55c5714cb7a71494d22a9c472fa630b42e3291c831434317",
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "seen_event_ids": [
       "url:https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform",
       "url:https://forms.gle/rd4XuDbJJ2fsrU3n7"
     ],
-    "signals": [
-      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7"
-    ],
+    "signals": [],
     "urls": [
-      "https://luma.com/user/tmu_byte",
-      "https://linktr.ee/BYTETMU"
+      "https://luma.com/user/tmu_byte"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
@@ -448,14 +445,17 @@
     ]
   },
   "u_of_t_competitive_programming_club_st_george": {
-    "fingerprint": "05a77d2240e8bd09203d69b1c2a4b0d05a4ac4c6830b28ec3fdace8a8a198df2",
+    "fingerprint": "c5f2ebf1ac9f0692ab6d611bebe646449eb01a3b884f413adf40913719eae40f",
     "seen_event_ids": [
       "text:u_of_t_competitive_programming_club_st_george:competitive programming club practices are announced in our discord server, and usually take place on saturday afternoons. these events typically take the form of a practice contest and solution discussions, though we may occasionally hold team practices or topic-specific sessions as well.:",
-      "url:http://www.comp.nus.edu.sg/~stevenha/myteaching/competitive_programming/cp1.pdf"
+      "text:u_of_t_competitive_programming_club_st_george:uoft's student community for sharpening problem-solving skills through algorithm workshops, collaborative practice, and competitive programming contests.:",
+      "url:http://www.comp.nus.edu.sg/~stevenha/myteaching/competitive_programming/cp1.pdf",
+      "url:https://www.teach.cs.toronto.edu/~acm"
     ],
     "signals": [
-      "LINK|Competitive Programming v1 Ebook| http://www.comp.nus.edu.sg/~stevenha/myteaching/competitive_programming/cp1.pdf",
-      "TEXT|Competitive Programming Club practices are announced in our discord server, and usually take place on Saturday afternoons. These events typically take the form of a practice contest and solution discussions, though we may occasionally hold team practices or topic-specific sessions as well."
+      "LINK|Competitive Programming Club|https://www.teach.cs.toronto.edu/~acm/",
+      "TEXT|Competitive Programming Club",
+      "TEXT|UofT's student community for sharpening problem-solving skills through algorithm workshops, collaborative practice, and competitive programming contests."
     ],
     "urls": [
       "https://www.teach.cs.toronto.edu/~acm/"
@@ -491,12 +491,12 @@
     ]
   },
   "u_of_t_gdg_u_of_t_st_george": {
-    "fingerprint": "3c457553968b37ac0a0636eacda741040e9b30a0d95edc81b38eddbb9a500e02",
+    "fingerprint": "038665c4e6e053c3acf5673baec5b0571419bd358d9a213f38c66dea40d81aec",
     "seen_event_ids": [
       "url:https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton"
     ],
     "signals": [
-      "LINK|2026年9月16日 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
+      "LINK|16 sept 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "TEXT|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton"
     ],
