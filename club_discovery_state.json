@@ -300,14 +300,17 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fingerprint": "bcff308ea326a35a55c5714cb7a71494d22a9c472fa630b42e3291c831434317",
     "seen_event_ids": [
       "url:https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform",
       "url:https://forms.gle/rd4XuDbJJ2fsrU3n7"
     ],
-    "signals": [],
+    "signals": [
+      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7"
+    ],
     "urls": [
-      "https://luma.com/user/tmu_byte"
+      "https://luma.com/user/tmu_byte",
+      "https://linktr.ee/BYTETMU"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
