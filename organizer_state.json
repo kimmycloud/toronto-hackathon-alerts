@@ -82,9 +82,12 @@
     "url": "https://www.deltahacks.com/"
   },
   "u_of_t_genai_genesis": {
-    "fingerprint": "09df74c387f34a178bbb22fad5934b4c31a9f1e02e4da0253db953ce563295da",
+    "fingerprint": "7fabcfec997b9d58562d5ac2216f87c952f5b69aeb4207803ffe8b2a37509852",
     "signals": [
       "LINK|We're Hiring!|https://genaigenesis.ca/apply",
+      "TEXT|Earlier this year, we brought together approximately 1,000 hackers to build with AI and partnered with Google , Shopify , and IBM .",
+      "TEXT|GenAI Genesis is Canada's largest AI hackathon, a student led hackathon based in Toronto, Canada.",
+      "TEXT|GenAI Genesis is Canada's largest AI hackathon, a student led hackathon based in Toronto, Canada. Earlier this year, we brought together approximately 1,000 hackers to build with AI and partnered with Google , Shopify , and IBM . For partnerships, please contact partnerships@genaigenesis.ca",
       "TITLE|GenAI Genesis 2027 | Canada’s Largest AI Hackathon"
     ],
     "url": "https://genaigenesis.ca/"
