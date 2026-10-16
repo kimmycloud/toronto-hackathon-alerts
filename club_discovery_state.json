@@ -526,9 +526,13 @@
     ]
   },
   "u_of_t_genai_genesis": {
-    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "seen_event_ids": [],
-    "signals": [],
+    "fingerprint": "fdf8c87f328625d2bd63e5d9a02b6da974853a3af7b3ca649e43da79dcb1325f",
+    "seen_event_ids": [
+      "text:u_of_t_genai_genesis:genai genesis is canada's largest ai hackathon, a student led hackathon based in toronto, canada.:"
+    ],
+    "signals": [
+      "TEXT|GenAI Genesis is Canada's largest AI hackathon, a student led hackathon based in Toronto, Canada."
+    ],
     "urls": [
       "https://genaigenesis.ca/"
     ]
