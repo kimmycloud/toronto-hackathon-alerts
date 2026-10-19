@@ -493,12 +493,12 @@
     ]
   },
   "u_of_t_gdg_u_of_t_st_george": {
-    "fingerprint": "038665c4e6e053c3acf5673baec5b0571419bd358d9a213f38c66dea40d81aec",
+    "fingerprint": "3c457553968b37ac0a0636eacda741040e9b30a0d95edc81b38eddbb9a500e02",
     "seen_event_ids": [
       "url:https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton"
     ],
     "signals": [
-      "LINK|16 sept 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
+      "LINK|2026年9月16日 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "TEXT|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton"
     ],
@@ -523,12 +523,25 @@
     ]
   },
   "u_of_t_genai_genesis": {
-    "fingerprint": "fdf8c87f328625d2bd63e5d9a02b6da974853a3af7b3ca649e43da79dcb1325f",
+    "fingerprint": "61f86665c072db156c74bd546c81c06e74486d0a3af474424d7eb2e7dc8224ef",
     "seen_event_ids": [
-      "text:u_of_t_genai_genesis:genai genesis is canada's largest ai hackathon, a student led hackathon based in toronto, canada.:"
+      "text:u_of_t_genai_genesis:bringing together 1000+ students, researchers, designers, and creators from around the world for canada's largest ai hackathon.:",
+      "text:u_of_t_genai_genesis:canada's largest ai hackathon.:",
+      "text:u_of_t_genai_genesis:every great hackathon needs a few stories that don't fit in the submission form :):",
+      "text:u_of_t_genai_genesis:genai genesis is a 36-hour ai hackathon taking place in march 2027 at the university of toronto in downtown toronto.:",
+      "text:u_of_t_genai_genesis:genai genesis is canada's largest ai hackathon, a student led hackathon based in toronto, canada.:",
+      "text:u_of_t_genai_genesis:how long is the hackathon?:",
+      "text:u_of_t_genai_genesis:is the hackathon in person or online?:",
+      "text:u_of_t_genai_genesis:when is the hackathon?:"
     ],
     "signals": [
-      "TEXT|GenAI Genesis is Canada's largest AI hackathon, a student led hackathon based in Toronto, Canada."
+      "TEXT|Bringing together 1000+ students, researchers, designers, and creators from around the world for Canada's largest AI hackathon.",
+      "TEXT|Canada's Largest AI Hackathon.",
+      "TEXT|Every great hackathon needs a few stories that don't fit in the submission form :)",
+      "TEXT|GenAI Genesis is a 36-hour AI hackathon taking place in March 2027 at the University of Toronto in downtown Toronto.",
+      "TEXT|How long is the hackathon?",
+      "TEXT|Is the hackathon in person or online?",
+      "TEXT|When is the hackathon?"
     ],
     "urls": [
       "https://genaigenesis.ca/"
@@ -1103,7 +1116,7 @@
     "seen_event_ids": [],
     "signals": [],
     "urls": [
-      "https://arbalestrocketry.ca/"
+      "https://www.arbalestrocketry.ca/"
     ]
   },
   "york_artificial_intelligence_in_healthcare_society": {
