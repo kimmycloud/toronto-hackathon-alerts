@@ -176,16 +176,18 @@
     ]
   },
   "mcmaster_deltahacks": {
-    "fingerprint": "9f9e1acdac2b541794b7c481fd74f6b3182fabedfac4d080353052aa0352b817",
+    "fingerprint": "ad96a4b0d130525bc17e8d18ec2c148f54c0c39704c5f09cebf3a943810ff869",
     "seen_event_ids": [
       "text:mcmaster_deltahacks:deltahacks is an annual 24-hour hackathon empowering 600+ students across north america to build impactful projects that spark positive change.:",
       "text:mcmaster_deltahacks:mcmaster university's annual hackathon for change.:",
+      "text:mcmaster_deltahacks:mcmaster's annual hackathon for change:",
+      "text:mcmaster_deltahacks:what is a hackathon?:",
       "url:https://mlh.io/na"
     ],
     "signals": [
       "LINK||https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2026-season&utm_content=gray",
-      "TEXT|DeltaHacks is an annual 24-hour hackathon empowering 600+ students across North America to build impactful projects that spark positive change.",
-      "TEXT|McMaster University's annual hackathon for change."
+      "TEXT|McMaster's Annual Hackathon for Change",
+      "TEXT|What is a hackathon?"
     ],
     "urls": [
       "https://www.deltahacks.com/"
@@ -242,11 +244,12 @@
     ]
   },
   "mcmaster_mcmaster_engineering_competition_mec": {
-    "fingerprint": "29f6deeedcaae6b997a4041d0dfe2595cd81221dc157e342d698bd3590fddcdf",
+    "fingerprint": "2419a7e80bb3781b1ad4f7ae1e01ce3c8e9f58f1d5f1f51533f54e2ff7f24a90",
     "seen_event_ids": [
       "text:mcmaster_mcmaster_engineering_competition_mec:mcmaster's annual engineering competition:"
     ],
     "signals": [
+      "LINK|2026 MEC REGISTRATION FORM|https://forms.gle/er8qTHVe23d9QDPi7",
       "TEXT|McMaster's annual engineering competition"
     ],
     "urls": [
