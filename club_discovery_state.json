@@ -493,12 +493,12 @@
     ]
   },
   "u_of_t_gdg_u_of_t_st_george": {
-    "fingerprint": "3c457553968b37ac0a0636eacda741040e9b30a0d95edc81b38eddbb9a500e02",
+    "fingerprint": "038665c4e6e053c3acf5673baec5b0571419bd358d9a213f38c66dea40d81aec",
     "seen_event_ids": [
       "url:https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton"
     ],
     "signals": [
-      "LINK|2026年9月16日 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
+      "LINK|16 sept 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "TEXT|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton"
     ],
@@ -870,7 +870,7 @@
     ]
   },
   "waterloo_engineering_ideas_clinic": {
-    "fingerprint": "a2aa82da81367982fe2fc2368e7066b05ce5c4b5d6cc3e784facb67d8697803e",
+    "fingerprint": "4f9ea101eae2de9ba1b4472ddcb447f3ceed81346a42eda03d07a85b527496b0",
     "seen_event_ids": [
       "url:https://uwaterloo.ca/engineering-ideas-clinic/airport-automation",
       "url:https://uwaterloo.ca/engineering-ideas-clinic/brookfield-challenge",
@@ -879,13 +879,13 @@
       "url:https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/toyota-innovation-challenge"
     ],
     "signals": [
-      "LINK|Brock Solutions Airport Automation Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/airport-automation",
+      "LINK|Brock Solutions Airport Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/airport-automation",
       "LINK|Brookfield Renewable Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/brookfield-challenge",
       "LINK|Canadian Nuclear Laboratories Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/canadian-nuclear-laboratories-innovation-challenge",
       "LINK|Health Tech Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/health-tech-innovation-challenge",
       "LINK|Toyota Innovation Challenge Build your engineering skills while working on real-world problems|https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/toyota-innovation-challenge",
       "LINK|Toyota Innovation Challenge|https://uwaterloo.ca/engineering-ideas-clinic/co-curricular-activities/toyota-innovation-challenge",
-      "TEXT|Brock Solutions Airport Automation Innovation Challenge",
+      "TEXT|Brock Solutions Airport Innovation Challenge",
       "TEXT|Brookfield Renewable Innovation Challenge",
       "TEXT|Canadian Nuclear Laboratories Innovation Challenge",
       "TEXT|Health Tech Innovation Challenge",
