@@ -305,14 +305,17 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fingerprint": "bcff308ea326a35a55c5714cb7a71494d22a9c472fa630b42e3291c831434317",
     "seen_event_ids": [
       "url:https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform",
       "url:https://forms.gle/rd4XuDbJJ2fsrU3n7"
     ],
-    "signals": [],
+    "signals": [
+      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7"
+    ],
     "urls": [
-      "https://luma.com/user/tmu_byte"
+      "https://luma.com/user/tmu_byte",
+      "https://linktr.ee/BYTETMU"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
@@ -324,14 +327,12 @@
     ]
   },
   "tmu_data_science_association_mdsa": {
-    "fingerprint": "f324fe290fe56da4ea67345a35118bfd8ba7942f365af84ede3df93a34a8fb71",
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "seen_event_ids": [
       "url:https://docs.google.com/forms/d/e/1FAIpQLSd3MDgO162ZutaAFS2ToN6fCToG0IiZQfVdFnZmV_nuWWGRYg/viewform?usp=header",
       "url:https://forms.gle/pi9vodT6zPgguqNdA"
     ],
-    "signals": [
-      "LINK|General Associate Application Form ‘26/27|https://forms.gle/pi9vodT6zPgguqNdA"
-    ],
+    "signals": [],
     "urls": [
       "https://linktr.ee/mdsa_tmu"
     ]
@@ -493,12 +494,12 @@
     ]
   },
   "u_of_t_gdg_u_of_t_st_george": {
-    "fingerprint": "038665c4e6e053c3acf5673baec5b0571419bd358d9a213f38c66dea40d81aec",
+    "fingerprint": "458009b96e1c1b22f78cd0e973870baef049f15dc57b8b541f0ae2832dc26380",
     "seen_event_ids": [
       "url:https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton"
     ],
     "signals": [
-      "LINK|16 sept 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
+      "LINK|16 sept. 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "TEXT|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton"
     ],
