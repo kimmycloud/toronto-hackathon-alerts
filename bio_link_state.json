@@ -30,10 +30,10 @@
   },
   "mcmaster_mac_ai_society": {
     "links": {
-      "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=B2M3RCm0rUKMJSjNSW9Hcug-TrzsvrtBkxczjzN_QFFUMUhXRVZNNzUwOVE0R0tTQlU5R1k4QU5RUi4u": {
-        "context": "Project Team Member Applications Project Team Member Applications",
-        "label": "Project Team Member Applications",
-        "url": "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=B2M3RCm0rUKMJSjNSW9Hcug-TrzsvrtBkxczjzN_QFFUMUhXRVZNNzUwOVE0R0tTQlU5R1k4QU5RUi4u"
+      "https://forms.cloud.microsoft/r/9EMwZ260rq": {
+        "context": "AI & Data Science Day AI & Data Science Day",
+        "label": "AI & Data Science Day",
+        "url": "https://forms.cloud.microsoft/r/9EMwZ260rq"
       },
       "https://github.com/McMasterAI-Society": {
         "context": "MacAI Projects MacAI Projects",
