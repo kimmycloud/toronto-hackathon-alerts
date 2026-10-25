@@ -150,7 +150,7 @@
     ]
   },
   "markham_gdg_chapter": {
-    "fingerprint": "0420cb7494b39252dbceb249120de27734a50e56bc16909e8b2cb18ff469bc60",
+    "fingerprint": "fe25da2edb85fc1b488d730f70f842da86a0e8b450e7247933604ec4c2d43dd1",
     "seen_event_ids": [
       "text:markham_gdg_chapter:build & connect: gdg markham hackathon + social 2026:",
       "text:markham_gdg_chapter:gdg markham october hackathon 2026:",
@@ -159,9 +159,9 @@
       "url:https://gdg.community.dev/events/details/google-gdg-markham-presents-gdg-markham-october-hackathon-2026"
     ],
     "signals": [
-      "LINK|→ View details|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
-      "TEXT|Build & Connect: GDG Markham Hackathon + Social 2026",
-      "TEXT|Join GDG Markham's AI Hackathon on Oct 24, 2026, in Thornhill. Collaborate with developers, designers, and community members to solve local challenges. Form teams, build tech solutions, and compete for awards. Ideal for tech enthusiasts and first-time participants. Registration is required."
+      "LINK|24 oct 2026 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
+      "LINK|Build & Connect: GDG Markham Hackathon + Social 2026|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
+      "TEXT|Build & Connect: GDG Markham Hackathon + Social 2026"
     ],
     "urls": [
       "https://gdg.community.dev/gdg-markham/"
