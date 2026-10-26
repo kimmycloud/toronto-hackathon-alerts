@@ -150,7 +150,7 @@
     ]
   },
   "markham_gdg_chapter": {
-    "fingerprint": "452f6e53932a16baf5729123dcfefe4d25c1e9f12ba8959b18080d8bdcb486bd",
+    "fingerprint": "03b7f1cc3048bafe016471af7c5b572a6c80f7cb137edbb7cf19d86af0d31c97",
     "seen_event_ids": [
       "text:markham_gdg_chapter:build & connect: gdg markham hackathon + social 2026:",
       "text:markham_gdg_chapter:gdg markham october hackathon 2026:",
@@ -159,7 +159,7 @@
       "url:https://gdg.community.dev/events/details/google-gdg-markham-presents-gdg-markham-october-hackathon-2026"
     ],
     "signals": [
-      "LINK|2026年10月24日 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
+      "LINK|24 de out. de 2026 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
       "LINK|Build & Connect: GDG Markham Hackathon + Social 2026|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
       "TEXT|Build & Connect: GDG Markham Hackathon + Social 2026"
     ],
@@ -494,12 +494,12 @@
     ]
   },
   "u_of_t_gdg_u_of_t_st_george": {
-    "fingerprint": "038665c4e6e053c3acf5673baec5b0571419bd358d9a213f38c66dea40d81aec",
+    "fingerprint": "3c457553968b37ac0a0636eacda741040e9b30a0d95edc81b38eddbb9a500e02",
     "seen_event_ids": [
       "url:https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton"
     ],
     "signals": [
-      "LINK|16 sept 2026 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
+      "LINK|2026年9月16日 Free registration How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton GDG on Campus University of Toronto, St. George Campus - Toronto, Canada|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "LINK|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton|https://gdg.community.dev/events/details/google-gdg-on-campus-university-of-toronto-st-george-campus-toronto-canada-presents-how-to-win-a-hackathon-ideas-teams-amp-speaker-night-x-shipaton/",
       "TEXT|How to Win a Hackathon: Ideas, Teams & Speaker Night x Shipaton"
     ],
