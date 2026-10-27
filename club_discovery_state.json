@@ -1210,22 +1210,16 @@
     ]
   },
   "york_game_devs_at_yorku": {
-    "fingerprint": "23b52d0346c550ad2f1c6ffb093436fb249abea3c9c53e4a91e1ed75e2550eef",
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "seen_event_ids": [
       "text:york_game_devs_at_yorku:hi everyone, welcome back to another of yudum dare! this is gdyu seventh game jam, and we're siuuuuper excited to get started!:",
       "text:york_game_devs_at_yorku:you may work alone or in a team, team up is recommended. we are also hosting a game jam announcement event on october 5th at 4:30 - 8:30, fc 152 (founders assembly hall) . please come and meet your other game dev fellas.:",
       "text:york_game_devs_at_yorku:yudum dare #7 is a game jam hosted by game devs at yorku (gdyu)! whether you're an experienced developer or making your first game, everyone is welcome to participate, experiment, and have fun!!!:",
       "url:https://itch.io/register"
     ],
-    "signals": [
-      "LINK|Register|https://itch.io/register",
-      "TEXT|Hi everyone, welcome back to another of YUdum Dare! This is GDYU seventh game jam, and we're siuuuuper excited to get started!",
-      "TEXT|YUdum Dare #7 is a game jam hosted by Game Devs at YorkU (GDYU)! Whether you're an experienced developer or making your first game, everyone is welcome to participate, experiment, and have fun!!!",
-      "TEXT|You may work alone or in a team, team up is recommended. We are also hosting a Game Jam Announcement event on October 5th at 4:30 - 8:30, FC 152 (Founders Assembly Hall) . Please come and meet your other Game dev fellas."
-    ],
+    "signals": [],
     "urls": [
-      "https://gdyu.itch.io/",
-      "https://itch.io/jam/yudum"
+      "https://gdyu.itch.io/"
     ]
   },
   "york_google_developer_group_on_campus": {
