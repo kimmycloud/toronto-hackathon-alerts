@@ -150,7 +150,7 @@
     ]
   },
   "markham_gdg_chapter": {
-    "fingerprint": "fe25da2edb85fc1b488d730f70f842da86a0e8b450e7247933604ec4c2d43dd1",
+    "fingerprint": "452f6e53932a16baf5729123dcfefe4d25c1e9f12ba8959b18080d8bdcb486bd",
     "seen_event_ids": [
       "text:markham_gdg_chapter:build & connect: gdg markham hackathon + social 2026:",
       "text:markham_gdg_chapter:gdg markham october hackathon 2026:",
@@ -159,7 +159,7 @@
       "url:https://gdg.community.dev/events/details/google-gdg-markham-presents-gdg-markham-october-hackathon-2026"
     ],
     "signals": [
-      "LINK|24 oct 2026 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
+      "LINK|2026年10月24日 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
       "LINK|Build & Connect: GDG Markham Hackathon + Social 2026|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
       "TEXT|Build & Connect: GDG Markham Hackathon + Social 2026"
     ],
@@ -305,17 +305,14 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "bcff308ea326a35a55c5714cb7a71494d22a9c472fa630b42e3291c831434317",
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "seen_event_ids": [
       "url:https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform",
       "url:https://forms.gle/rd4XuDbJJ2fsrU3n7"
     ],
-    "signals": [
-      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7"
-    ],
+    "signals": [],
     "urls": [
-      "https://luma.com/user/tmu_byte",
-      "https://linktr.ee/BYTETMU"
+      "https://luma.com/user/tmu_byte"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
