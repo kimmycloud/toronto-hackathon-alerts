@@ -1166,7 +1166,7 @@
     "seen_event_ids": [],
     "signals": [],
     "urls": [
-      "https://yuconnect.yorku.ca/webapp/auth/login?redirect=%2fCSHM%2f&msg=LOGIN_REQUIRED"
+      "https://yuconnect.yorku.ca/CSHM/web_officers"
     ]
   },
   "york_creative_technologies_students_club": {
