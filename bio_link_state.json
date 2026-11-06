@@ -41,7 +41,7 @@
         "url": "https://github.com/McMasterAI-Society"
       },
       "https://machacks.devpost.com/project-gallery": {
-        "context": "MacHacks 2026 Projects MacHacks 2026 Projects A sprint-style hackathon focused on building practical AI-driven solutions through hands-on experimentation and collaboration.",
+        "context": "MacHacks 2026 Projects MacHacks 2026 Projects",
         "label": "MacHacks 2026 Projects",
         "url": "https://machacks.devpost.com/project-gallery"
       }
@@ -50,7 +50,7 @@
   "mcmaster_mcmaster_engineering_competition_mec": {
     "links": {
       "https://docs.google.com/forms/d/e/1FAIpQLSedpQFuyhjDkOunFf2RgcRXUs51IFnMgos2tQm81j_v0x06KQ/viewform": {
-        "context": "2026 MEC VOLUNTEER FORM 2026 MEC VOLUNTEER FORM",
+        "context": "2026 MEC VOLUNTEER FORM 2026 MEC VOLUNTEER FORM We need YOU to help make MEC possible! Please fill out this form to indicate your interest in volunteering for MEC 2026, Our 20th Anniversary!!!!!!!!!!! We will reach out to you closer to the competition with more details! Please note that there is no prior experience required to volunteer! What is the McMaster Engineering Competition? The McMaster E",
         "label": "2026 MEC VOLUNTEER FORM",
         "url": "https://docs.google.com/forms/d/e/1FAIpQLSedpQFuyhjDkOunFf2RgcRXUs51IFnMgos2tQm81j_v0x06KQ/viewform"
       },
@@ -60,7 +60,7 @@
         "url": "https://forms.gle/er8qTHVe23d9QDPi7"
       },
       "https://mec.super.site/": {
-        "context": "Website Website",
+        "context": "Website Website The McMaster Engineering Competition (MEC) brings together students from across engineering to tackle real-world challenges under pressure, running this year on Sunday November 15th/22nd",
         "label": "Website",
         "url": "https://mec.super.site/"
       },
