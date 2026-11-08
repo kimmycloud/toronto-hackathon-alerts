@@ -305,17 +305,14 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "bcff308ea326a35a55c5714cb7a71494d22a9c472fa630b42e3291c831434317",
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "seen_event_ids": [
       "url:https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform",
       "url:https://forms.gle/rd4XuDbJJ2fsrU3n7"
     ],
-    "signals": [
-      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7"
-    ],
+    "signals": [],
     "urls": [
-      "https://luma.com/user/tmu_byte",
-      "https://linktr.ee/BYTETMU"
+      "https://luma.com/user/tmu_byte"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
@@ -473,13 +470,14 @@
     ]
   },
   "u_of_t_data_science_statistics_society_ds3_utsc": {
-    "fingerprint": "06d9f6f998fd57da926791c5859c5b539b3759c0a0a034f484b23a3c1208a5ad",
+    "fingerprint": "2f77c09aad0d76e175216b89295fd1c2b243492f22bfb546784bcba1ef200ca2",
     "seen_event_ids": [
       "text:u_of_t_data_science_statistics_society_ds3_utsc:hackathon:",
       "url:https://ds3utsc.com/hackathon"
     ],
     "signals": [
-      "LINK|Hackathon|https://ds3utsc.com/hackathon"
+      "LINK|datathon|https://ds3utsc.com/hackathon",
+      "LINK|hackathon|https://ds3utsc.com/hackathon"
     ],
     "urls": [
       "https://ds3utsc.com/"
@@ -639,8 +637,7 @@
     "seen_event_ids": [],
     "signals": [],
     "urls": [
-      "https://sop.utoronto.ca/group/university-of-toronto-student-team-for-amateur-rocketry-utstar/",
-      "https://www.utstar.ca/"
+      "https://sop.utoronto.ca/group/university-of-toronto-student-team-for-amateur-rocketry-utstar/"
     ]
   },
   "u_of_t_uoft_ai_agents_utm": {
