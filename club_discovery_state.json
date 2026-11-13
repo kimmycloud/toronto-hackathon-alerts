@@ -150,7 +150,7 @@
     ]
   },
   "markham_gdg_chapter": {
-    "fingerprint": "452f6e53932a16baf5729123dcfefe4d25c1e9f12ba8959b18080d8bdcb486bd",
+    "fingerprint": "4b66a2a233d646cb6da1e99e8cc69b22f10ab3a846f2b0256b148be4f70d912e",
     "seen_event_ids": [
       "text:markham_gdg_chapter:build & connect: gdg markham hackathon + social 2026:",
       "text:markham_gdg_chapter:gdg markham october hackathon 2026:",
@@ -159,7 +159,7 @@
       "url:https://gdg.community.dev/events/details/google-gdg-markham-presents-gdg-markham-october-hackathon-2026"
     ],
     "signals": [
-      "LINK|2026年10月24日 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
+      "LINK|24 oct. 2026 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
       "LINK|Build & Connect: GDG Markham Hackathon + Social 2026|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
       "TEXT|Build & Connect: GDG Markham Hackathon + Social 2026"
     ],
