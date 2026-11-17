@@ -150,7 +150,7 @@
     ]
   },
   "markham_gdg_chapter": {
-    "fingerprint": "452f6e53932a16baf5729123dcfefe4d25c1e9f12ba8959b18080d8bdcb486bd",
+    "fingerprint": "9ee3881bed44a865d4b066ad146d68153825cb9f3647f457fc01735f622a701a",
     "seen_event_ids": [
       "text:markham_gdg_chapter:build & connect: gdg markham hackathon + social 2026:",
       "text:markham_gdg_chapter:gdg markham october hackathon 2026:",
@@ -159,7 +159,7 @@
       "url:https://gdg.community.dev/events/details/google-gdg-markham-presents-gdg-markham-october-hackathon-2026"
     ],
     "signals": [
-      "LINK|2026年10月24日 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
+      "LINK|2026년 10월 24일 Free registration Build & Connect: GDG Markham Hackathon + Social 2026 GDG Markham|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
       "LINK|Build & Connect: GDG Markham Hackathon + Social 2026|https://gdg.community.dev/events/details/google-gdg-markham-presents-build-amp-connect-gdg-markham-hackathon-social-2026/",
       "TEXT|Build & Connect: GDG Markham Hackathon + Social 2026"
     ],
@@ -305,14 +305,19 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fingerprint": "d8005f8f2ae66501935c488e697e3e1dff6723e64afa055eea8be679f6ced700",
     "seen_event_ids": [
+      "url:https://docs.google.com/forms/d/e/1FAIpQLSdel7datahchsGy7Jj5PnArISCvzu0pKVwlf0rFfZ_vifbojA/viewform",
       "url:https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform",
       "url:https://forms.gle/rd4XuDbJJ2fsrU3n7"
     ],
-    "signals": [],
+    "signals": [
+      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7",
+      "LINK|Nous Demo Event Registration|https://docs.google.com/forms/d/e/1FAIpQLSdel7datahchsGy7Jj5PnArISCvzu0pKVwlf0rFfZ_vifbojA/viewform"
+    ],
     "urls": [
-      "https://luma.com/user/tmu_byte"
+      "https://luma.com/user/tmu_byte",
+      "https://linktr.ee/BYTETMU"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
@@ -657,6 +662,42 @@
       "https://sop.utoronto.ca/group/university-of-toronto-artificial-intelligence-club-uoft-ai/"
     ]
   },
+  "u_of_t_uoft_capture_the_flag_club": {
+    "fingerprint": "9db8130ebf2f7635025770d6bb9986b33c2534e053ea2511abba800a52c18d87",
+    "seen_event_ids": [
+      "text:u_of_t_uoft_capture_the_flag_club:a beginner's guide to ctf:",
+      "text:u_of_t_uoft_capture_the_flag_club:do not share or post any flags or solutions publicly during the ctf.:",
+      "text:u_of_t_uoft_capture_the_flag_club:have an account registered on the ctf platform at play.uoftctf.org .:",
+      "text:u_of_t_uoft_capture_the_flag_club:it will be a jeopardy-style ctf with classic categories like web exploitation, reverse engineering, binary exploitation, osint, cryptography, forensics and more.:",
+      "text:u_of_t_uoft_capture_the_flag_club:university of toronto capture the flag team.:",
+      "text:u_of_t_uoft_capture_the_flag_club:write-ups for all the reverse engineering challenges in espionage ctf 2024.:",
+      "url:https://ctf.uoftctf.org/",
+      "url:https://ctftime.org/event/2969",
+      "url:https://uoftctf.org/posts/espionage-pwn-2024",
+      "url:https://uoftctf.org/posts/espionage-rev-2024"
+    ],
+    "signals": [
+      "LINK|Contact|https://ctf.uoftctf.org/#contact",
+      "LINK|FAQ|https://ctf.uoftctf.org/#faq",
+      "LINK|ISSessions Espionage CTF 2024 - pwn challenge writeups|https://uoftctf.org/posts/espionage-pwn-2024/",
+      "LINK|ISSessions Espionage CTF 2024 RE challenge writeups|https://uoftctf.org/posts/espionage-rev-2024/",
+      "LINK|Info|https://ctf.uoftctf.org/#event-info",
+      "LINK|Prizes|https://ctf.uoftctf.org/#prizes",
+      "LINK|Rules|https://ctf.uoftctf.org/#rules",
+      "LINK|Sponsors|https://ctf.uoftctf.org/#sponsors",
+      "LINK|View CTF Results|https://ctftime.org/event/2969/",
+      "TEXT|A beginner's guide to CTF",
+      "TEXT|Do not share or post any flags or solutions publicly during the CTF.",
+      "TEXT|Have an account registered on the CTF platform at play.uoftctf.org .",
+      "TEXT|It will be a jeopardy-style CTF with classic categories like web exploitation, reverse engineering, binary exploitation, OSINT, cryptography, forensics and more.",
+      "TEXT|University of Toronto Capture the Flag Team.",
+      "TEXT|Write-ups for all the reverse engineering challenges in Espionage CTF 2024."
+    ],
+    "urls": [
+      "https://ctf.uoftctf.org/",
+      "https://uoftctf.org/"
+    ]
+  },
   "u_of_t_uoft_claude_builder_club": {
     "fingerprint": "990a7b0cd11f719a5d856110d69d4bcdca8a71298622a52d9116523d87d10393",
     "seen_event_ids": [
@@ -698,6 +739,14 @@
     "signals": [],
     "urls": [
       "https://sop.utoronto.ca/group/uoft-project-club/"
+    ]
+  },
+  "u_of_t_uofthacks": {
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
+    "signals": [],
+    "urls": [
+      "https://uofthacks.com/"
     ]
   },
   "u_of_t_utm_robotics_club": {
@@ -1060,6 +1109,14 @@
     "signals": [],
     "urls": [
       "https://www.waterloofab.com/"
+    ]
+  },
+  "waterloo_waterloo_quantum_club": {
+    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seen_event_ids": [],
+    "signals": [],
+    "urls": [
+      "https://uwquantum.com/"
     ]
   },
   "waterloo_waterloo_robosoccer_team": {
