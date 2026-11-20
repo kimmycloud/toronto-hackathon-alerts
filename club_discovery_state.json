@@ -16,9 +16,23 @@
     ]
   },
   "carleton_carleton_ai_society": {
-    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "seen_event_ids": [],
-    "signals": [],
+    "fingerprint": "6f24e2080ba131c6ec20346ea2fd9fe9075bd5904ea43c2791b79c69c2c3601f",
+    "seen_event_ids": [
+      "text:carleton_carleton_ai_society:a hackathon in ottawa: our machine learning workshop at hack the hill iii.:",
+      "text:carleton_carleton_ai_society:carleton's cognitive science hackathon: partnering on mindhack 2027.:",
+      "text:carleton_carleton_ai_society:carleton's hackathon: co-hosted workshops, and a cuhacking 6 partner club.:",
+      "url:https://cuhacking.ca/",
+      "url:https://hackthehill.com/",
+      "url:https://mindhack-2026.devpost.com/"
+    ],
+    "signals": [
+      "LINK|Hack the Hill A hackathon in Ottawa: our machine learning workshop at Hack the Hill III. (opens in a new tab)|https://hackthehill.com",
+      "LINK|MindHack Carleton's cognitive science hackathon: partnering on MindHack 2027. (opens in a new tab)|https://mindhack-2026.devpost.com",
+      "LINK|cuHacking Carleton's hackathon: co-hosted workshops, and a cuHacking 6 partner club. (opens in a new tab)|https://cuhacking.ca",
+      "TEXT|A hackathon in Ottawa: our machine learning workshop at Hack the Hill III.",
+      "TEXT|Carleton's cognitive science hackathon: partnering on MindHack 2027.",
+      "TEXT|Carleton's hackathon: co-hosted workshops, and a cuHacking 6 partner club."
+    ],
     "urls": [
       "https://carletonai.com/"
     ]
@@ -305,15 +319,19 @@
     ]
   },
   "tmu_build_your_technical_experience_byte": {
-    "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fingerprint": "d8005f8f2ae66501935c488e697e3e1dff6723e64afa055eea8be679f6ced700",
     "seen_event_ids": [
       "url:https://docs.google.com/forms/d/e/1FAIpQLSdel7datahchsGy7Jj5PnArISCvzu0pKVwlf0rFfZ_vifbojA/viewform",
       "url:https://docs.google.com/forms/d/e/1FAIpQLSeqfq-ryBEoIAwVn9No84ZtOeNGi2ns935FGNLMlNKV3guRzA/viewform",
       "url:https://forms.gle/rd4XuDbJJ2fsrU3n7"
     ],
-    "signals": [],
+    "signals": [
+      "LINK|BYTE Fall 2026 Application Form|https://forms.gle/rd4XuDbJJ2fsrU3n7",
+      "LINK|Nous Demo Event Registration|https://docs.google.com/forms/d/e/1FAIpQLSdel7datahchsGy7Jj5PnArISCvzu0pKVwlf0rFfZ_vifbojA/viewform"
+    ],
     "urls": [
-      "https://luma.com/user/tmu_byte"
+      "https://luma.com/user/tmu_byte",
+      "https://linktr.ee/BYTETMU"
     ]
   },
   "tmu_computer_science_course_union_cscu": {
