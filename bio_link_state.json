@@ -208,10 +208,20 @@
         "label": "uOttaHack 9 | HACKER APPLICATIONS",
         "url": "https://2027.uottahack.ca/"
       },
+      "https://forms.gle/i9SJVAQLN51e4uE26": {
+        "context": "uOttaHack 9 | Mentor Applications uOttaHack 9 | Mentor Applications Access Google Forms with a personal Google account or Google Workspace account (for business use).",
+        "label": "uOttaHack 9 | Mentor Applications",
+        "url": "https://forms.gle/i9SJVAQLN51e4uE26"
+      },
       "https://forms.gle/m9TXg2fGNdyDLC3c8": {
         "context": "uOttaHack x UOGDC uOttaHack x UOGDC",
         "label": "uOttaHack x UOGDC",
         "url": "https://forms.gle/m9TXg2fGNdyDLC3c8"
+      },
+      "https://forms.gle/vedRXSW4fi9z7DY5A": {
+        "context": "uOttaHack 9 | Volunteer Applications uOttaHack 9 | Volunteer Applications Thanks for your interest in participating as a mentor at uOttaHack 9! Our event is: January 15th to 17th 2027 at uOttawa CRX. You can find directions to this building here. If you have any questions about the form, please feel free to email us at hi@uottahack.ca. Thanks, The uOttaHack Team",
+        "label": "uOttaHack 9 | Volunteer Applications",
+        "url": "https://forms.gle/vedRXSW4fi9z7DY5A"
       },
       "https://youtu.be/RCi04EDupSw": {
         "context": "uOttaHack 8 Recap Video uOttaHack 8 Recap Video",
@@ -223,7 +233,7 @@
   "york_data_science_club_at_yorku": {
     "links": {
       "https://docs.google.com/forms/d/e/1FAIpQLSeef6jkhRjooj0qa3L18BVg-W2dAkGuLomCLPAc8_6MsLYgTA/viewform": {
-        "context": "2026 YorkU Data Science Club Hiring form 2026 YorkU Data Science Club Hiring form Access Google Forms with a personal Google account or Google Workspace account (for business use).",
+        "context": "2026 YorkU Data Science Club Hiring form 2026 YorkU Data Science Club Hiring form",
         "label": "2026 YorkU Data Science Club Hiring form",
         "url": "https://docs.google.com/forms/d/e/1FAIpQLSeef6jkhRjooj0qa3L18BVg-W2dAkGuLomCLPAc8_6MsLYgTA/viewform"
       },
